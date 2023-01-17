@@ -1,0 +1,9 @@
+@extends('webmin.layouts.base')
+@section('content')
+@endsection
+@section('css')
+@endsection
+@section('js')
+@endsection
+@section('javascript')
+@endsection
