@@ -1,19 +1,3 @@
-@if(strpos($__env->yieldContent('content'),'type="file"'))
-@prepend('css')
-<!-- Jquery filer css -->
-<link href="{{ url('public') }}/plugins/jquery.filer/css/jquery.filer.css" rel="stylesheet" />
-<link href="{{ url('public') }}/plugins/jquery.filer/css/themes/jquery.filer-dragdropbox-theme.css" rel="stylesheet" />
-@endprepend
-@prepend('js')
-<!-- Jquery filer js -->
-<script src="{{ url('public') }}/plugins/jquery.filer/js/jquery.filer.min.js"></script>
-@endprepend
-@prepend('javascript')
-<!-- Jquery filer init -->
-<script src="{{ url('public') }}/assets/pages/jquery.fileuploads.init.js"></script>
-@endprepend
-@endif
-
 
 @if(strpos($__env->yieldContent('content'),'select2'))
 @prepend('css')
@@ -57,7 +41,7 @@
 @endprepend
 @prepend('javascript')
 <!-- Jquery datepicker init -->
-<script src="{{ url('public') }}/assets/pages/jquery.form-datepickers.init.js"></script>
+<script src="{{ url('public') }}/plugins/jquery/jquery.form-datepickers.init.js"></script>
 @endprepend
 @endif
 

@@ -308,9 +308,7 @@
     <!--Morris Chart-->
     <script src="{{ url('public') }}/plugins/morris/morris.min.js"></script>
     <script src="{{ url('public') }}/plugins/raphael/raphael-min.js"></script>
-
-    <!-- Dashboard init -->
-    <script src="{{ url('public') }}/assets/pages/jquery.dashboard.js"></script>
+    
 @endsection
 @section('javascript')
 @endsection
