@@ -10,10 +10,10 @@ class EmagazineController extends Controller
 {
     function __construct()
     {
-        //  $this->middleware('permission:news-list', ['only' => ['index','store']]);
-        //  $this->middleware('permission:news-create', ['only' => ['create','store']]);
-        //  $this->middleware('permission:news-edit', ['only' => ['edit','update']]);
-        //  $this->middleware('permission:news-delete', ['only' => ['destroy']]);
+        //  $this->middleware('permission:e-magazine-list', ['only' => ['index','store']]);
+        //  $this->middleware('permission:e-magazine-create', ['only' => ['create','store']]);
+        //  $this->middleware('permission:e-magazine-edit', ['only' => ['edit','update']]);
+        //  $this->middleware('permission:e-magazine-delete', ['only' => ['destroy']]);
     }
 
 
@@ -46,8 +46,11 @@ class EmagazineController extends Controller
             'file' => 'required',
             'image' => 'required',
         ]);
+        $store['ref'] =  (Ebook::where('type', '=', 'e-magazine')->max('ref') || 0) + 1;
         foreach (config('app.locales') as $lang) {
+            $reorder = Ebook::where('type', '=', 'e-magazine')->where('lang', '=', $lang)->max('reorder');
             $store['lang'] =  $lang;
+            $store['reorder'] =  ($reorder || 0) + 1;
             Ebook::create($store);
         }
 

@@ -8,6 +8,7 @@ class TextEditor extends Component
 {
     public $name;
     public $value;
+    public $label;
     public $required;
     /**
      * Create a new component instance.
@@ -17,10 +18,12 @@ class TextEditor extends Component
     public function __construct(
         $name,
         $value,
+        $label="",
         $required=""
     ){
         $this->name = $name;
         $this->value = $value;
+        $this->label = $label;
         $this->required = $required;
 
     }

@@ -1,4 +1,4 @@
-(function() {
+(function () {
   "use strict";
 
   /**
@@ -103,7 +103,7 @@
   /**
    * Mobile nav toggle
    */
-  on('click', '.mobile-nav-toggle', function(e) {
+  on('click', '.mobile-nav-toggle', function (e) {
     select('#navbar').classList.toggle('navbar-mobile')
     this.classList.toggle('bi-list')
     this.classList.toggle('bi-x')
@@ -112,7 +112,7 @@
   /**
    * Mobile nav dropdowns activate
    */
-  on('click', '.navbar .dropdown > a', function(e) {
+  on('click', '.navbar .dropdown > a', function (e) {
     if (select('#navbar').classList.contains('navbar-mobile')) {
       e.preventDefault()
       this.nextElementSibling.classList.toggle('dropdown-active')
@@ -122,7 +122,7 @@
   /**
    * Scrool with ofset on links with a class name .scrollto
    */
-  on('click', '.scrollto', function(e) {
+  on('click', '.scrollto', function (e) {
     if (select(this.hash)) {
       e.preventDefault()
 
@@ -158,9 +158,9 @@
     });
   }
 
-  /**
-   * Initiate  glightbox 
-   */
+  // /**
+  //  * Initiate  glightbox 
+  //  */
   const glightbox = GLightbox({
     selector: '.glightbox'
   });
@@ -173,7 +173,7 @@
     new Waypoint({
       element: skilsContent,
       offset: '80%',
-      handler: function(direction) {
+      handler: function (direction) {
         let progress = select('.progress .progress-bar', true);
         progress.forEach((el) => {
           el.style.width = el.getAttribute('aria-valuenow') + '%'
@@ -194,9 +194,9 @@
 
       let portfolioFilters = select('#portfolio-flters li', true);
 
-      on('click', '#portfolio-flters li', function(e) {
+      on('click', '#portfolio-flters li', function (e) {
         e.preventDefault();
-        portfolioFilters.forEach(function(el) {
+        portfolioFilters.forEach(function (el) {
           el.classList.remove('filter-active');
         });
         this.classList.add('filter-active');
@@ -204,7 +204,7 @@
         portfolioIsotope.arrange({
           filter: this.getAttribute('data-filter')
         });
-        portfolioIsotope.on('arrangeComplete', function() {
+        portfolioIsotope.on('arrangeComplete', function () {
           AOS.refresh()
         });
       }, true);
@@ -212,9 +212,9 @@
 
   });
 
-  /**
-   * Initiate galery lightbox 
-   */
+  // /**
+  //  * Initiate galery lightbox 
+  //  */
   const portfolioLightbox = GLightbox({
     selector: '.galery-lightbox'
   });
@@ -252,16 +252,16 @@
 /**
    * Sidebar Navigation
    */
- $('.sub-menu ul').hide();
- $(".sub-menu a").click(function () {
-   $(this).parent(".sub-menu").children("ul").slideToggle("100");
-   $(this).find(".right").toggleClass("ri-subtract-line ri-add-line");
- });
+$('.sub-menu ul').hide();
+$(".sub-menu a").click(function () {
+  $(this).parent(".sub-menu").children("ul").slideToggle("100");
+  $(this).find(".right").toggleClass("ri-subtract-line ri-add-line");
+});
 
 /**
    * Shorcut Menu
    */
- $(".trigger-shorcut-menu, .overlay").click(function(){
+$(".trigger-shorcut-menu, .overlay").click(function () {
   $(".shorcut-menu").slideToggle();
   $(".overlay").fadeToggle();
 });
@@ -310,34 +310,56 @@ $('.box-news-slide').slick({
   speed: 300,
   autoplay: true,
   slidesToShow: 3,
+  responsive: [
+    {
+      breakpoint: 768,
+      settings: {
+        arrows: false,
+        centerMode: true,
+        centerPadding: '20px',
+        slidesToShow: 1
+      }
+    },
+    {
+      breakpoint: 480,
+      settings: {
+        arrows: false,
+        centerMode: true,
+        centerPadding: '20px',
+        slidesToShow: 1
+      }
+    }
+  ]
 });
 
-$(".list-certificate li").click(function(){
+$(".list-certificate li").click(function () {
   var get_image = $(this).children("img").attr("src");
   $(this).addClass('active').siblings().removeClass('active');
   $("#current-cert").attr("src", get_image);
 });
 
-$(window).scroll(function (event) {
-  var getValScroll = $(window).scrollTop();
-  if (getValScroll == 0){
-    $("#navbar").fadeIn();
-    $("#floating-menu-home").fadeOut();
-    $(".large-logo").fadeIn();
-    $(".small-logo").fadeOut();
-    $("#floating-menu-general").fadeOut();
-    $(".general-menu-banner").fadeIn();
-  } else {
-    $("#navbar").fadeOut();
-    $("#floating-menu-home").fadeIn();
-    $(".large-logo").fadeOut();
-    $(".small-logo").fadeIn();
-    $("#floating-menu-general").fadeIn();
-    $(".general-menu-banner").fadeOut();
-  }
-});
+if ($(window).width() > 1024) {
+  $(window).scroll(function (event) {
+    var getValScroll = $(window).scrollTop();
+    if (getValScroll == 0){
+      $("#navbar").fadeIn();
+      $("#floating-menu-home").fadeOut();
+      $(".large-logo").fadeIn();
+      $(".small-logo").fadeOut();
+      $("#floating-menu-general").fadeOut();
+      $(".general-menu-banner").fadeIn();
+    } else {
+      $("#navbar").fadeOut();
+      $("#floating-menu-home").fadeIn();
+      $(".large-logo").fadeOut();
+      $(".small-logo").fadeIn();
+      $("#floating-menu-general").fadeIn();
+      $(".general-menu-banner").fadeOut();
+    }
+  });
+}
 
-$(".accordion").on("click", function() {
+$(".accordion").on("click", function () {
   $(this).toggleClass("active");
   $(this).next().slideToggle(200);
 });
@@ -346,60 +368,61 @@ let heightScreen = $(window).height();
 $(".carousel-item, #hero").height(heightScreen);
 $(".overlay, .overlay-megamenu").height(heightScreen);
 
-$(".list-product a").click(function(){
-  $(this).addClass("active");
-  $(this).siblings().removeClass("active");
-});
+if (typeof $('.list-product') !== undefined) {
+  $(".list-product x-button").click(function () {
+    $(this).addClass("active");
+    $(this).siblings().removeClass("active");
+  });
 
-let isRotated = false;
+  let isRotated = false;
 
-$(".list-product a").on("click", function() {
-  if (!isRotated) {
-    isRotated = true;
+  $(".list-product x-button").on("click", function () {
+    if (!isRotated) {
+      isRotated = true;
 
-    //add one class and remove the other
-    $(".img-circle").addClass("rotate-180");
-    $(".img-circle").removeClass("rotate-180back");
-  } else {
-    isRotated = false;
+      //add one class and remove the other
+      $(".img-circle").addClass("rotate-180");
+      $(".img-circle").removeClass("rotate-180back");
+    } else {
+      isRotated = false;
 
-    //add one class and remove the other
-    $(".img-circle").addClass("rotate-180back");
-    $(".img-circle").removeClass("rotate-180");
-  }
-});
+      //add one class and remove the other
+      $(".img-circle").addClass("rotate-180back");
+      $(".img-circle").removeClass("rotate-180");
+    }
+  });
 
-
-$("#urea-link").on('click', function() {
-  $("#page-product .box-circle-product:not('.hide')").stop().fadeOut('fast', function() {
+  $("#urea-link").on('click', function () {
+    $("#page-product .box-circle-product:not('.hide')").stop().fadeOut('fast', function () {
       $(this).addClass('hide');
       $('#urea').fadeIn('slow').removeClass('hide');
+    });
   });
-});
-$("#amoniak-link").on('click', function() {
-  $("#page-product .box-circle-product:not('.hide')").stop().fadeOut('fast', function() {
+  $("#amoniak-link").on('click', function () {
+    $("#page-product .box-circle-product:not('.hide')").stop().fadeOut('fast', function () {
       $(this).addClass('hide');
       $('#amoniak').fadeIn('slow').removeClass('hide');
+    });
   });
-});
-$("#npk-link").on('click', function() {
-  $("#page-product .box-circle-product:not('.hide')").stop().fadeOut('fast', function() {
+  $("#npk-link").on('click', function () {
+    $("#page-product .box-circle-product:not('.hide')").stop().fadeOut('fast', function () {
       $(this).addClass('hide');
       $('#npk').fadeIn('slow').removeClass('hide');
+    });
   });
-});
+}
+$(".navbar li").has(".mega-menu").hover(function () {
 
-$(".navbar li").has(".mega-menu").hover(function(){
   $(".overlay-megamenu").css("display", "block");
-  }, function(){
+}, function () {
   $(".overlay-megamenu").css("display", "none");
 });
 
-$( ".overlay-megamenu" ).mouseover(function() {
+$(".overlay-megamenu").mouseover(function () {
   $(this).css("display", "none");
 });
 
-$( document ).ready(function() {
+$(document).ready(function () {
   $('#first-accordion').trigger('click');
   const ele1 = document.getElementById('panzoom-1');
   const ele2 = document.getElementById('panzoom-2');
@@ -408,25 +431,31 @@ $( document ).ready(function() {
 
   const btnzoomin2 = document.getElementById('zoom-in-2');
   const btnzoomout2 = document.getElementById('zoom-out-2');
-  
-  const panzoom1 = Panzoom(ele1, {
-    animate: true,
-  });
-  const panzoom2 = Panzoom(ele2, {
-    animate: true,
-  });
 
-  btnzoomin1.addEventListener('click', panzoom1.zoomIn);
-  btnzoomout1.addEventListener('click', panzoom1.zoomOut);
-  btnzoomin2.addEventListener('click', panzoom2.zoomIn);
-  btnzoomout2.addEventListener('click', panzoom2.zoomOut);
+  if (ele1) {
+    const panzoom1 = Panzoom(ele1, {
+      animate: true,
+    });
+    btnzoomin1.addEventListener('click', panzoom1.zoomIn);
+    btnzoomout1.addEventListener('click', panzoom1.zoomOut);
+  }
+  if (ele2) {
+    const panzoom2 = Panzoom(ele2, {
+      animate: true,
+    });
+    btnzoomin2.addEventListener('click', panzoom2.zoomIn);
+    btnzoomout2.addEventListener('click', panzoom2.zoomOut);
+  }
 });
 
-$('.other-directors').slick({
-  infinite: false,
-  slidesToShow: 4,
-  slidesToScroll: 2
-});
+const otherDirectors = $('.other-directors');
+if (typeof otherDirectors !== undefined) {
+  $('.other-directors').slick({
+    infinite: false,
+    slidesToShow: 4,
+    slidesToScroll: 2
+  });
+}
 
 $('.box-report-investor').slick({
   infinite: false,
@@ -461,135 +490,135 @@ $('.box-items-product').slick({
   ]
 });
 
-Highcharts.chart('detail-production', {
-  chart: {
-    type: 'column',
-    backgroundColor: '#E2F2FF',
-  },
-  title: {
-    text: 'Rincian Produksi'
-  },
-  xAxis: {
-    categories: [
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'Mei',
-      'Jun',
-      'Jul',
-      'Agt',
-      'Sept',
-      'Okt',
-      'Nov',
-      'Des'
-    ],
-    crosshair: true
-  },
-  yAxis: {
-    title: {
-      useHTML: true,
-      text: 'Tons'
-    }
-  },
-  tooltip: {
-    headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-      '<td style="padding:0"><b>{point.y:.1f}</b></td></tr>',
-    footerFormat: '</table>',
-    shared: true,
-    useHTML: true
-  },
-  credits: {
-    enabled: false
-  },
-  plotOptions: {
-    column: {
-      pointPadding: 0.2,
-      borderWidth: 0
-    }
-  },
-  series: [{
-    color: '#00519B',
-    name: 'Amoniak',
-    data: [13.93, 13.63, 13.73, 13.67, 14.37, 14.89, 14.56,
-      14.32, 14.13, 13.93, 13.21, 12.16]
+// Highcharts.chart('detail-production', {
+//   chart: {
+//     type: 'column',
+//     backgroundColor: '#E2F2FF',
+//   },
+//   title: {
+//     text: 'Rincian Produksi'
+//   },
+//   xAxis: {
+//     categories: [
+//       'Jan',
+//       'Feb',
+//       'Mar',
+//       'Apr',
+//       'Mei',
+//       'Jun',
+//       'Jul',
+//       'Agt',
+//       'Sept',
+//       'Okt',
+//       'Nov',
+//       'Des'
+//     ],
+//     crosshair: true
+//   },
+//   yAxis: {
+//     title: {
+//       useHTML: true,
+//       text: 'Tons'
+//     }
+//   },
+//   tooltip: {
+//     headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+//     pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+//       '<td style="padding:0"><b>{point.y:.1f}</b></td></tr>',
+//     footerFormat: '</table>',
+//     shared: true,
+//     useHTML: true
+//   },
+//   credits: {
+//     enabled: false
+//   },
+//   plotOptions: {
+//     column: {
+//       pointPadding: 0.2,
+//       borderWidth: 0
+//     }
+//   },
+//   series: [{
+//     color: '#00519B',
+//     name: 'Amoniak',
+//     data: [13.93, 13.63, 13.73, 13.67, 14.37, 14.89, 14.56,
+//       14.32, 14.13, 13.93, 13.21, 12.16]
 
-  }, {
-    color: '#74F7FF',
-    name: 'Urea',
-    data: [12.24, 12.24, 11.95, 12.02, 11.65, 11.96, 11.59,
-      11.94, 11.96, 11.59, 11.42, 11.76]
+//   }, {
+//     color: '#74F7FF',
+//     name: 'Urea',
+//     data: [12.24, 12.24, 11.95, 12.02, 11.65, 11.96, 11.59,
+//       11.94, 11.96, 11.59, 11.42, 11.76]
 
-  }, {
-    color: '#F47920',
-    name: 'NPK',
-    data: [10.00, 9.93, 9.97, 10.01, 10.23, 10.26, 10.00,
-      9.12, 9.36, 8.72, 8.38, 8.69]
+//   }, {
+//     color: '#F47920',
+//     name: 'NPK',
+//     data: [10.00, 9.93, 9.97, 10.01, 10.23, 10.26, 10.00,
+//       9.12, 9.36, 8.72, 8.38, 8.69]
 
-  }]
-});
+//   }]
+// });
 
-Highcharts.chart('target-production', {
-  chart: {
-    type: 'bar',
-    backgroundColor: '#E2F2FF',
-  },
-  title: {
-    text: 'Target Production'
-  },
-  xAxis: {
-    categories: [
-      'Amoniak',
-      'Urea',
-      'NPK',
-    ],
-    title: {
-      text: null
-    }
-  },
-  yAxis: {
-    min: 0,
-    title: {
-      text: 'Berat',
-      align: 'high'
-    },
-    labels: {
-      overflow: 'justify'
-    }
-  },
-  tooltip: {
-    valueSuffix: ' Tons'
-  },
-  plotOptions: {
-    bar: {
-      dataLabels: {
-        enabled: true
-      }
-    }
-  },
-  legend: {
-    layout: 'vertical',
-    align: 'right',
-    verticalAlign: 'top',
-    x: -40,
-    y: 80,
-    floating: true,
-    borderWidth: 1,
-    backgroundColor:
-      Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF',
-    shadow: true
-  },
-  credits: {
-    enabled: false
-  },
-  series: [{
-    data: [
-      {y: 100, color: '#00519B'}, 
-      {y: 893, color: '#74F7FF'}, 
-      {y: 182, color: '#F47920'},
-    ],
-    showInLegend: false,
-    name: '',
-  }]
-});
+// Highcharts.chart('target-production', {
+//   chart: {
+//     type: 'bar',
+//     backgroundColor: '#E2F2FF',
+//   },
+//   title: {
+//     text: 'Target Production'
+//   },
+//   xAxis: {
+//     categories: [
+//       'Amoniak',
+//       'Urea',
+//       'NPK',
+//     ],
+//     title: {
+//       text: null
+//     }
+//   },
+//   yAxis: {
+//     min: 0,
+//     title: {
+//       text: 'Berat',
+//       align: 'high'
+//     },
+//     labels: {
+//       overflow: 'justify'
+//     }
+//   },
+//   tooltip: {
+//     valueSuffix: ' Tons'
+//   },
+//   plotOptions: {
+//     bar: {
+//       dataLabels: {
+//         enabled: true
+//       }
+//     }
+//   },
+//   legend: {
+//     layout: 'vertical',
+//     align: 'right',
+//     verticalAlign: 'top',
+//     x: -40,
+//     y: 80,
+//     floating: true,
+//     borderWidth: 1,
+//     backgroundColor:
+//       Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF',
+//     shadow: true
+//   },
+//   credits: {
+//     enabled: false
+//   },
+//   series: [{
+//     data: [
+//       { y: 100, color: '#00519B' },
+//       { y: 893, color: '#74F7FF' },
+//       { y: 182, color: '#F47920' },
+//     ],
+//     showInLegend: false,
+//     name: '',
+//   }]
+// });

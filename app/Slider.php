@@ -21,33 +21,33 @@ class Slider extends Model
         'updated_at' => 'datetime:Y-m-d H:i:s',
     ];
 
+    public function newQuery($excludeDeleted = true) {
+        return parent::newQuery($excludeDeleted = true)
+            ->where('position', '=', 'top');
+    }
     public static function getData($request)
     {
         $columns = [
-            'menus.id',
-            'menus.title',
-            'menus.menu_type',
-            'menus.menu_position',
-            'menus.lang',
-            'menus.created_at',
-            'menus.updated_at',
-            'menuroot.title AS parent_menu'
+            'id',
+            'title',
+            'image',
+            'position',
+            'lang',
+            'created_at',
+            'updated_at',
         ];
-        $query = DB::table('slider')->select($columns)
-            ->leftJoin('slider AS menuroot', 'slider.id_menu', '=', 'menuroot.id');
+        $query = Slider::select($columns);
 
         if (isset($request->order[0]['column']) && $request->order[0]['column']=='1'){
-            $query->orderBy('menus.lang', $request->order[0]['dir']);
+            $query->orderBy('lang', $request->order[0]['dir']);
         }elseif (isset($request->order[0]['column']) && $request->order[0]['column']=='2'){
-            $query->orderBy('menuroot.title', $request->order[0]['dir']);
-        }elseif (isset($request->order[0]['column']) && $request->order[0]['column']=='3'){
-            $query->orderBy('menus.title', $request->order[0]['dir']);
+            $query->orderBy('title', $request->order[0]['dir']);
         }elseif (isset($request->order[0]['column']) && $request->order[0]['column']=='4'){
-            $query->orderBy('menus.created_at', $request->order[0]['dir']);
+            $query->orderBy('created_at', $request->order[0]['dir']);
         }elseif (isset($request->order[0]['column']) && $request->order[0]['column']=='5'){
-            $query->orderBy('menus.updated_at', $request->order[0]['dir']);
+            $query->orderBy('updated_at', $request->order[0]['dir']);
         }else{
-            $query->orderBy('menus.lang', 'ASC')->orderBy('menus.reorder', 'ASC');
+            $query->orderBy('lang', 'ASC')->orderBy('reorder', 'ASC');
         }
         $out = getQueryDatatables($columns, $query);
         return $out;
@@ -59,7 +59,7 @@ class Slider extends Model
         $reorder = explode(',', $request->reorder);
         foreach ($reorder as $value) {
             $count++;
-            $menus = Menu::find(intval($value));
+            $menus = Slider::find(intval($value));
             $menus->reorder = $count;
             $menus->save();
         }

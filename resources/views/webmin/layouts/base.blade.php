@@ -28,6 +28,7 @@
     <link href="{{ url('public') }}/assets/css/menu.css" rel="stylesheet" type="text/css" />
     <link href="{{ url('public') }}/assets/css/responsive.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="{{ url('public') }}/plugins/switchery/switchery.min.css">
+    <link rel="stylesheet" href="{{ url('public') }}/plugins/fancybox/jquery.fancybox.css">
 
 
     <!-- HTML5 Shiv and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -90,6 +91,7 @@
     <!-- <script src="{{ url('public') }}/assets/js/jquery.scrollTo.min.js"></script> -->
     <script src="{{ url('public') }}/plugins/switchery/switchery.min.js"></script>
     <script src="{{ url('public') }}/plugins/bootstrap-sweetalert/sweet-alert.min.js"></script>
+    <script src="{{ url('public') }}/plugins/fancybox/jquery.fancybox.pack.js"></script>
 
     @stack('js')
     @yield('js')

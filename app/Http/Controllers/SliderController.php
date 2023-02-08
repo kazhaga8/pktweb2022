@@ -19,8 +19,22 @@ class SliderController extends Controller
     }
     
 
-    public function json(){
-        return DataTables::of(Slider::where('position', '=', 'top')->orderBy('created_at', 'DESC'))->addIndexColumn()->make(true);
+    public function json(Request $request){
+        if ($request->reorder){
+            Slider::reorderData($request);
+        }
+        $getData = Slider::getData($request);
+        $query = $getData['query'];
+
+        return DataTables::of($query)
+        ->addIndexColumn()
+        ->filter(function ($query) use ($request, $getData) {
+            $this->filterGlobal($getData, $request, $query);
+        })
+        ->skipTotalRecords()
+        ->setTotalRecords(false)
+        ->setFilteredRecords(false)
+        ->make(true);
     }
 
     /**

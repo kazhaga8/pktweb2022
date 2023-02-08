@@ -1,0 +1,42 @@
+.panel {
+  display: block;
+}
+.desc-cert img {
+  display: none;
+}
+.list-certificate img {
+  display: block !important;
+  width: 50%!important;
+  height: 50%!important;
+}
+#certificate .content .col-lg-7 {
+  width: 100%;
+}
+#certificate .content .col-lg-5 {
+  width: 100%;
+}
+.img-circle {
+  /* display: none !important; */
+}
+.box-circle-product img {
+  position: relative;
+  margin-bottom: 10px;
+  top: 0px;
+}
+#amoniak {
+  display: block !important;
+  margin-top: 550px;
+}
+#npk {
+  display: block !important;
+  margin-top: 1100px;
+}
+
+.box-circle-product .info-product-1,
+.box-circle-product .info-product-2,
+.box-circle-product .info-product-3 {
+    position: relative;
+    right: auto;
+    top: auto;
+    left: auto;
+}

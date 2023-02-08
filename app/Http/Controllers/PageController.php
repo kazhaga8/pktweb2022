@@ -36,7 +36,7 @@ class PageController extends Controller
         $page['title'] = 'Pages Management';
         $page['method'] = 'POST';
         $page['action'] = route('pages.store');
-        $parent = Menu::where('lang', '=', config('app.fallback_locale'))->get(['id', 'title as name']);
+        $parent = Menu::where('lang', '=', config('app.fallback_locale'))->where('menu_position', '!=', 'shortcut')->get(['id', 'title as name']);
         $parent = json_decode(json_encode($parent));
         return view('webmin.pages.form',compact('parent','page'));
     }
@@ -49,6 +49,10 @@ class PageController extends Controller
             'content' => 'required',
         ]);
         $store['ref'] =  (Page::max('ref') || 0) + 1;
+        $anchor = Menu::find($store['id_menu']);
+        if ($anchor->menu_type == "anchor") {
+            $store['content'] = setSectionAnchor($store['content'], $anchor->alias);
+        }
         $store['content'] = htmlentities($store['content']);
         $ref = Menu::where('id', '=', $store['id_menu'])->select('ref')->pluck('ref')->first();
         foreach (config('app.locales') as $lang) {
@@ -70,7 +74,7 @@ class PageController extends Controller
         $page_['title'] = 'Pages Management';
         $page_['method'] = 'PUT';
         $page_['action'] = route('pages.update',$page->id);
-        $parent = Menu::where('lang', '=', $page->lang)->get(['id', 'title as name']);
+        $parent = Menu::where('lang', '=', $page->lang)->where('menu_position', '!=', 'shortcut')->get(['id', 'title as name']);
         $parent = json_decode(json_encode($parent));
         $page->content = html_entity_decode($page->content);
         return view('webmin.pages.form',compact('parent'), [ 'page' => $page_, 'pages' => $page ]);
@@ -83,6 +87,11 @@ class PageController extends Controller
         ]);
 
         $store  = $request->all();
+        $anchor = Menu::find($store['id_menu']);
+        if ($anchor->menu_type == "anchor") {
+            $store['content'] = setSectionAnchor($store['content'], $anchor->alias);
+        }
+        $store['content'] = htmlentities($store['content']);
         $page->update($store);
         return redirect()->route('pages.index')
                         ->with('success','Pages updated successfully');
@@ -90,10 +99,6 @@ class PageController extends Controller
     public function destroy(Page $page)
     {
         $page->delete();
-        if($page->image!=""){
-            unlink(public_path($page->image));
-        }
-
         return redirect()->route('menus.index')
                         ->with('success','Menu deleted successfully');
     }

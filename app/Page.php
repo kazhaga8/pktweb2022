@@ -28,6 +28,12 @@ class Page extends Model
         'reorder',
         'id_menu'
     ];
+
+    public function newQuery($excludeDeleted = true) {
+        return parent::newQuery($excludeDeleted = true)
+            ->where('visible', '=', 'true');
+    }
+
     protected $casts = [
         'created_at' => 'datetime:Y-m-d H:i:s',
         'updated_at' => 'datetime:Y-m-d H:i:s',

@@ -13,17 +13,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/webmin', function () {
-    return redirect()->route('login');
-});
 Route::get('/e-book', function ($book) {
     return view('web.ebook',compact('book'));
 })->name('ebook.index');
 Route::get('/e-book/{book}', function ($book) {
     return view('web.ebook',compact('book'));
 })->name('ebook');
-Route::prefix('{locale?}')->middleware('locale')->group(function() {
-    Route::get('/', function () {
-        return view('welcome');
+Route::get('/webmin', function () {
+    return redirect()->route('login');
+});
+Route::prefix('{locale?}')->middleware('locale')->group(function($locale) {
+    Route::get('/', function ($locale) {
+        return redirect()->route('web.index', [$locale, 'home']);
     });
+    Route::get('/{pages}','WebController@index')->name('web.index');
 });

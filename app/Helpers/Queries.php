@@ -41,7 +41,6 @@ function getQueryDatatables($columns, $query)
     ];
 }
 
-// machrus alifuddin check query
 function getSql($query){
     $sql= $query->toSql();
     foreach($query->getBindings() as $binding){
@@ -52,10 +51,6 @@ function getSql($query){
 }
 
 function getSqlQry($query){
-    // DB::enableQueryLog();
-    // // disini query buildernya
-    // dd(getSqlQry(DB::getQueryLog()));
-
     $sql= $query[0]['query'];
     foreach($query[0]['bindings'] as $binding){
         $value = is_numeric($binding) ? $binding : "'".$binding."'";
@@ -63,7 +58,6 @@ function getSqlQry($query){
     }
     return $sql;
 }
-// machrus alifuddin check query
 
 function getSqlRec($log){
     return vsprintf(str_replace('?', '"%s"', $log[0]['query']), $log[0]['bindings']);

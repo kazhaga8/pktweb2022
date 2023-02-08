@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 
 use App\Menu;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
 
@@ -83,7 +82,8 @@ class MenuController extends Controller
         $alias = str_slug($request->title, '-');
         $store['alias'] =  $alias;
         $store['href'] =  $store['link'];
-        $store['ref'] =  (Menu::max('ref') || 0) + 1;
+        $max_ref = Menu::max('ref');
+        $store['ref'] =  ($max_ref ? $max_ref : 0) + 1;
         $ref = Menu::where('id', '=', $store['id_menu'])->select('ref')->pluck('ref')->first();
         foreach (config('app.locales') as $lang) {
             if ($store['id_menu']) {
@@ -92,7 +92,7 @@ class MenuController extends Controller
             }
             $reorder = Menu::where('lang', '=', $lang)->max('reorder');
             $store['lang'] =  $lang;
-            $store['reorder'] =  ($reorder || 0) + 1;
+            $store['reorder'] =  ($reorder ? $reorder : 0) + 1;
             Menu::create($store);
         }
 
@@ -161,10 +161,6 @@ class MenuController extends Controller
     public function destroy(Menu $menu)
     {
         $menu->delete();
-        if($menu->image!=""){
-            unlink(public_path($menu->image));
-        }
-
         return redirect()->route('menus.index')
                         ->with('success','Menu deleted successfully');
     }

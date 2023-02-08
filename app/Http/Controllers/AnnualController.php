@@ -10,10 +10,10 @@ class AnnualController extends Controller
 {
     function __construct()
     {
-        //  $this->middleware('permission:news-list', ['only' => ['index','store']]);
-        //  $this->middleware('permission:news-create', ['only' => ['create','store']]);
-        //  $this->middleware('permission:news-edit', ['only' => ['edit','update']]);
-        //  $this->middleware('permission:news-delete', ['only' => ['destroy']]);
+        //  $this->middleware('permission:annual-list', ['only' => ['index','store']]);
+        //  $this->middleware('permission:annual-create', ['only' => ['create','store']]);
+        //  $this->middleware('permission:annual-edit', ['only' => ['edit','update']]);
+        //  $this->middleware('permission:annual-delete', ['only' => ['destroy']]);
     }
 
 
@@ -46,8 +46,11 @@ class AnnualController extends Controller
             'file' => 'required',
             'image' => 'required',
         ]);
+        $store['ref'] =  (Ebook::where('type', '=', 'annual')->max('ref') || 0) + 1;
         foreach (config('app.locales') as $lang) {
+            $reorder = Ebook::where('type', '=', 'annual')->where('lang', '=', $lang)->max('reorder');
             $store['lang'] =  $lang;
+            $store['reorder'] =  ($reorder || 0) + 1;
             Ebook::create($store);
         }
 

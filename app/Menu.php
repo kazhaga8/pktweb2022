@@ -31,6 +31,11 @@ class Menu extends Model
         'updated_at' => 'datetime:Y-m-d H:i:s',
     ];
 
+    public function newQuery($excludeDeleted = true) {
+        return parent::newQuery($excludeDeleted = true)
+            ->where('menus.menu_position', '!=', 'shortcut');
+    }
+
     public static function getData($request)
     {
         $columns = [
@@ -44,7 +49,7 @@ class Menu extends Model
             'menus.updated_at',
             'menuroot.title AS parent_menu'
         ];
-        $query = DB::table('menus')->select($columns)
+        $query = Menu::select($columns)
             ->leftJoin('menus AS menuroot', 'menus.id_menu', '=', 'menuroot.id');
 
         if (isset($request->order[0]['column']) && $request->order[0]['column']=='1'){

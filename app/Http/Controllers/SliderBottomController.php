@@ -4,7 +4,7 @@
 namespace App\Http\Controllers;
 
 
-use App\Slider;
+use App\SliderBottom;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -19,10 +19,23 @@ class SliderBottomController extends Controller
     }
     
 
-    public function json(){
-        return DataTables::of(Slider::where('position', '=', 'bottom')->orderBy('created_at', 'DESC'))->addIndexColumn()->make(true);
-    }
+    public function json(Request $request){
+        if ($request->reorder){
+            SliderBottom::reorderData($request);
+        }
+        $getData = SliderBottom::getData($request);
+        $query = $getData['query'];
 
+        return DataTables::of($query)
+        ->addIndexColumn()
+        ->filter(function ($query) use ($request, $getData) {
+            $this->filterGlobal($getData, $request, $query);
+        })
+        ->skipTotalRecords()
+        ->setTotalRecords(false)
+        ->setFilteredRecords(false)
+        ->make(true);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -65,10 +78,10 @@ class SliderBottomController extends Controller
         ]);
         $store  = $request->all();
         foreach (config('app.locales') as $lang) {
-            $reorder = Slider::where('lang', '=', $lang)->max('reorder');
+            $reorder = SliderBottom::where('lang', '=', $lang)->max('reorder');
             $store['lang'] =  $lang;
             $store['reorder'] =  ($reorder || 0) + 1;
-            Slider::create($store);
+            SliderBottom::create($store);
         }
 
 
@@ -83,7 +96,7 @@ class SliderBottomController extends Controller
      * @param  \App\Slider  $slider
      * @return \Illuminate\Http\Response
      */
-    public function show(Slider $sliders_bottom)
+    public function show(SliderBottom $sliders_bottom)
     {
         return view('webmin.sliders-bottom.show',compact('slider'));
     }
@@ -95,12 +108,13 @@ class SliderBottomController extends Controller
      * @param  \App\Slider  $slider
      * @return \Illuminate\Http\Response
      */
-    public function edit(Slider $sliders_bottom)
+    public function edit(SliderBottom $sliders_bottom)
     {
         $page['page'] = 'sliders-bottom';
         $page['title'] = 'Sliders Bottom Management';
         $page['method'] = 'PUT';
         $page['action'] = route('sliders-bottom.update',$sliders_bottom->id);
+        $slider = $sliders_bottom;
         return view('webmin.sliders-bottom.form',compact('slider','page'));
     }
 
@@ -112,7 +126,7 @@ class SliderBottomController extends Controller
      * @param  \App\Slider  $slider
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Slider $sliders_bottom)
+    public function update(Request $request, SliderBottom $sliders_bottom)
     {
          request()->validate([
             'title' => 'required',
@@ -133,7 +147,7 @@ class SliderBottomController extends Controller
      * @param  \App\Slider  $slider
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Slider $sliders_bottom)
+    public function destroy(SliderBottom $sliders_bottom)
     {
         $sliders_bottom->delete();
         return redirect()->route('sliders-bottom.index')

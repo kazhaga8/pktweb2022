@@ -8,6 +8,9 @@ class InputFile extends Component
 {
     public $dragndrop;
     public $name;
+    public $label;
+    public $info;
+    public $type;
     public $value;
     public $required;
     public $disabled;
@@ -21,14 +24,21 @@ class InputFile extends Component
     public function __construct(
         $dragndrop=false,
         $name,
+        $label="",
+        $info="",
+        $type="",
         $value,
         $required="",
         $disabled="false",
         $multiple=false,
         $allowext=[]
     ){
+
         $this->dragndrop = $dragndrop;
         $this->name = $name;
+        $this->label = $label;
+        $this->info = $info;
+        $this->type = $type;
         $this->value = $value;
         $this->required = $required;
         $this->disabled = $disabled;

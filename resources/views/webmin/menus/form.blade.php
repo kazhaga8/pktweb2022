@@ -5,10 +5,8 @@
 <x-webmin.radio name="menu_type" value="{!! isset($menu->menu_type)? $menu->menu_type : '' !!}" required="required" :items="['internal','anchor','external']" />
 <x-webmin.input type="text" name="link" value="{!! isset($menu->link)? $menu->link : '' !!}" required="required" />
 <x-webmin.select2 name="id_menu" placeholder="{{ __('form.select_id_menu') }}" value="{!! isset($menu->id_menu)? $menu->id_menu : '' !!}" :items="$parent" />
-<x-webmin.input-file name="banner_img" value="{!! isset($menu->banner_img)? $menu->banner_img : '' !!}" required="required" />
-<!-- <x-webmin.texteditor name="detail" value="{!! isset($menu->detail)? $menu->detail : '' !!}" required="required" /> -->
-	<!-- <x-webmin.select name="id_menu" value="{!! isset($menu->id_menu)? $menu->id_menu : '' !!}"  required="required" :items="['main','right']" /> -->
-	
+<x-webmin.input-file name="banner_img" type="1" value="{!! isset($menu->banner_img)? $menu->banner_img : '' !!}" required="required" />
+
 @endsection
 @section('javascript')
 <script>

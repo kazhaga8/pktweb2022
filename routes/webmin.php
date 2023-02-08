@@ -34,7 +34,7 @@ Route::group(['middleware' => ['auth']], function() {
     
     Route::resource('sliders-bottom','SliderBottomController')->except(['edit', 'show']);
     Route::get('/sliders-bottom/json','SliderBottomController@json')->name('sliders-bottom.json');
-    Route::get('/sliders-bottom/{slider}','SliderBottomController@edit')->name('sliders-bottom.edit');
+    Route::get('/sliders-bottom/{sliders_bottom}','SliderBottomController@edit')->name('sliders-bottom.edit');
 
     Route::resource('news','NewsController')->except(['edit', 'show']);
     Route::get('/news/json','NewsController@json')->name('news.json');
@@ -71,6 +71,48 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/e-magazine/{ebook}','EmagazineController@edit')->name('e-magazine.edit');
     Route::match(['put', 'patch'],'e-magazine/{ebook}','EmagazineController@update')->name('e-magazine.update');
     Route::delete('/e-magazine/{ebook}','EmagazineController@destroy')->name('e-magazine.destroy');
+
+    Route::resource('shortcuts','ShortcutController')->except(['edit', 'show']);
+    Route::get('/shortcuts/json','ShortcutController@json')->name('shortcuts.json');
+    Route::get('/shortcuts/{shortcut}','ShortcutController@edit')->name('shortcuts.edit');
+
+    Route::resource('certificates','CertificateController')->except(['edit', 'show']);
+    Route::get('/certificates/json','CertificateController@json')->name('certificates.json');
+    Route::get('/certificates/{certificate}','CertificateController@edit')->name('certificates.edit');
+
+    Route::resource('timelines','TimelineController')->except(['edit', 'show']);
+    Route::get('/timelines/json','TimelineController@json')->name('timelines.json');
+    Route::get('/timelines/{timeline}','TimelineController@edit')->name('timelines.edit');
+
+    Route::resource('program-tjsl','ProgramTjslController')->except(['edit', 'show']);
+    Route::get('/program-tjsl/json','ProgramTjslController@json')->name('program-tjsl.json');
+    Route::get('/program-tjsl/{program_tjsl}','ProgramTjslController@edit')->name('program-tjsl.edit');
+
+    Route::resource('program-empowerment','ProgramEmpowermentController')->except(['edit', 'show']);
+    Route::get('/program-empowerment/json','ProgramEmpowermentController@json')->name('program-empowerment.json');
+    Route::get('/program-empowerment/{program_program-empowerment}','ProgramEmpowermentController@edit')->name('program-empowerment.edit');
+
+    Route::resource('managements','ManagementController')->except(['edit', 'show']);
+    Route::get('/managements/json','ManagementController@json')->name('managements.json');
+    Route::get('/managements/{management}','ManagementController@edit')->name('managements.edit');
+
+    Route::resource('galleries','GalleryController')->except(['edit', 'show']);
+    Route::get('/galleries/json','GalleryController@json')->name('galleries.json');
+    Route::get('/galleries/{gallery}','GalleryController@edit')->name('galleries.edit');
+
+    Route::resource('contacts','ContactController')->except(['edit', 'show']);
+    Route::get('/contacts/json','ContactController@json')->name('contacts.json');
+    Route::get('/contacts/{contact}','ContactController@edit')->name('contacts.edit');
+
+    Route::resource('products','ProductController')->except(['edit', 'show']);
+    Route::get('/products/json','ProductController@json')->name('products.json');
+    Route::get('/products/{product}','ProductController@edit')->name('products.edit');
+
+    Route::get('/configs', function () {
+        return redirect()->route('configs.edit', [1]);
+    })->name('configs.index');
+    Route::get('/configs/{config}','ConfigController@edit')->name('configs.edit');
+    Route::match(['put', 'patch'], '/configs/update','ConfigController@update')->name('configs.update');
 
     Route::get('/roles/json','RoleController@json')->name('roles.json');
     Route::resource('roles','RoleController');

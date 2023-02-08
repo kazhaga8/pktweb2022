@@ -47,7 +47,8 @@
             "database/factories"
         ],
         "files": [
-            "app/Helpers/Queries.php"
+            "app/Helpers/Queries.php",
+            "app/Helpers/BladeParser.php"
         ]
     },
     "autoload-dev": {

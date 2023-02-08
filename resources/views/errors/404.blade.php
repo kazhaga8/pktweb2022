@@ -22,7 +22,7 @@
             <p>{{ $exception->getMessage() }}</p>
         </div>
     </div>
-    <div id="particles-js"><a class="back" href="{{ route('dashboard') }}">GO BACK</a></div>
+    <div id="particles-js"><a class="back" href="{{ url()->previous() }}">GO BACK</a></div>
 </body>
 
 </html>

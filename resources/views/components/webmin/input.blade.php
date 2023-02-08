@@ -5,6 +5,7 @@
     name="{{ $name }}" id="{{ $name }}"
     type="{{ $type }}" 
     value="{{ $value }}" 
+    placeholder="{{ $placeholder }}" 
     {{ (isset($required) && $required == "required")?"required":"" }} 
     {{ (isset($disabled) && $disabled == "disabled")?"disabled":"" }}
   >
