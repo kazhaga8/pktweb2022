@@ -130,8 +130,33 @@ return [
     */
 
     'custom' => [
-        'attribute-name' => [
-            'rule-name' => 'custom-message',
+        'subject' => [
+            'required' => 'Subjek harus diisi',
+        ],
+        'tujuan' => [
+            'required' => 'Tujuan harus diisi',
+        ],
+        'name' => [
+            'required' => 'Nama harus diisi',
+        ],
+        'email' => [
+            'required' => 'Email harus diisi',
+        ],
+        'ktp' => [
+            'required' => 'No. KTP harus diisi',
+        ],
+        'message' => [
+            'required' => 'Pesan harus diisi',
+        ],
+        'ktp_file' => [
+            'required' => 'Foto KTP harus diisi',
+            'max' => 'File terlalu besar, maksimal 500KB'
+        ],
+        'phone' => [
+            'required' => 'No HP harus diisi',
+        ],
+        'captcha' => [
+            'required' => 'Captcha harus diisi',
         ],
     ],
 

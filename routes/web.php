@@ -22,6 +22,7 @@ Route::get('/e-book/{book}', function ($book) {
 Route::get('/webmin', function () {
     return redirect()->route('login');
 });
+Route::post('/send-contact','WebController@sendContact')->name('send-contact');
 Route::prefix('{locale?}')->middleware('locale')->group(function($locale) {
     Route::get('/', function ($locale) {
         return redirect()->route('web.index', [$locale, 'home']);

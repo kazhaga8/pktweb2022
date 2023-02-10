@@ -8,7 +8,7 @@
     <meta name="author" content="Coderthemes">
 
     <!-- App favicon -->
-    <link rel="shortcut icon" href="{{ url('public') }}/assets/images/favicon.ico">
+    <link rel="shortcut icon" href="{{ url('public') }}/assets/web/img/favicon.png">
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- App title -->

@@ -1,7 +1,48 @@
 <?php
 
 use App\Http\Controllers\WebController;
+use Illuminate\Support\Str;
 
+function acakCaptcha()
+{
+    $kode = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+    $pass = array();
+
+    $panjangkode = strlen($kode) - 2;
+    for ($i = 0; $i < 5; $i++) {
+        $n = rand(0, $panjangkode);
+        $pass[] = $kode[$n];
+    }
+    return implode($pass);
+}
+function reCaptcha()
+{
+    $code = acakCaptcha();
+    session(['captcha_code' => $code]);
+    $gbr = imagecreate(257, 50);
+
+    imagecolorallocate($gbr, 244, 121, 32);
+
+    $color = imagecolorallocate($gbr, 253, 252, 252);
+    putenv('GDFONTPATH=' . realpath('.'));
+    $font = public_path('assets/fonts/ArialTh.ttf');
+    $ukuran_font = 20;
+    $posisi = 35;
+    $stringLength = strlen($code);
+    for ($i = 0; $i < $stringLength; $i++) {
+        $kemiringan = rand(1, 20);
+
+        imagettftext($gbr, $ukuran_font, $kemiringan, 60 + 30 * $i, $posisi, $color, $font, $code[$i]);
+    }
+    ob_start();
+    header("Content-Type: image/jpeg");
+    ImageJpeg($gbr);
+    $img = ob_get_clean();
+
+    ImageDestroy($gbr);
+    return base64_encode($img);
+}
 function setSectionAnchor($source, $anchor)
 {
     preg_match_all("'<section(.*?)>'si", $source, $pages);
@@ -11,7 +52,7 @@ function setSectionAnchor($source, $anchor)
     }
     return $source;
 }
-function renderPage($page)
+function renderPage($page, $locale)
 {
     $content = $page->content;
     preg_match_all("'&lt;!--MODULE-(.*?)--&gt;(.*?)&lt;!--/MODULE-(.*?)--&gt;'si", $content, $module);
@@ -54,6 +95,10 @@ function renderPage($page)
         }
         if ($module[1][0] == "LAPORAN-KEUANGAN") {
             $replace_content = WebController::rederKeuangan();
+            $content    = str_replace($module[0][0], $replace_content, $content);
+        }
+        if ($module[1][0] == "CONTACT") {
+            $replace_content = WebController::rederContact($locale);
             $content    = str_replace($module[0][0], $replace_content, $content);
         }
     }

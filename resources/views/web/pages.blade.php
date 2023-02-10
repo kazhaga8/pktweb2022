@@ -2,6 +2,6 @@
 
 @section('content')
 @foreach ($pages as $page)
-{!! renderPage($page) !!}
+{!! renderPage($page, $locale) !!}
 @endforeach
 @endsection

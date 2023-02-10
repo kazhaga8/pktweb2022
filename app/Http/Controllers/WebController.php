@@ -3,11 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Config;
+use App\Contact;
 use App\Menu;
 use App\MenuShortcut;
 use App\Page;
 use App\Slider;
 use App\SliderBottom;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class WebController extends Controller
 {
@@ -115,7 +120,7 @@ class WebController extends Controller
     $menu = Menu::where('lang', '=', $locale)->where('alias', '=', $pages)->firstOrFail();
     $menu_id = $menu->id;
     $nav_lang = Menu::where('ref', '=', $menu->ref)->get()->toArray();
-    if (!$menu_id) { 
+    if (!$menu_id) {
       return abort(404, 'page not found.');
     }
     $active_menu = $this->getActiveMenu($menu->menu_position == 'main' ? $nav : $nav_right, $menu_id);
@@ -126,7 +131,6 @@ class WebController extends Controller
       }
     } else {
       $menu_ids[] = $active_menu->id;
-
     }
     $slider = [];
     $slider_bottom = [];
@@ -142,43 +146,104 @@ class WebController extends Controller
     return view('web.pages', compact('pages', 'locale', 'config', 'nav', 'nav_right', 'nav_shortcut', 'nav_lang', 'active_menu', 'slider', 'slider_bottom'));
   }
 
-  static function rederHomeInvestors() {
+  static function rederHomeInvestors()
+  {
     return view('web.render-modules.home-investors');
   }
 
-  static function rederHomeNews() {
+  static function rederHomeNews()
+  {
     return view('web.render-modules.home-news');
   }
 
-  static function rederProfileTimelines() {
+  static function rederProfileTimelines()
+  {
     return view('web.render-modules.profile-timelines');
   }
 
-  static function rederDewanKomisaris() {
+  static function rederDewanKomisaris()
+  {
     return view('web.render-modules.dewan-komisaris');
   }
 
-  static function rederDireksi() {
+  static function rederDireksi()
+  {
     return view('web.render-modules.direksi');
   }
 
-  static function rederSekper() {
+  static function rederSekper()
+  {
     return view('web.render-modules.sekper');
   }
 
-  static function rederAward() {
+  static function rederAward()
+  {
     return view('web.render-modules.certificate-award');
   }
 
-  static function rederKeberlanjutan() {
+  static function rederKeberlanjutan()
+  {
     return view('web.render-modules.laporan-laporan');
   }
 
-  static function rederTahunan() {
+  static function rederTahunan()
+  {
     return view('web.render-modules.laporan-laporan');
   }
 
-  static function rederKeuangan() {
+  static function rederKeuangan()
+  {
     return view('web.render-modules.laporan-laporan');
+  }
+
+  static function rederContact($locale)
+  {
+    $contact = Contact::where('lang', $locale)->get();
+    $captcha = count($contact) ? reCaptcha() : '';
+    return view('web.render-modules.contact', compact('contact', 'captcha'));
+  }
+
+  public function sendContact(Request $request)
+  {
+    $store  = $request->all();
+    $validator = Validator::make($store, [
+      'captcha' => 'required',
+      'subject' => 'required',
+      'tujuan' => 'required',
+      'name' => 'required',
+      'email' => 'required|email',
+      'ktp' => 'required',
+      'phone' => 'required',
+      'message' => 'required',
+      'ktp_file' => 'required|max:500',
+    ]);
+
+    $captcha_code = session('captcha_code');
+    $validator->after(function ($validator) use ($request, $captcha_code) {
+      if (strtolower($request->captcha) != strtolower($captcha_code)) {
+        $validator->errors()->add('captcha', 'Captcha tidak sesuai');
+      }
+    });
+    if ($validator->fails()) {
+      return redirect(url()->previous() . "#form")->withErrors($validator)->withInput();
+    }
+
+    $ktp_name = date('YmdHis').$request->ktp_file->getClientOriginalName();
+    $request->ktp_file->storeAs('public', $ktp_name);
+    $body = $store;
+    $body['msg'] = $store['message'];
+    $body['logo'] = public_path('assets/files/img/logodasar.png');
+    $body['ktp_image'] = storage_path('app/public/').$ktp_name;
+    unset($body['message']);
+    $dataEmail = [];
+    $dataEmail['body'] = $body;
+    $dataEmail['view'] = "mail.contact";
+    $dataEmail['subject'] = $store['subject'];
+    $dataEmail = json_decode(json_encode($dataEmail));
+
+    $mailto = "sangrezha@gmail.com";
+    Mail::to($mailto)->send(new SendEmailController($dataEmail));
+    Storage::disk('public')->delete($ktp_name);
+    return redirect(url()->previous() . "#form")->with('success_submit_contact', 'Terima kasih, inkuiri anda akan segera kami balas melalui email.');
   }
 }
