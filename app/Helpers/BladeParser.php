@@ -70,15 +70,15 @@ function renderPage($page, $locale)
             $content    = str_replace($module[0][0], $replace_content, $content);
         }
         if ($module[1][0] == "DEWAN-KOMISARIS") {
-            $replace_content = WebController::rederDewanKomisaris();
+            $replace_content = WebController::rederDewanKomisaris($locale);
             $content    = str_replace($module[0][0], $replace_content, $content);
         }
         if ($module[1][0] == "DIREKSI") {
-            $replace_content = WebController::rederDireksi();
+            $replace_content = WebController::rederDireksi($locale);
             $content    = str_replace($module[0][0], $replace_content, $content);
         }
         if ($module[1][0] == "SEKPER") {
-            $replace_content = WebController::rederSekper();
+            $replace_content = WebController::rederSekper($locale);
             $content    = str_replace($module[0][0], $replace_content, $content);
         }
         if ($module[1][0] == "AWARD") {

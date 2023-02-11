@@ -44,6 +44,8 @@
   
   <main id="main">
     @yield('content')
+    @stack('content-support')
+    @yield('content-support')
     @if ($active_menu->ref == 1)
     @include('web.layouts.sliderbottom')
     @endif

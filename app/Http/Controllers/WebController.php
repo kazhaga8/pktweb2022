@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Config;
 use App\Contact;
+use App\Management;
 use App\Menu;
 use App\MenuShortcut;
 use App\Page;
@@ -161,19 +162,22 @@ class WebController extends Controller
     return view('web.render-modules.profile-timelines');
   }
 
-  static function rederDewanKomisaris()
+  static function rederDewanKomisaris($locale)
   {
-    return view('web.render-modules.dewan-komisaris');
+    $data = Management::where('lang', $locale)->where('board', 'commissioner')->get();
+    return view('web.render-modules.management', compact('data'));
   }
 
-  static function rederDireksi()
+  static function rederDireksi($locale)
   {
-    return view('web.render-modules.direksi');
+    $data = Management::where('lang', $locale)->where('board', 'directors')->get();
+    return view('web.render-modules.management', compact('data'));
   }
 
-  static function rederSekper()
+  static function rederSekper($locale)
   {
-    return view('web.render-modules.sekper');
+    $data = Management::where('lang', $locale)->where('board', 'secretary')->get();
+    return view('web.render-modules.management', compact('data'));
   }
 
   static function rederAward()
