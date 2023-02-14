@@ -49,6 +49,10 @@ class NewsController extends Controller
             'content' => 'required',
         ]);
         $store['ref'] =  (News::max('ref') || 0) + 1;
+        $alias = str_slug($request->title, '-');
+        $store['url'] =  $alias;
+        $store['active_date'] = implode('-', array_reverse(explode('/', $store['active_date'])));
+        $store['exp_date'] = $store['exp_date'] ? implode('-', array_reverse(explode('/', $store['exp_date']))) : NULL;
         $store['content'] = htmlentities($store['content']);
         $ref = Category::where('id', '=', $store['id_category'])->select('ref')->pluck('ref')->first();
         foreach (config('app.locales') as $lang) {
@@ -56,7 +60,9 @@ class NewsController extends Controller
                 $id_category = Category::where('lang', '=', $lang)->where('ref', '=', $ref)->select('id')->pluck('id')->first();
                 $store['id_category'] =  $id_category;
             }
+            $reorder = News::where('lang', '=', $lang)->max('reorder');
             $store['lang'] =  $lang;
+            $store['reorder'] =  ($reorder ? $reorder : 0) + 1;
             News::create($store);
         }
 
@@ -83,6 +89,10 @@ class NewsController extends Controller
         ]);
 
         $store  = $request->all();
+        $alias = str_slug($request->title, '-');
+        $store['url'] =  $alias;
+        $store['active_date'] = implode('-', array_reverse(explode('/', $store['active_date'])));
+        $store['exp_date'] = $store['exp_date'] ? implode('-', array_reverse(explode('/', $store['exp_date']))) : NULL;
         $news->update($store);
         return redirect()->route('news.index')
                         ->with('success','News updated successfully');

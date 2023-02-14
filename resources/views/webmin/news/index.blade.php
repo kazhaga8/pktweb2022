@@ -6,7 +6,7 @@
         column: [{
                 data: 'title',
                 name: 'title',
-                title: 'Page'
+                title: 'Title'
             },
             {
                 data: 'lang',

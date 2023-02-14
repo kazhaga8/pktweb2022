@@ -23,9 +23,11 @@ Route::get('/webmin', function () {
     return redirect()->route('login');
 });
 Route::post('/send-contact','WebController@sendContact')->name('send-contact');
+Route::post('/get-news','WebController@getNews')->name('get-news.index');
 Route::prefix('{locale?}')->middleware('locale')->group(function($locale) {
     Route::get('/', function ($locale) {
         return redirect()->route('web.index', [$locale, 'home']);
     });
+    Route::get('/{pages}/{url}','WebController@pageDetail')->name('web.page-det');
     Route::get('/{pages}','WebController@index')->name('web.index');
 });

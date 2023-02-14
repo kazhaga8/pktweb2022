@@ -121,5 +121,9 @@ return [
     'secondary_logo' => 'Secondary Logo',
     'content_shortcut' => 'Content Shortcut',
     'content_footer' => 'Content Footer',
+    'embed' => 'Embed',
+    'embed_yt' => 'Embed Youtube',
+    'active_date' => 'Active Date',
+    'exp_date' => 'Expired Date',
 
 ];

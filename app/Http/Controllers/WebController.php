@@ -2,18 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
 use App\Config;
 use App\Contact;
 use App\Management;
 use App\Menu;
+use App\Menus;
 use App\MenuShortcut;
+use App\News;
 use App\Page;
 use App\Slider;
 use App\SliderBottom;
+use App\Timeline;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use stdClass;
 
 class WebController extends Controller
 {
@@ -79,25 +84,34 @@ class WebController extends Controller
 
   public function getActiveMenu($nav, $menu_id)
   {
+    $next_menu = null;
     $active_menu = null;
-    foreach ($nav as $lvl1) {
+    foreach ($nav as $key1 => $lvl1) {
       if ($lvl1->id == $menu_id) {
         $active_menu = $lvl1;
+        $next_menu = isset($nav[$key1 + 1]) ? $nav[$key1 + 1] : null;
       } else {
         if (isset($lvl1->child)) {
-          foreach ($lvl1->child as $levl2) {
-            if ($levl2->id == $menu_id) {
-              $active_menu = $levl2;
+          foreach ($lvl1->child as $key2 => $lvl2) {
+            if ($lvl2->id == $menu_id) {
+              $active_menu = $lvl2;
+              if (isset($lvl2->child) && $lvl2->child[0]->menu_type !== 'anchor') {
+                $next_menu = $lvl2->child[0];
+              } else {
+                $next_menu = isset($lvl1->child[$key2 + 1]) ? $lvl1->child[$key2 + 1] : $nav[$key1 + 1];
+              }
             } else {
-              if (isset($levl2->child)) {
-                foreach ($levl2->child as $lvl3) {
+              if (isset($lvl2->child)) {
+                foreach ($lvl2->child as $key3 =>  $lvl3) {
                   if ($lvl3->id == $menu_id) {
                     $active_menu = $lvl3;
+                    $next_menu = isset($lvl2->child[$key3 + 1]) ? $lvl2->child[$key3 + 1] : $lvl1->child[$key2 + 1];
                   } else {
                     if (isset($lvl3->child)) {
-                      foreach ($lvl3->child as $lvl4) {
+                      foreach ($lvl3->child as $key4 =>  $lvl4) {
                         if ($lvl4->id == $menu_id) {
                           $active_menu = $lvl4;
+                          $next_menu = isset($lvl3->child[$key4 + 1]) ? $lvl3->child[$key4 + 1] : $lvl2->child[$key3 + 1];
                         }
                       }
                     }
@@ -109,10 +123,11 @@ class WebController extends Controller
         }
       }
     }
-    return $active_menu;
+
+    return [$active_menu, $next_menu];
   }
 
-  public function index($locale, $pages)
+  public function index(Request $request, $locale, $pages)
   {
     $config = Config::first()->toArray();
     $nav = $this->generateMenu($locale, 'main');
@@ -124,7 +139,16 @@ class WebController extends Controller
     if (!$menu_id) {
       return abort(404, 'page not found.');
     }
-    $active_menu = $this->getActiveMenu($menu->menu_position == 'main' ? $nav : $nav_right, $menu_id);
+    $find_menu = $this->getActiveMenu($menu->menu_position == 'main' ? $nav : $nav_right, $menu_id);
+    $active_menu = $find_menu[0];
+    $next_menu = $find_menu[1];
+    if ($next_menu == null && $menu->menu_position == 'main') {
+      $next_menu = $nav_right[0]->child[0];
+    } elseif ($next_menu == null && $menu->menu_position == 'right') {
+      $next_menu = $nav[0];
+    }
+
+    // dd($next_menu);
     $menu_ids = [];
     if (isset($active_menu->child) && $active_menu->child) {
       foreach ($active_menu->child as $value) {
@@ -142,10 +166,39 @@ class WebController extends Controller
 
     $pages = Page::whereIn('id_menu', $menu_ids)->orderBy('reorder')->get();
     if (!count($pages)) {
-      return view('web.coming-soon', compact('pages', 'locale', 'config', 'nav', 'nav_right', 'nav_shortcut', 'nav_lang', 'active_menu'));
+      return view('web.coming-soon', compact('pages', 'locale', 'config', 'nav', 'nav_right', 'nav_shortcut', 'nav_lang', 'active_menu', 'next_menu'));
     }
-    return view('web.pages', compact('pages', 'locale', 'config', 'nav', 'nav_right', 'nav_shortcut', 'nav_lang', 'active_menu', 'slider', 'slider_bottom'));
+    return view('web.pages', compact('pages', 'locale', 'config', 'nav', 'nav_right', 'nav_shortcut', 'nav_lang', 'active_menu', 'slider', 'slider_bottom', 'next_menu'));
   }
+
+  public function pageDetail($locale, $pages, $url)
+  {
+    $config = Config::first()->toArray();
+    $nav = $this->generateMenu($locale, 'main');
+    $nav_right = $this->generateMenu($locale, 'right');
+    $nav_shortcut = MenuShortcut::where('lang', '=', $locale)->get();
+    $menu = Menus::where('lang', '=', $locale)->where('alias', '=', $pages)->first();
+    $menu_id = $menu->id;
+    $active_menu = $menu;
+    $views = 'web.page-detail';
+    $slider = [];
+    $slider_bottom = [];
+    $nav_lang = [];
+    if ($active_menu->alias == 'news-detail') {
+      $active_menu->title = $menu->title;
+      $views = 'web.news-detail';
+      $news = News::where('url', $url)->get();
+      foreach ($news as $navlang) {
+        $nav_lang[] = ["lang" => $navlang->lang, "alias" => $active_menu->alias . "/" . $navlang->url];
+        if ($navlang->lang == $locale) {
+          $detail = $navlang;
+          $active_menu->title = Category::where('id', $navlang->id_category)->first()->title;
+        }
+      };
+    }
+    return view($views, compact('detail', 'locale', 'config', 'nav', 'nav_right', 'nav_shortcut', 'nav_lang', 'active_menu', 'slider', 'slider_bottom'));
+  }
+
 
   static function rederHomeInvestors()
   {
@@ -157,9 +210,10 @@ class WebController extends Controller
     return view('web.render-modules.home-news');
   }
 
-  static function rederProfileTimelines()
+  static function rederProfileTimelines($locale)
   {
-    return view('web.render-modules.profile-timelines');
+    $timeline = Timeline::where('lang', $locale)->get();
+    return view('web.render-modules.profile-timelines', compact('timeline'));
   }
 
   static function rederDewanKomisaris($locale)
@@ -207,6 +261,34 @@ class WebController extends Controller
     return view('web.render-modules.contact', compact('contact', 'captcha'));
   }
 
+  static function rederNews($locale)
+  {
+    $category = Category::where('lang', $locale)->get();
+    return view('web.render-modules.news', compact('locale', 'category'));
+  }
+
+  public function getNews(Request $request)
+  {
+    $_response = array("status" => "200", "messages" => [], "data" => []);
+    $_response['messages'] = "Data Found";
+    $category = $request->category ? "id_category='" . $request->category . "'" : "id_category!=''";
+    $data = News::where('lang', $request->locale)->whereRaw($category)->orderBy('created_at', 'DESC')->paginate($request->limit);
+    $news = [];
+    if ($data->count() > 0) {
+      foreach ($data->items() as $key => $value) {
+        $value->url = route('web.page-det', [$request->locale, 'news-detail', $value->url]);
+        $value->image = url('public' . $value->image);
+        $value->active_date = date('m M Y', strtotime($value->active_date));
+        $value->category = Category::where('id', $value->id_category)->first()->title;
+        $news[] = $value;
+      }
+    }
+    $data->items($news);
+    $_response['data'] = $data;
+    $_response['blade'] = view('web.render-modules.news-card', compact('data'))->render();
+    return response()->json($_response);
+  }
+
   public function sendContact(Request $request)
   {
     $store  = $request->all();
@@ -232,12 +314,12 @@ class WebController extends Controller
       return redirect(url()->previous() . "#form")->withErrors($validator)->withInput();
     }
 
-    $ktp_name = date('YmdHis').$request->ktp_file->getClientOriginalName();
+    $ktp_name = date('YmdHis') . $request->ktp_file->getClientOriginalName();
     $request->ktp_file->storeAs('public', $ktp_name);
     $body = $store;
     $body['msg'] = $store['message'];
     $body['logo'] = public_path('assets/files/img/logodasar.png');
-    $body['ktp_image'] = storage_path('app/public/').$ktp_name;
+    $body['ktp_image'] = storage_path('app/public/') . $ktp_name;
     unset($body['message']);
     $dataEmail = [];
     $dataEmail['body'] = $body;

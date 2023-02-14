@@ -36,7 +36,7 @@
 
 <body>
   @include('web.layouts.header')
-  @if ($active_menu->ref == 1)
+  @if (isset($active_menu->ref) && $active_menu->ref == 1)
   @include('web.layouts.sliders')
   @else
   @include('web.layouts.banner')
@@ -54,7 +54,7 @@
     @include('web.layouts.floatingmenu')
   </main>
   @if ($active_menu->ref > 1)
-  <!-- @include('web.layouts.nextmenu') -->
+  @include('web.layouts.nextmenu')
   @endif
   @include('web.layouts.footer')
 

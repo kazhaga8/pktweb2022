@@ -66,7 +66,7 @@ function renderPage($page, $locale)
             $content    = str_replace($module[0][0], $replace_content, $content);
         }
         if ($module[1][0] == "PROFILE-TIMELINE") {
-            $replace_content = WebController::rederProfileTimelines();
+            $replace_content = WebController::rederProfileTimelines($locale);
             $content    = str_replace($module[0][0], $replace_content, $content);
         }
         if ($module[1][0] == "DEWAN-KOMISARIS") {
@@ -99,6 +99,10 @@ function renderPage($page, $locale)
         }
         if ($module[1][0] == "CONTACT") {
             $replace_content = WebController::rederContact($locale);
+            $content    = str_replace($module[0][0], $replace_content, $content);
+        }
+        if ($module[1][0] == "NEWS") {
+            $replace_content = WebController::rederNews($locale);
             $content    = str_replace($module[0][0], $replace_content, $content);
         }
     }
