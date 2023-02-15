@@ -2,7 +2,7 @@
   <div class="container news" data-aos="fade-up" id="berita">
     <div class="p-2">
       <select class="form-select w-25" id="select-news">
-        <option value="">Semua</option>
+        <option value="">{{ __('web.all') }}</option>
         @foreach($category as $cat)
         <option value="{{ $cat->id }}">{{ $cat->title }}</option>
         @endforeach
@@ -10,7 +10,7 @@
     </div>
     <div id="news-card" class="row content justify-content-center"></div>
     <div class="text-center">
-      <button type="button" id="load-more-news" data-page="2" class="btn btn-primary btn-animate mt-4">Muat Lebih</button>
+      <button type="button" id="load-more-news" data-page="2" class="btn btn-primary btn-animate mt-4">{{ __('web.load-more') }}</button>
     </div>
 </section>
 

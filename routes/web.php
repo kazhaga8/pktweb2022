@@ -24,6 +24,7 @@ Route::get('/webmin', function () {
 });
 Route::post('/send-contact','WebController@sendContact')->name('send-contact');
 Route::post('/get-news','WebController@getNews')->name('get-news.index');
+Route::post('/get-certificate','WebController@getCertificate')->name('get-certificate.index');
 Route::prefix('{locale?}')->middleware('locale')->group(function($locale) {
     Route::get('/', function ($locale) {
         return redirect()->route('web.index', [$locale, 'home']);

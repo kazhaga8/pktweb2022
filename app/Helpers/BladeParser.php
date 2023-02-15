@@ -82,7 +82,7 @@ function renderPage($page, $locale)
             $content    = str_replace($module[0][0], $replace_content, $content);
         }
         if ($module[1][0] == "AWARD") {
-            $replace_content = WebController::rederAward();
+            $replace_content = WebController::rederAward($locale);
             $content    = str_replace($module[0][0], $replace_content, $content);
         }
         if ($module[1][0] == "LAPORAN-KEBERLANJUTAN") {

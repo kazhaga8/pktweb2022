@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Category;
+use App\Certificate;
 use App\Config;
 use App\Contact;
 use App\Management;
@@ -234,9 +235,10 @@ class WebController extends Controller
     return view('web.render-modules.management', compact('data'));
   }
 
-  static function rederAward()
+  static function rederAward($locale)
   {
-    return view('web.render-modules.certificate-award');
+    $year = Certificate::select('year')->where('lang', $locale)->orderBy('year', 'DESC')->groupBy('year')->get();
+    return view('web.render-modules.certificate-award', compact('year', 'locale'));
   }
 
   static function rederKeberlanjutan()
@@ -286,6 +288,26 @@ class WebController extends Controller
     $data->items($news);
     $_response['data'] = $data;
     $_response['blade'] = view('web.render-modules.news-card', compact('data'))->render();
+    return response()->json($_response);
+  }
+
+  public function getCertificate(Request $request)
+  {
+    $_response = array("status" => "200", "messages" => [], "data" => []);
+    $_response['messages'] = "Data Found";
+    $year = $request->year ? "year='" . $request->year . "'" : "year!=''";
+    $data = Certificate::where('lang', $request->locale)->whereRaw($year)->orderBy('created_at', 'DESC')->paginate($request->limit);
+    $cert = [];
+    if ($data->count() > 0) {
+      foreach ($data->items() as $key => $value) {
+        $value->image = url('public' . $value->image);
+        $cert[] = $value;
+      }
+    }
+    $data->items($cert);
+    $_response['data'] = $data;
+    $_response['card'] = view('web.render-modules.certificate-card', compact('data'))->render();
+    $_response['card-detail'] = view('web.render-modules.certificate-card-detail', compact('data'))->render();
     return response()->json($_response);
   }
 
