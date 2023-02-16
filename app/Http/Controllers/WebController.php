@@ -331,8 +331,10 @@ class WebController extends Controller
       foreach ($data->items() as $key => $value) {
         if ($value->type == "image") {
           $value->image = url('public' . $value->media);
+          $value->media = url('public' . $value->media);
         } else {
           $value->image = "http://img.youtube.com/vi/".$value->media."/sddefault.jpg";
+          $value->media = "https://www.youtube.com/watch?v=".$value->media;
         }
         $cert[] = $value;
       }
