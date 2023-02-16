@@ -8,6 +8,7 @@ class Gallery extends Model
 {
     protected $fillable = [
         'ref',
+        'id_category',
         'year',
         'title',
         'media',

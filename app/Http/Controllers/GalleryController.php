@@ -3,6 +3,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
 use App\Gallery;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
@@ -60,7 +61,9 @@ class GalleryController extends Controller
         $page['title'] = 'Gallery Management';
         $page['method'] = 'POST';
         $page['action'] = route('galleries.store');
-        return view('webmin.galleries.form',compact('page'));
+        $parent = Category::where('lang', '=', config('app.fallback_locale'))->where('type', 'gallery')->get(['id', 'title as name']);
+        $parent = json_decode(json_encode($parent));
+        return view('webmin.galleries.form',compact('page', 'parent'));
     }
 
 
@@ -85,10 +88,15 @@ class GalleryController extends Controller
             $media = $store['image'];
         }
         $store['media'] = $media;
+        $ref = Category::where('id', '=', $store['id_category'])->select('ref')->pluck('ref')->first();
         foreach (config('app.locales') as $lang) {
+            if ($store['id_category']) {
+                $id_category = Category::where('lang', '=', $lang)->where('ref', '=', $ref)->select('id')->pluck('id')->first();
+                $store['id_category'] =  $id_category;
+            }
             $reorder = Gallery::where('lang', '=', $lang)->max('reorder');
             $store['lang'] =  $lang;
-            $store['reorder'] =  ($reorder || 0) + 1;
+            $store['reorder'] =  ($reorder ? $reorder : 0) + 1;
             Gallery::create($store);
         }
 
@@ -109,7 +117,9 @@ class GalleryController extends Controller
         $page['title'] = 'Gallery Management';
         $page['method'] = 'PUT';
         $page['action'] = route('galleries.update',$gallery->id);
-        return view('webmin.galleries.form',compact('gallery','page'));
+        $parent = Category::where('lang', '=', $gallery->lang)->where('type', 'gallery')->get(['id', 'title as name']);
+        $parent = json_decode(json_encode($parent));
+        return view('webmin.galleries.form',compact('gallery','page', 'parent'));
     }
 
 

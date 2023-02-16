@@ -6,6 +6,7 @@ use App\Category;
 use App\Certificate;
 use App\Config;
 use App\Contact;
+use App\Gallery;
 use App\Management;
 use App\Menu;
 use App\Menus;
@@ -265,8 +266,15 @@ class WebController extends Controller
 
   static function rederNews($locale)
   {
-    $category = Category::where('lang', $locale)->get();
+    $category = Category::where('lang', $locale)->where('type', 'news')->get();
     return view('web.render-modules.news', compact('locale', 'category'));
+  }
+
+  static function rederGallery($locale)
+  {
+    $category = Category::where('lang', $locale)->where('type', 'gallery')->get();
+    $year = Gallery::select('year')->where('lang', $locale)->orderBy('year', 'DESC')->groupBy('year')->get();
+    return view('web.render-modules.gallery', compact('locale', 'category', 'year'));
   }
 
   public function getNews(Request $request)
@@ -308,6 +316,30 @@ class WebController extends Controller
     $_response['data'] = $data;
     $_response['card'] = view('web.render-modules.certificate-card', compact('data'))->render();
     $_response['card-detail'] = view('web.render-modules.certificate-card-detail', compact('data'))->render();
+    return response()->json($_response);
+  }
+
+  public function getGallery(Request $request)
+  {
+    $_response = array("status" => "200", "messages" => [], "data" => []);
+    $_response['messages'] = "Data Found";
+    $category = $request->category ? "id_category='" . $request->category . "'" : "id_category!=''";
+    $year = $request->year ? "year='" . $request->year . "'" : "year!=''";
+    $data = Gallery::where('lang', $request->locale)->whereRaw($year)->whereRaw($category)->orderBy('created_at', 'DESC')->paginate($request->limit);
+    $cert = [];
+    if ($data->count() > 0) {
+      foreach ($data->items() as $key => $value) {
+        if ($value->type == "image") {
+          $value->image = url('public' . $value->media);
+        } else {
+          $value->image = "http://img.youtube.com/vi/".$value->media."/sddefault.jpg";
+        }
+        $cert[] = $value;
+      }
+    }
+    $data->items($cert);
+    $_response['data'] = $data;
+    $_response['card'] = view('web.render-modules.gallery-card', compact('data'))->render();
     return response()->json($_response);
   }
 

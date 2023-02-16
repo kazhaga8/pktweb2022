@@ -36,7 +36,7 @@ class NewsController extends Controller
         $page['title'] = 'News Management';
         $page['method'] = 'POST';
         $page['action'] = route('news.store');
-        $parent = Category::where('lang', '=', config('app.fallback_locale'))->get(['id', 'title as name']);
+        $parent = Category::where('lang', '=', config('app.fallback_locale'))->where('type', 'news')->get(['id', 'title as name']);
         $parent = json_decode(json_encode($parent));
         return view('webmin.news.form',compact('parent','page'));
     }
@@ -76,7 +76,7 @@ class NewsController extends Controller
         $page['title'] = 'News Management';
         $page['method'] = 'PUT';
         $page['action'] = route('news.update',$news->id);
-        $parent = Category::where('lang', '=', $news->lang)->get(['id', 'title as name']);
+        $parent = Category::where('lang', '=', $news->lang)->where('type', 'news')->get(['id', 'title as name']);
         $parent = json_decode(json_encode($parent));
         $news->content = html_entity_decode($news->content);
         return view('webmin.news.form',compact('parent','page', 'news'));
