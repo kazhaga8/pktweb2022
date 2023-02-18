@@ -54,7 +54,7 @@
           <li key="lazy_loading_thumbs">false</li> <!-- enabled/disabled lazdy loading for thumbs -->
           <li key="double_click_enabled">true</li> <!-- enabled/disabled double click mouse for flipbook -->
           <li key="rtl">false</li> <!-- enabled/disabled 'right to left' for eastern countries -->
-          <li key="pdf_url">{{ url('public') }}/assets/files/ebook/{{ $book }}</li> <!-- pathway to a pdf file ( the file will be read live ) -->
+          <li key="pdf_url">{{ $book }}</li> <!-- pathway to a pdf file ( the file will be read live ) -->
           <li key="pdf_scale">2</li> <!-- to live a pdf file (if you want to have a strong zoom - increase the value) -->
           <li key="page_mode">auto</li> <!-- value to 'single', 'double', or 'auto' -->
           <li key="sound_sheet">{{ url('public') }}/plugins/ebook/img/page-flip.mp3</li> <!-- sound for sheet -->
@@ -92,7 +92,7 @@
             </li>
             <!-- icon download -->
             <li>
-              <a title="download pdf" class="fb5-download" href="{{ url('public') }}/assets/files/ebook/{{ $book }}"><i class="fa fa-download"></i></a>
+              <a title="download pdf" class="fb5-download" href="{{ $book }}"><i class="fa fa-download"></i></a>
             </li>
             <!-- icon arrow left -->
             <li>

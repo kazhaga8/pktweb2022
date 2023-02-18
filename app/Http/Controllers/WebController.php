@@ -6,6 +6,7 @@ use App\Category;
 use App\Certificate;
 use App\Config;
 use App\Contact;
+use App\Ebook;
 use App\Gallery;
 use App\Management;
 use App\Menu;
@@ -39,6 +40,20 @@ class WebController extends Controller
       ->where('lang', '=', $locale)
       ->where('menu_position', '=', $position)
       ->orderBy('reorder', 'ASC');
+  }
+
+  public function eBook(Request $request, $book)
+  {
+    $ebook_dir = base64_decode($request->v);
+    $book = url('public') . $ebook_dir . $book;
+    return view('web.ebook', compact('book'));
+  }
+  public function downloadFile(Request $request, $file)
+  {
+    $file_dir = base64_decode($request->v);
+    $file_path = public_path() . $file_dir . $file;
+    $headers = array('Content-Type: application/pdf');
+    return response()->download($file_path, $file, $headers);
   }
 
   public function getHref($data, $url_parent)
@@ -242,19 +257,22 @@ class WebController extends Controller
     return view('web.render-modules.certificate-award', compact('year', 'locale'));
   }
 
-  static function rederKeberlanjutan()
+  static function rederKeberlanjutan($locale)
   {
-    return view('web.render-modules.laporan-laporan');
+    $ebook = Ebook::where('type', '=', 'sustainability')->where('lang', $locale)->orderBy('reorder')->get();
+    return view('web.render-modules.laporan-laporan', compact('ebook'));
   }
 
-  static function rederTahunan()
+  static function rederTahunan($locale)
   {
-    return view('web.render-modules.laporan-laporan');
+    $ebook = Ebook::where('type', '=', 'annual')->where('lang', $locale)->orderBy('reorder')->get();
+    return view('web.render-modules.laporan-laporan', compact('ebook'));
   }
 
-  static function rederKeuangan()
+  static function rederKeuangan($locale)
   {
-    return view('web.render-modules.laporan-laporan');
+    $ebook = Ebook::where('type', '=', 'financial')->where('lang', $locale)->orderBy('reorder')->get();
+    return view('web.render-modules.laporan-laporan', compact('ebook'));
   }
 
   static function rederContact($locale)
@@ -333,8 +351,8 @@ class WebController extends Controller
           $value->image = url('public' . $value->media);
           $value->media = url('public' . $value->media);
         } else {
-          $value->image = "http://img.youtube.com/vi/".$value->media."/sddefault.jpg";
-          $value->media = "https://www.youtube.com/watch?v=".$value->media;
+          $value->image = "http://img.youtube.com/vi/" . $value->media . "/sddefault.jpg";
+          $value->media = "https://www.youtube.com/watch?v=" . $value->media;
         }
         $cert[] = $value;
       }

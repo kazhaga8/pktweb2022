@@ -232,8 +232,9 @@
                     li.innerHTML = '<img class="img-thumbnail" src="' + item + '" />';
                 } else if (/\.(pdf)$/.test(item)) {
                     const files = item.split('/').slice(-1)[0]
+                    const dir = item.replace("{{ url('public') }}", "").replace(files, "");
                     const ebook = "{{ route('ebook.index') }}";
-                    li.innerHTML = '<a target="_blank" href="' + ebook + '/' + files + '"> ' + files + ' </a>';
+                    li.innerHTML = '<a target="_blank" href="' + ebook + '/' + files + '?v='+btoa(dir)+'"> ' + files + ' </a>';
                 } else {
                     li.innerHTML = '<span> ' + item + ' </span>';
                 }

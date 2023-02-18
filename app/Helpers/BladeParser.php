@@ -86,15 +86,15 @@ function renderPage($page, $locale)
             $content    = str_replace($module[0][0], $replace_content, $content);
         }
         if ($module[1][0] == "LAPORAN-KEBERLANJUTAN") {
-            $replace_content = WebController::rederKeberlanjutan();
+            $replace_content = WebController::rederKeberlanjutan($locale);
             $content    = str_replace($module[0][0], $replace_content, $content);
         }
         if ($module[1][0] == "LAPORAN-TAHUNAN") {
-            $replace_content = WebController::rederTahunan();
+            $replace_content = WebController::rederTahunan($locale);
             $content    = str_replace($module[0][0], $replace_content, $content);
         }
         if ($module[1][0] == "LAPORAN-KEUANGAN") {
-            $replace_content = WebController::rederKeuangan();
+            $replace_content = WebController::rederKeuangan($locale);
             $content    = str_replace($module[0][0], $replace_content, $content);
         }
         if ($module[1][0] == "CONTACT") {

@@ -48,7 +48,8 @@
         ],
         "files": [
             "app/Helpers/Queries.php",
-            "app/Helpers/BladeParser.php"
+            "app/Helpers/BladeParser.php",
+            "app/Helpers/File.php"
         ]
     },
     "autoload-dev": {

@@ -13,12 +13,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/e-book', function ($book) {
-    return view('web.ebook',compact('book'));
-})->name('ebook.index');
-Route::get('/e-book/{book}', function ($book) {
-    return view('web.ebook',compact('book'));
-})->name('ebook');
+Route::get('/e-book','WebController@eBook')->name('ebook.index');
+Route::get('/e-book/{book}','WebController@eBook')->name('ebook');
+Route::get('/download-file','WebController@downloadFile')->name('download-file.index');
+Route::get('/download-file/{file}','WebController@downloadFile')->name('download-file');
 Route::get('/webmin', function () {
     return redirect()->route('login');
 });
