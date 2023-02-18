@@ -8,8 +8,8 @@
 
 @push('javascript')
 <script>
-  if($('.zoom-pdf.btn-pdf').length) {
-    $('.zoom-pdf.btn-pdf').each(function() {
+  if($('.act-ebooks-preview').length) {
+    $('.act-ebooks-preview').each(function() {
         const btn = $(this).find('a');
         const href = btn.attr('href');
         if(href !== '' && href !== '#'){
@@ -21,8 +21,8 @@
         }
     })
   }
-  if($('.download-pdf.btn-pdf').length) {
-    $('.download-pdf.btn-pdf').each(function() {
+  if($('.act-files-download').length) {
+    $('.act-files-download').each(function() {
         const btn = $(this).find('a');
         const href = btn.attr('href');
         if(href !== '' && href !== '#'){

@@ -269,6 +269,11 @@ class WebController extends Controller
     return view('web.render-modules.laporan-laporan', compact('ebook'));
   }
 
+  static function rederEMagazine($locale)
+  {
+    return view('web.render-modules.e-magazine', compact('locale'));
+  }
+
   static function rederKeuangan($locale)
   {
     $ebook = Ebook::where('type', '=', 'financial')->where('lang', $locale)->orderBy('reorder')->get();
@@ -360,6 +365,28 @@ class WebController extends Controller
     $data->items($cert);
     $_response['data'] = $data;
     $_response['card'] = view('web.render-modules.gallery-card', compact('data'))->render();
+    return response()->json($_response);
+  }
+  public function getEMagazine(Request $request)
+  {
+    $_response = array("status" => "200", "messages" => [], "data" => []);
+    $_response['messages'] = "Data Found";
+    $data = Ebook::where('type', '=', 'e-magazine')->where('lang', $request->locale)->orderBy('reorder')->paginate($request->limit);
+    $cert = [];
+    if ($data->count() > 0) {
+      foreach ($data->items() as $key => $value) {
+        $value->image = url('public' . $value->image);
+
+        $file = explode('/', $value->file);
+        $file = end($file);
+        $dir = str_replace($file, '', $value->file);
+        $value->file = route('ebook.index') . "/" . $file . '?v=' . base64_encode($dir);
+        $cert[] = $value;
+      }
+    }
+    $data->items($cert);
+    $_response['data'] = $data;
+    $_response['blade'] = view('web.render-modules.e-magazine-card', compact('data'))->render();
     return response()->json($_response);
   }
 
