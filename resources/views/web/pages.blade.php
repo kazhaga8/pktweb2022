@@ -14,7 +14,7 @@
         const href = btn.attr('href');
         if(href !== '' && href !== '#'){
             const files = href.split('/').slice(-1)[0]
-            const dir = href.replace("{{ url('public') }}", "").replace(files, "");
+            const dir = href.replace("{{ url('public') }}", "").replace("../../", "").replace(files, "");
             const ebook = "{{ route('ebook.index') }}";
             const newHref = ebook + '/' + files + '?v='+btoa(dir);
             btn.attr('href', newHref);
@@ -27,7 +27,7 @@
         const href = btn.attr('href');
         if(href !== '' && href !== '#'){
             const files = href.split('/').slice(-1)[0]
-            const dir = href.replace("{{ url('public') }}", "").replace(files, "");
+            const dir = href.replace("{{ url('public') }}", "").replace("../../", "").replace(files, "");
             const download = "{{ route('download-file.index') }}";
             const newHref = download + '/' + files + '?v='+btoa(dir);
             btn.attr('href', newHref);

@@ -14,6 +14,7 @@ use App\Menus;
 use App\MenuShortcut;
 use App\News;
 use App\Page;
+use App\ProgramTjsl;
 use App\Slider;
 use App\SliderBottom;
 use App\Timeline;
@@ -257,6 +258,11 @@ class WebController extends Controller
     return view('web.render-modules.certificate-award', compact('year', 'locale'));
   }
 
+  static function rederProgramTJSL($locale)
+  {
+    return view('web.render-modules.tjsl', compact('locale'));
+  }
+
   static function rederKeberlanjutan($locale)
   {
     $ebook = Ebook::where('type', '=', 'sustainability')->where('lang', $locale)->orderBy('reorder')->get();
@@ -339,6 +345,25 @@ class WebController extends Controller
     $_response['data'] = $data;
     $_response['card'] = view('web.render-modules.certificate-card', compact('data'))->render();
     $_response['card-detail'] = view('web.render-modules.certificate-card-detail', compact('data'))->render();
+    return response()->json($_response);
+  }
+
+  public function getTjsl(Request $request)
+  {
+    $_response = array("status" => "200", "messages" => [], "data" => []);
+    $_response['messages'] = "Data Found";
+    $data = ProgramTjsl::where('lang', $request->locale)->orderBy('created_at', 'DESC')->paginate($request->limit);
+    $cert = [];
+    if ($data->count() > 0) {
+      foreach ($data->items() as $key => $value) {
+        $value->image = url('public' . $value->image);
+        $cert[] = $value;
+      }
+    }
+    $data->items($cert);
+    $_response['data'] = $data;
+    $_response['card'] = view('web.render-modules.tjsl-card', compact('data'))->render();
+    $_response['card-detail'] = view('web.render-modules.tjsl-card-detail', compact('data'))->render();
     return response()->json($_response);
   }
 

@@ -12,8 +12,10 @@ return [
     | these language lines according to your application's requirements.
     |
     */
-    
+
     'award' => 'Award',
     'all' => 'All',
     'load-more' => 'Load More',
+    'more' => 'More',
+    'title-tjsl' => 'TANGGUNG JAWAB SOSIAL DAN LINGKUNGAN',
 ];

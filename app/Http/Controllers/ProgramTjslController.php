@@ -9,7 +9,7 @@ use Yajra\DataTables\Facades\DataTables;
 
 
 class ProgramTjslController extends Controller
-{ 
+{
     function __construct()
     {
         //  $this->middleware('permission:program-tjsl-list', ['only' => ['index','show']]);
@@ -17,7 +17,7 @@ class ProgramTjslController extends Controller
         //  $this->middleware('permission:program-tjsl-edit', ['only' => ['edit','update']]);
         //  $this->middleware('permission:program-tjsl-delete', ['only' => ['destroy']]);
     }
-    
+
 
     /**
      * Display a listing of the resource.
@@ -47,7 +47,7 @@ class ProgramTjslController extends Controller
         ->setFilteredRecords(false)
         ->make(true);
     }
-    
+
 
     /**
      * Show the form for creating a new resource.
@@ -103,7 +103,7 @@ class ProgramTjslController extends Controller
         $page['title'] = 'Program TJSL Management';
         $page['method'] = 'PUT';
         $page['action'] = route('program-tjsl.update',$program_tjsl->id);
-        return view('webmin.program-tjsl.form',compact('program-tjsl','page'));
+        return view('webmin.program-tjsl.form',compact('program_tjsl','page'));
     }
 
 

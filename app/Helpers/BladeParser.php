@@ -113,6 +113,10 @@ function renderPage($page, $locale)
             $replace_content = WebController::rederEMagazine($locale);
             $content    = str_replace($module[0][0], $replace_content, $content);
         }
+        if ($module[1][0] == "PROGRAM-TJSL") {
+            $replace_content = WebController::rederProgramTJSL($locale);
+            $content    = str_replace($module[0][0], $replace_content, $content);
+        }
     }
 
     preg_match_all("'&lt;div class=&quot;bg-(.*?)&quot;&gt;'si", $content, $element);
