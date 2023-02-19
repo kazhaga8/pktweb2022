@@ -122,6 +122,14 @@ function renderPage($page, $locale)
             $content    = str_replace($module[0][0], $replace_content, $content);
         }
     }
+    preg_match_all("'&lt;!--MODULE-PRODUCT-(.*?)--&gt;(.*?)&lt;!--/MODULE-PRODUCT-(.*?)--&gt;'si", $content, $module);
+    if (count($module[0]) > 0) {
+        if (isset($module[1][0])) {
+            $product = strtolower($module[1][0]);
+            $replace_content = WebController::rederProduct($locale, $product);
+            $content    = str_replace($module[0][0], $replace_content, $content);
+        }
+    }
 
     preg_match_all("'&lt;div class=&quot;bg-(.*?)&quot;&gt;'si", $content, $element);
     if (count($element[0]) > 0) {

@@ -14,6 +14,7 @@ use App\Menus;
 use App\MenuShortcut;
 use App\News;
 use App\Page;
+use App\Product;
 use App\ProgramEmpowerment;
 use App\ProgramTjsl;
 use App\Slider;
@@ -309,6 +310,12 @@ class WebController extends Controller
     $category = Category::where('lang', $locale)->where('type', 'gallery')->get();
     $year = Gallery::select('year')->where('lang', $locale)->orderBy('year', 'DESC')->groupBy('year')->get();
     return view('web.render-modules.gallery', compact('locale', 'category', 'year'));
+  }
+
+  static function rederProduct($locale, $product)
+  {
+    $product = Product::where('lang', $locale)->where('product', $product)->get();
+    return view('web.render-modules.product', compact('locale', 'product'));
   }
 
   public function getNews(Request $request)

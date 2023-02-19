@@ -41,7 +41,7 @@
   @else
   @include('web.layouts.banner')
   @endif
-  
+
   <main id="main">
     @yield('content')
     @stack('content-support')
@@ -67,6 +67,7 @@
   <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@panzoom/panzoom/dist/panzoom.min.js"></script>
+  <script src="https://code.highcharts.com/highcharts.js"></script>
   @stack('js')
   @yield('js')
   <script src="{{ url('public') }}/assets/web/js/main.js"></script>
