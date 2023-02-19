@@ -26,6 +26,7 @@ Route::post('/get-certificate','WebController@getCertificate')->name('get-certif
 Route::post('/get-gallery','WebController@getGallery')->name('get-gallery.index');
 Route::post('/get-e-magazine','WebController@getEMagazine')->name('get-e-magazine.index');
 Route::post('/get-tjsl','WebController@getTjsl')->name('get-tjsl.index');
+Route::post('/get-empowerment','WebController@getEmpowerment')->name('get-empowerment.index');
 Route::prefix('{locale?}')->middleware('locale')->group(function($locale) {
     Route::get('/', function ($locale) {
         return redirect()->route('web.index', [$locale, 'home']);

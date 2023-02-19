@@ -9,7 +9,7 @@ use Yajra\DataTables\Facades\DataTables;
 
 
 class ProgramEmpowermentController extends Controller
-{ 
+{
     function __construct()
     {
         //  $this->middleware('permission:program-empowerment-list', ['only' => ['index','show']]);
@@ -17,7 +17,7 @@ class ProgramEmpowermentController extends Controller
         //  $this->middleware('permission:program-empowerment-edit', ['only' => ['edit','update']]);
         //  $this->middleware('permission:program-empowerment-delete', ['only' => ['destroy']]);
     }
-    
+
 
     /**
      * Display a listing of the resource.
@@ -47,7 +47,7 @@ class ProgramEmpowermentController extends Controller
         ->setFilteredRecords(false)
         ->make(true);
     }
-    
+
 
     /**
      * Show the form for creating a new resource.
@@ -103,7 +103,7 @@ class ProgramEmpowermentController extends Controller
         $page['title'] = 'Program Pemberdayaan Masyarakat Management';
         $page['method'] = 'PUT';
         $page['action'] = route('program-empowerment.update',$program_empowerment->id);
-        return view('webmin.program-empowerment.form',compact('program-empowerment','page'));
+        return view('webmin.program-empowerment.form',compact('program_empowerment','page'));
     }
 
 

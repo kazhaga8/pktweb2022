@@ -92,7 +92,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::resource('program-empowerment', 'ProgramEmpowermentController')->except(['edit', 'show']);
     Route::get('/program-empowerment/json', 'ProgramEmpowermentController@json')->name('program-empowerment.json');
-    Route::get('/program-empowerment/{program_program-empowerment}', 'ProgramEmpowermentController@edit')->name('program-empowerment.edit');
+    Route::get('/program-empowerment/{program_empowerment}', 'ProgramEmpowermentController@edit')->name('program-empowerment.edit');
 
     Route::resource('managements', 'ManagementController')->except(['edit', 'show']);
     Route::get('/managements/json', 'ManagementController@json')->name('managements.json');
