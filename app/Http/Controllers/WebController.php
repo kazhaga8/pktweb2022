@@ -225,9 +225,10 @@ class WebController extends Controller
     return view('web.render-modules.home-investors');
   }
 
-  static function rederHomeNews()
+  static function rederHomeNews($locale)
   {
-    return view('web.render-modules.home-news');
+    $category = Category::where('lang', $locale)->where('type', 'news')->get();
+    return view('web.render-modules.home-news', compact('locale', 'category'));
   }
 
   static function rederProfileTimelines($locale)
@@ -336,7 +337,11 @@ class WebController extends Controller
     }
     $data->items($news);
     $_response['data'] = $data;
-    $_response['blade'] = view('web.render-modules.news-card', compact('data'))->render();
+    if (isset($request->placement) && $request->placement == "home"){
+        $_response['blade'] = view('web.render-modules.home-news-card', compact('data'))->render();
+    }else{
+        $_response['blade'] = view('web.render-modules.news-card', compact('data'))->render();
+    }
     return response()->json($_response);
   }
 

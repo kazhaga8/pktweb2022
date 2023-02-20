@@ -4,7 +4,7 @@
   <div class="col-lg-4">
     <div class="box">
       <div class="box-image w-100">
-        <img class="w-100" src="{{ $news->image }}" alt="..." />
+        <img class="w-100" src="{{ $news->image }}" alt="{{ $news->title }}" />
       </div>
       <div class="content">
         <div class="d-flex justify-content-between mb-2">
@@ -12,7 +12,7 @@
           <span class="date">{{ $news->active_date }}</span>
         </div>
         <p class="fs-6 fw-semibold">{{ $news->title }}</p>
-        <a href="{{ $news->url }}"><button type="button" class="btn btn-primary btn-animate mt-4">Selengkapnya</button></a>
+        <a href="{{ $news->url }}"><button type="button" class="btn btn-primary btn-animate mt-4">{{ __('web.more') }}</button></a>
       </div>
     </div>
   </div>

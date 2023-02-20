@@ -62,7 +62,7 @@ function renderPage($page, $locale)
             $content    = str_replace($module[0][0], $replace_content, $content);
         }
         if ($module[1][0] == "HOME-NEWS") {
-            $replace_content = WebController::rederHomeNews();
+            $replace_content = WebController::rederHomeNews($locale);
             $content    = str_replace($module[0][0], $replace_content, $content);
         }
         if ($module[1][0] == "PROFILE-TIMELINE") {

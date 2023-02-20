@@ -1,78 +1,109 @@
 <div class="box-categories-news as-it-is">
   <ul class="categories-news d-flex p-0 m-0">
-    <li class="active">Semua</li>
-    <li>Berita</li>
-    <li>Pengumuman</li>
-    <li>Info Lelang</li>
-    <li>eMagazine</li>
-    <li>CSR</li>
-    <li>COVID-19</li>
+    <li data-category="" class="toggle-category active">{{ __('web.all') }}</li>
+    @if(isset($category))
+    @foreach($category as $item)
+    <li data-category="{{ $item->id }}" class="toggle-category">{{ $item->title }}</li>
+    @endforeach
+    @endif
   </ul>
 </div>
-<div class="box-news-slide mt-4 as-it-is">
-  <div class="box">
-    <div class="box-image w-100">
-      <img class="w-100" src="../../public/assets/files/img/news1.jpg" alt="..." />
-    </div>
-    <div class="content">
-      <div class="d-flex justify-content-between mb-2">
-        <span class="tag">Berita</span>
-        <span class="date">23 Oktober 2022</span>
-      </div>
-      <p class="fs-6 fw-semibold">Bukti Nyata Keberhasilan Aksi dan Inovasi ESG, Pupuk Kaltim Raih Penghargaan Bergengsi</p>
-      <button type="button" class="btn btn-primary btn-animate mt-4">Selengkapnya</button>
-    </div>
-  </div>
-  <div class="box">
-    <div class="box-image w-100">
-      <img class="w-100" src="../../public/assets/files/img/news2.jpg" alt="..." />
-    </div>
-    <div class="content">
-      <div class="d-flex justify-content-between mb-2">
-        <span class="tag">Berita</span>
-        <span class="date">19 Oktober 2022</span>
-      </div>
-      <p class="fs-6 fw-semibold">Hari Pangan Sedunia 2022 - PKT Berkomitmen Atasi Potensi Krisis Pangan 2023</p>
-      <button type="button" class="btn btn-primary btn-animate mt-4">Selengkapnya</button>
-    </div>
-  </div>
-  <div class="box">
-    <div class="box-image w-100">
-      <img class="w-100" src="../../public/assets/files/img/news3.jpg" alt="..." />
-    </div>
-    <div class="content">
-      <div class="d-flex justify-content-between mb-2">
-        <span class="tag">Berita</span>
-        <span class="date">17 Oktober 2022</span>
-      </div>
-      <p class="fs-6 fw-semibold">Dukung Terwujudnya Kota Layak Anak, Pupuk Kaltim Raih Penghargaan Perusahaan Sahabat Anak dari Pemkot Bontang</p>
-      <button type="button" class="btn btn-primary btn-animate mt-4">Selengkapnya</button>
-    </div>
-  </div>
-  <div class="box">
-    <div class="box-image w-100">
-      <img class="w-100" src="../../public/assets/files/img/news4.jpg" alt="..." />
-    </div>
-    <div class="content">
-      <div class="d-flex justify-content-between mb-2">
-        <span class="tag">Pengumuman</span>
-        <span class="date">16 September 2022</span>
-      </div>
-      <p class="fs-6 fw-semibold">PENGUMUMAN HASIL TES WAWANCARA SELEKSI CALON PESERTA PUPUK KALTIM APPRENTICE CHALLENGE VII-2022 GELOMBANG 2</p>
-      <button type="button" class="btn btn-primary btn-animate mt-4">Selengkapnya</button>
-    </div>
-  </div>
-  <div class="box">
-    <div class="box-image w-100">
-      <img class="w-100" src="../../public/assets/files/img/news4.jpg" alt="..." />
-    </div>
-    <div class="content">
-      <div class="d-flex justify-content-between mb-2">
-        <span class="tag">Pengumuman</span>
-        <span class="date">13 September 2022</span>
-      </div>
-      <p class="fs-6 fw-semibold">PENGUMUMAN HASIL TES KEMAMPUAN DASAR (TKD) SELEKSI CALON PESERTA PUPUK KALTIM APPRENTICE CHALLENGE VII-2022 GELOMBANG 2</p>
-      <button type="button" class="btn btn-primary btn-animate mt-4">Selengkapnya</button>
-    </div>
-  </div>
+<div class="box-news-slide mt-4" id="news-card">
 </div>
+
+
+@push('javascript')
+<script>
+  function getQueryParams(url) {
+    const paramArr = url.slice(url.indexOf('?') + 1).split('&');
+    const params = {};
+    paramArr.map(param => {
+      const [key, val] = param.split('=');
+      params[key] = decodeURIComponent(val);
+    })
+    return params;
+  }
+
+  function destroyCarousel() {
+    if ($('.box-news-slide').hasClass('slick-initialized')) {
+      $('.box-news-slide').slick('destroy');
+    }
+  }
+
+  function slickNews() {
+    $('.box-news-slide').slick({
+      dots: true,
+      infinite: false,
+      speed: 300,
+      autoplay: true,
+      slidesToShow: 3,
+      responsive: [{
+          breakpoint: 768,
+          settings: {
+            arrows: false,
+            centerMode: true,
+            centerPadding: '20px',
+            slidesToShow: 1
+          }
+        },
+        {
+          breakpoint: 480,
+          settings: {
+            arrows: false,
+            centerMode: true,
+            centerPadding: '20px',
+            slidesToShow: 1
+          }
+        }
+      ]
+    });
+  }
+
+  function getCategory($page = '', $cat = '') {
+    $.ajax({
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+      },
+      method: "POST",
+      url: "{{ url('get-news') }}",
+      data: JSON.stringify({
+        "locale": "{{ $locale }}",
+        "placement": "home",
+        "category": $cat,
+        "limit": 9,
+        "page": $page,
+      })
+    }).then((response) => {
+      destroyCarousel();
+      const {
+        data: result,
+        blade,
+      } = response;
+      const {
+        current_page,
+        next_page_url
+      } = result;
+      if (current_page === 1) {
+        $('#news-card').html(blade);
+      } else {
+        $('#news-card').append(blade);
+      }
+      slickNews();
+    }).catch((error) => {
+      console.log(error)
+    });
+  }
+  $(document).ready(function() {
+    getCategory("1", "");
+
+    $('.toggle-category').on('click', function() {
+      $('.toggle-category').removeClass('active');
+      $(this).addClass('active');
+      var cat = $(this).attr('data-category');
+      getCategory(1, cat);
+    });
+  });
+</script>
+@endpush
