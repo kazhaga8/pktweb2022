@@ -58,7 +58,7 @@ function renderPage($page, $locale)
     preg_match_all("'&lt;!--MODULE-(.*?)--&gt;(.*?)&lt;!--/MODULE-(.*?)--&gt;'si", $content, $module);
     if (count($module[0]) > 0) {
         if ($module[1][0] == "HOME-INVESTOR") {
-            $replace_content = WebController::rederHomeInvestors();
+            $replace_content = WebController::rederHomeInvestors($locale);
             $content    = str_replace($module[0][0], $replace_content, $content);
         }
         if ($module[1][0] == "HOME-NEWS") {

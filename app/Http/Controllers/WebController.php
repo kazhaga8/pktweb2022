@@ -220,9 +220,10 @@ class WebController extends Controller
   }
 
 
-  static function rederHomeInvestors()
+  static function rederHomeInvestors($locale)
   {
-    return view('web.render-modules.home-investors');
+    $ebook = Ebook::where('type', '=', 'annual')->where('lang', $locale)->orderBy('reorder')->take(6)->get();
+    return view('web.render-modules.home-investors', compact('locale', 'ebook'));
   }
 
   static function rederHomeNews($locale)
