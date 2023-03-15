@@ -1,6 +1,7 @@
 @componentlib
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,7 +21,6 @@
     <!-- App css -->
     <link href="{{ url('public') }}/plugins/bootstrap-sweetalert/sweet-alert.css" rel="stylesheet" type="text/css">
     <link href="{{ url('public') }}/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-    <!-- <link href="{{ url('public') }}/assets/web/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"> -->
     <link href="{{ url('public') }}/assets/css/core.css" rel="stylesheet" type="text/css" />
     <link href="{{ url('public') }}/assets/css/components.css" rel="stylesheet" type="text/css" />
     <link href="{{ url('public') }}/assets/css/icons.css" rel="stylesheet" type="text/css" />
@@ -28,7 +28,7 @@
     <link href="{{ url('public') }}/assets/css/menu.css" rel="stylesheet" type="text/css" />
     <link href="{{ url('public') }}/assets/css/responsive.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="{{ url('public') }}/plugins/switchery/switchery.min.css">
-    <link rel="stylesheet" href="{{ url('public') }}/plugins/fancybox/jquery.fancybox.css">
+    <!-- <link rel="stylesheet" href="{{ url('public') }}/plugins/fancybox/jquery.fancybox.css"> -->
 
 
     <!-- HTML5 Shiv and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -41,9 +41,10 @@
     <script src="{{ url('public') }}/assets/js/modernizr.min.js"></script>
 
 </head>
+
 <body class="fixed-left">
     <!-- Begin page -->
-    <div id="wrapper">
+    <div id="wrapper" class="">
         @include('webmin.layouts.topbar')
         @include('webmin.layouts.leftsidebar')
         <div class="content-page">
@@ -51,7 +52,7 @@
                 <div class="container">
                     @include('webmin.layouts.breadcrumb')
                     @yield('content')
-                    
+
                 </div>
             </div>
             @include('webmin.layouts.footer')
@@ -82,7 +83,6 @@
     <!-- jQuery  -->
     <script src="{{ url('public') }}/assets/js/jquery.min.js"></script>
     <script src="{{ url('public') }}/assets/js/bootstrap.min.js"></script>
-    <!-- <script src="{{ url('public') }}/assets/web/vendor/bootstrap/js/bootstrap.bundle.min.js"></script> -->
     <script src="{{ url('public') }}/assets/js/detect.js"></script>
     <script src="{{ url('public') }}/assets/js/fastclick.js"></script>
     <!-- <script src="{{ url('public') }}/assets/js/jquery.blockUI.js"></script> -->
@@ -92,14 +92,51 @@
     <script src="{{ url('public') }}/plugins/switchery/switchery.min.js"></script>
     <script src="{{ url('public') }}/plugins/bootstrap-sweetalert/sweet-alert.min.js"></script>
     <script src="{{ url('public') }}/plugins/fancybox/jquery.fancybox.pack.js"></script>
+    <script>
+      function setCookie(cName, cValue, expDays) {
+        let date = new Date();
+        date.setTime(date.getTime() + (expDays * 24 * 60 * 60 * 1000));
+        const expires = "expires=" + date.toUTCString();
+        document.cookie = cName + "=" + cValue + "; " + expires + "; path=/";
+      }
+      function getCookie(cName) {
+        const name = cName + "=";
+        const cDecoded = decodeURIComponent(document.cookie); //to be careful
+        const cArr = cDecoded .split('; ');
+        let res;
+        cArr.forEach(val => {
+            if (val.indexOf(name) === 0) res = val.substring(name.length);
+        })
+        return res;
+      }
+      $('.open-left').click(function(){
+        if ($('#wrapper').hasClass('enlarged')) {
+          setCookie('isLargeMenu', true, 1);
+        } else {
+          setCookie('isLargeMenu', false, 1);
+        }
+      });
+    </script>
 
     @stack('js')
     @yield('js')
-    
+
     <!-- App js -->
     <script src="{{ url('public') }}/assets/js/jquery.core.js"></script>
     <script src="{{ url('public') }}/assets/js/jquery.app.js"></script>
-    
+    <script>
+      $(document).ready(function(){
+        $("#wrapper").addClass("forced");
+        if (getCookie('isLargeMenu') === 'true') {
+          $("body").removeClass("fixed-left-void").addClass("fixed-left");
+          $("#wrapper").removeClass("enlarged");
+        } else {
+          $("body").removeClass("fixed-left").addClass("fixed-left-void");
+          $("#wrapper").addClass("enlarged");
+        }
+      });
+    </script>
+
     @stack('javascript')
     @yield('javascript')
 

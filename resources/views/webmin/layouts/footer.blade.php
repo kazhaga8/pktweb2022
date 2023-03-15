@@ -1,3 +1,3 @@
 <footer class="footer text-right">
-    2020 - 2021 © PKT WEB
+    2022 - 2023 © PT. PUPUK KALTIM Website
 </footer>

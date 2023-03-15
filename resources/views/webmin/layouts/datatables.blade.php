@@ -35,6 +35,9 @@
 <script src="{{ url('public') }}/plugins/datatables/dataTables.bootstrap.js"></script>
 @endsection
 
+
+@section('javascript')
+
 <script>
   class dataTbConfig {
     constructor({
@@ -48,8 +51,6 @@
     }
   }
 </script>
-
-@section('javascript')
 @stack('datatbInit')
 <script>
   const columnId = [{
@@ -104,7 +105,6 @@
   const columnDefsAll = columnDefsId.concat(dataTbInit.columnDefs, columnDefsAction)
 
   $(document).ready(function() {
-
     var listdatatb = $('#listdatatb').DataTable({
       processing: true,
       serverSide: true,
@@ -112,7 +112,7 @@
         update: false,
       },
       stateSave: true,
-      dom: "<'row col-md-12' <'col-sm-2 col-md-6'l> <'col-sm-2 col-md-6'f> >" +
+    dom: "<'row col-md-12' <'col-sm-2 col-md-6'l> <'col-sm-2 col-md-6 flex-justify-end' <'filter dataTables_filter'>f> >" +
         "<'row' <'col-sm-12 col-md-12' <'nav-table'> > >" +
         "<'row'" +
         "<'col-sm-12'tr>" +
@@ -131,7 +131,6 @@
       fnRowCallback: function(nRow, aData, iDisplayIndex, iDisplayIndexFull) {},
       columnDefs: columnDefsAll,
       initComplete: function(settings, json) {
-
       },
       drawCallback: function(setting) {
         $('.action-delete').click(function(e) {
@@ -153,6 +152,23 @@
         }, function() {
           $(this).removeClass("open");
         });
+
+        const useLangFilter = columnAll.findIndex(x => x.data === 'lang');
+        if (useLangFilter) {
+            $('.filter').html(
+                '<label>Lang: ' +
+                '<select id="filter_lang" class="form-control input-sm">' +
+                '<option value="">All</option>' +
+                '<option value="en">EN</option>' +
+                '<option value="id">ID</option>' +
+                '</select>' +
+                '</label>'
+            );
+            $('#filter_lang').on('change',function () {
+                listdatatb.columns(useLangFilter).search($(this).val()).draw();
+            });
+            $('#filter_lang').val(listdatatb.columns(useLangFilter).search()[0]);
+        }
       }
     });
     $('.refresh-btn').click(function(e) {
@@ -163,15 +179,15 @@
     });
 
     listdatatb.on('row-reorder', function ( e, diff, edit ) {
-    var ids = new Array();
-    for (var i = 1; i < e.target.rows.length; i++) {
-        var b =e.target.rows[i].cells[0].innerHTML.split('data-rowid="');
-        var b2 = b[1].split('">')
-        ids.push(b2[0]);
-    }
+        var ids = new Array();
+        for (var i = 1; i < e.target.rows.length; i++) {
+            var b =e.target.rows[i].cells[0].innerHTML.split('data-rowid="');
+            var b2 = b[1].split('">')
+            ids.push(b2[0]);
+        }
 
-    listdatatb.ajax.url("{{ $page['page'] }}/json?reorder="+ encodeURIComponent(ids)).load();
-});
+        listdatatb.ajax.url("{{ $page['page'] }}/json?reorder="+ encodeURIComponent(ids)).load();
+    });
   });
 </script>
 @endsection

@@ -10,7 +10,7 @@
                 <img src="{{ url('public') }}/assets/images/logo.png" alt="" height="60">
             </span>
             <i>
-                <img src="{{ url('public') }}/assets/images/logo.png" alt="" height="28">
+                <img src="{{ url('public') }}/assets/images/logo-small.png" alt="" height="28">
             </i>
         </a>
     </div>
@@ -44,7 +44,7 @@
                         <li><a href="{{ route('changepassword') }}"><i class="ti-settings m-r-5"></i> Change Password</a></li>
                         <!-- <li><a href="javascript:void(0)"><i class="ti-lock m-r-5"></i> Lock screen</a></li> -->
                         <li>
-                            <a href="{{ route('logout') }}" onclick="event.preventDefault(); 
+                            <a href="{{ route('logout') }}" onclick="event.preventDefault();
                             document.getElementById('logout-form').submit();">
                                 <i class="ti-power-off m-r-5"></i>
                                 {{ __('Logout') }}

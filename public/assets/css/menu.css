@@ -134,7 +134,7 @@ body.fixed-left .side-menu.left {
   line-height: 70px;
 }
 .button-menu-mobile:hover {
-  color: #7fc1fc;
+  color: #f75804b5;
 }
 .sidebar-inner {
   height: 100%;
@@ -193,7 +193,7 @@ body.fixed-left .side-menu.left {
   border-top: 0;
 }
 #sidebar-menu ul ul li.active a {
-  color: #7fc1fc;
+  color: #f75804b5;
 }
 #sidebar-menu ul ul a {
   color: #98a6ad;

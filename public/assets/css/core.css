@@ -949,3 +949,10 @@ a:focus {
 form .img-thumbnail{
   max-width: 600px;
 }
+
+.flex-justify-end {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: 16px;
+}

@@ -11,7 +11,8 @@
             {
                 data: 'lang',
                 name: 'lang',
-                title: 'Lang'
+                title: 'Lang',
+                search: { value: 'en', regex: true },
             },
             {
                 data: 'created_at',
