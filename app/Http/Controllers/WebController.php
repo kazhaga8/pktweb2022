@@ -28,23 +28,6 @@ use stdClass;
 
 class WebController extends Controller
 {
-  public function getMenu($locale, $position)
-  {
-    return Menu::select(
-      'id',
-      'ref',
-      'banner_img',
-      'lang',
-      'alias',
-      'title',
-      'href',
-      'menu_type',
-    )
-      ->where('lang', '=', $locale)
-      ->where('menu_position', '=', $position)
-      ->orderBy('reorder', 'ASC');
-  }
-
   public function eBook(Request $request, $book)
   {
     $ebook_dir = base64_decode($request->v);
@@ -59,99 +42,11 @@ class WebController extends Controller
     return response()->download($file_path, $file, $headers);
   }
 
-  public function getHref($data, $url_parent)
-  {
-    $url = "";
-
-    if ($data['menu_type'] == "internal") {
-      $url = route('web.index', [$data['lang'], $data['alias']]);
-    }
-    if ($data['menu_type'] == "anchor") {
-      $url = route('web.index', [$data['lang'], $url_parent . "#" . $data['alias']]);
-    }
-    if ($data['menu_type'] == "external") {
-      $url = $data['href'];
-    }
-
-    return $url;
-  }
-
-  public function generateMenu($locale, $position)
-  {
-    $nav = [];
-    $nav1 = $this->getMenu($locale, $position)->whereNull('id_menu')->get()->toArray();
-    foreach ($nav1 as $lvl1) {
-      $nav2 = $this->getMenu($locale, $position)->where('id_menu', '=', $lvl1['id'])->get()->toArray();
-      foreach ($nav2 as $lvl2) {
-        $nav3 = $this->getMenu($locale, $position)->where('id_menu', '=', $lvl2['id'])->get()->toArray();
-        foreach ($nav3 as $lvl3) {
-          $nav4 = $this->getMenu($locale, $position)->where('id_menu', '=', $lvl3['id'])->get()->toArray();
-          foreach ($nav4 as $lvl4) {
-            $lvl4['href'] = $this->getHref($lvl4, $lvl3['alias']);
-            $lvl3['child'][] = $lvl4;
-          }
-          $lvl3['href'] = $this->getHref($lvl3, $lvl2['alias']);
-          $lvl2['child'][] = $lvl3;
-        }
-        $lvl2['href'] = $this->getHref($lvl2, $lvl1['alias']);
-        $lvl1['child'][] = $lvl2;
-      }
-      $lvl1['href'] = isset($lvl1['child']) && count($lvl1['child']) ? $lvl1['child'][0]['href'] : route('web.index', [$locale, $lvl1['alias']]);
-      $nav[] = $lvl1;
-    }
-    return json_decode(json_encode($nav));
-  }
-
-  public function getActiveMenu($nav, $menu_id)
-  {
-    $next_menu = null;
-    $active_menu = null;
-    foreach ($nav as $key1 => $lvl1) {
-      if ($lvl1->id == $menu_id) {
-        $active_menu = $lvl1;
-        $next_menu = isset($nav[$key1 + 1]) ? $nav[$key1 + 1] : null;
-      } else {
-        if (isset($lvl1->child)) {
-          foreach ($lvl1->child as $key2 => $lvl2) {
-            if ($lvl2->id == $menu_id) {
-              $active_menu = $lvl2;
-              if (isset($lvl2->child) && $lvl2->child[0]->menu_type !== 'anchor') {
-                $next_menu = $lvl2->child[0];
-              } else {
-                $next_menu = isset($lvl1->child[$key2 + 1]) ? $lvl1->child[$key2 + 1] : $nav[$key1 + 1];
-              }
-            } else {
-              if (isset($lvl2->child)) {
-                foreach ($lvl2->child as $key3 =>  $lvl3) {
-                  if ($lvl3->id == $menu_id) {
-                    $active_menu = $lvl3;
-                    $next_menu = isset($lvl2->child[$key3 + 1]) ? $lvl2->child[$key3 + 1] : $lvl1->child[$key2 + 1];
-                  } else {
-                    if (isset($lvl3->child)) {
-                      foreach ($lvl3->child as $key4 =>  $lvl4) {
-                        if ($lvl4->id == $menu_id) {
-                          $active_menu = $lvl4;
-                          $next_menu = isset($lvl3->child[$key4 + 1]) ? $lvl3->child[$key4 + 1] : $lvl2->child[$key3 + 1];
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-
-    return [$active_menu, $next_menu];
-  }
-
   public function index(Request $request, $locale, $pages)
   {
     $config = Config::first()->toArray();
-    $nav = $this->generateMenu($locale, 'main');
-    $nav_right = $this->generateMenu($locale, 'right');
+    $nav = generateMenu($locale, 'main');
+    $nav_right = generateMenu($locale, 'right');
     $nav_shortcut = MenuShortcut::where('lang', '=', $locale)->get();
     $menu = Menu::where('lang', '=', $locale)->where('alias', '=', $pages)->firstOrFail();
     $menu_id = $menu->id;
@@ -159,7 +54,7 @@ class WebController extends Controller
     if (!$menu_id) {
       return abort(404, 'page not found.');
     }
-    $find_menu = $this->getActiveMenu($menu->menu_position == 'main' ? $nav : $nav_right, $menu_id);
+    $find_menu = getActiveMenu($menu->menu_position == 'main' ? $nav : $nav_right, $menu_id);
     $active_menu = $find_menu[0];
     $next_menu = $find_menu[1];
     if ($next_menu == null && $menu->menu_position == 'main') {
@@ -194,8 +89,8 @@ class WebController extends Controller
   public function pageDetail($locale, $pages, $url)
   {
     $config = Config::first()->toArray();
-    $nav = $this->generateMenu($locale, 'main');
-    $nav_right = $this->generateMenu($locale, 'right');
+    $nav = generateMenu($locale, 'main');
+    $nav_right = generateMenu($locale, 'right');
     $nav_shortcut = MenuShortcut::where('lang', '=', $locale)->get();
     $menu = Menus::where('lang', '=', $locale)->where('alias', '=', $pages)->first();
     $menu_id = $menu->id;

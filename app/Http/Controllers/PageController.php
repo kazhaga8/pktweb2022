@@ -36,8 +36,7 @@ class PageController extends Controller
         $page['title'] = 'Pages Management';
         $page['method'] = 'POST';
         $page['action'] = route('pages.store');
-        $parent = Menu::where('lang', '=', config('app.fallback_locale'))->where('menu_position', '!=', 'shortcut')->get(['id', 'title as name']);
-        $parent = json_decode(json_encode($parent));
+        $parent = selectMenu(config('app.fallback_locale'));
         return view('webmin.pages.form',compact('parent','page'));
     }
 
@@ -74,8 +73,7 @@ class PageController extends Controller
         $page_['title'] = 'Pages Management';
         $page_['method'] = 'PUT';
         $page_['action'] = route('pages.update',$page->id);
-        $parent = Menu::where('lang', '=', $page->lang)->where('menu_position', '!=', 'shortcut')->get(['id', 'title as name']);
-        $parent = json_decode(json_encode($parent));
+        $parent = selectMenu($page->lang);
         $page->content = html_entity_decode($page->content);
         return view('webmin.pages.form',compact('parent'), [ 'page' => $page_, 'pages' => $page ]);
     }
@@ -99,7 +97,7 @@ class PageController extends Controller
     public function destroy(Page $page)
     {
         $page->delete();
-        return redirect()->route('menus.index')
-                        ->with('success','Menu deleted successfully');
+        return redirect()->route('pages.index')
+                        ->with('success','Pages deleted successfully');
     }
 }
