@@ -10,11 +10,11 @@ class Ebook extends Model
 {
     /**
      * The attributes that are mass assignable.
-     *	
+     *
      * @var array
      */
     protected $fillable = [
-
+        'ref',
         'lang',
         'title',
         'file',
