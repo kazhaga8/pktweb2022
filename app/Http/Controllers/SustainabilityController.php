@@ -46,8 +46,11 @@ class SustainabilityController extends Controller
             'file' => 'required',
             'image' => 'required',
         ]);
+        $store['ref'] =  (Ebook::where('type', '=', 'sustainability')->max('ref') || 0) + 1;
         foreach (config('app.locales') as $lang) {
+            $reorder = Ebook::where('type', '=', 'sustainability')->where('lang', '=', $lang)->max('reorder');
             $store['lang'] =  $lang;
+            $store['reorder'] =  ($reorder || 0) + 1;
             Ebook::create($store);
         }
 
