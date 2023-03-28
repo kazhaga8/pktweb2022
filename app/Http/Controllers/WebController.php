@@ -220,7 +220,16 @@ class WebController extends Controller
     $_response = array("status" => "200", "messages" => [], "data" => []);
     $_response['messages'] = "Data Found";
     $category = $request->category ? "id_category='" . $request->category . "'" : "id_category!=''";
-    $data = News::where('lang', $request->locale)->whereRaw($category)->orderBy('created_at', 'DESC')->paginate($request->limit);
+    $data = News::
+    where('lang', $request->locale)
+    ->where('active_date', '<=', date('Y-m-d'))
+    ->where(function($q) {
+        $q->whereNull('exp_date')
+          ->orWhere('exp_date', '>=', date('Y-m-d'));
+    })
+    ->whereRaw($category)
+    ->orderBy('created_at', 'DESC')
+    ->paginate($request->limit);
     $news = [];
     if ($data->count() > 0) {
       foreach ($data->items() as $key => $value) {
