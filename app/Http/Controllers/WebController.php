@@ -204,7 +204,7 @@ class WebController extends Controller
 
   static function rederGallery($locale)
   {
-    $category = Category::where('lang', $locale)->where('type', 'gallery')->get();
+    $category = Gallery::select('type', 'type as title')->groupBy('type')->get();
     $year = Gallery::select('year')->where('lang', $locale)->orderBy('year', 'DESC')->groupBy('year')->get();
     return view('web.render-modules.gallery', compact('locale', 'category', 'year'));
   }
@@ -302,7 +302,7 @@ class WebController extends Controller
   {
     $_response = array("status" => "200", "messages" => [], "data" => []);
     $_response['messages'] = "Data Found";
-    $category = $request->category ? "id_category='" . $request->category . "'" : "id_category!=''";
+    $category = $request->category ? "type='" . $request->category . "'" : "type!=''";
     $year = $request->year ? "year='" . $request->year . "'" : "year!=''";
     $data = Gallery::where('lang', $request->locale)->whereRaw($year)->whereRaw($category)->orderBy('created_at', 'DESC')->paginate($request->limit);
     $cert = [];

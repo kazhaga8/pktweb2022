@@ -16,7 +16,7 @@
         <li data-category="" class="toggle-category active">Semua Gallery</li>
         @if(isset($category))
         @foreach($category as $item)
-        <li data-category="{{ $item->id }}" class="toggle-category">{{ $item->title }}</li>
+        <li data-category="{{ $item->type }}" class="toggle-category">{{ ucfirst($item->title) }}</li>
         @endforeach
         @endif
       </ul>

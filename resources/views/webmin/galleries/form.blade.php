@@ -1,6 +1,6 @@
 @extends('webmin.layouts.formbase')
 @section('formelement')
-<x-webmin.select2 name="id_category" label="{{ __('form.category') }}" placeholder="{{ __('form.select_category') }}" value="{!! isset($gallery->id_category)? $gallery->id_category : '' !!}" :items="$parent" />
+<!-- <x-webmin.select2 name="id_category" label="{{ __('form.category') }}" placeholder="{{ __('form.select_category') }}" value="{!! isset($gallery->id_category)? $gallery->id_category : '' !!}" :items="$parent" /> -->
 <x-webmin.input type="number" name="year" value="{!! isset($gallery->year)? $gallery->year : '' !!}" required="required" />
 <x-webmin.radio name="type" value="{!! isset($gallery->type)? $gallery->type : '' !!}"  required="required" :items="['image','video']" />
 <x-webmin.input type="text" name="title" value="{!! isset($gallery->title)? $gallery->title : '' !!}" required="required" />
@@ -23,7 +23,7 @@
 				$('#groupvideo').hide();
 				$('#embedvideo').hide();
 				$('input[name=video]').removeAttr('required');
-			} 
+			}
     if (_this !== '' && $('input[name=type]:checked').val() === 'video') {
 				$('#groupimage').hide();
 				$('input[name=image]').removeAttr('required');
