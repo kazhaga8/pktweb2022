@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Ebook;
+use App\Emagazine;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -17,8 +17,22 @@ class EmagazineController extends Controller
     }
 
 
-    public function json(){
-        return DataTables::of(Ebook::where('type', '=', 'e-magazine')->orderBy('id','DESC'))->addIndexColumn()->make(true);
+    public function json(Request $request){
+        if ($request->reorder){
+            Emagazine::reorderData($request);
+        }
+        $getData = Emagazine::getData($request);
+        $query = $getData['query'];
+
+        return DataTables::of($query)
+        ->addIndexColumn()
+        ->filter(function ($query) use ($request, $getData) {
+            $this->filterGlobal($getData, $request, $query);
+        })
+        ->skipTotalRecords()
+        ->setTotalRecords(false)
+        ->setFilteredRecords(false)
+        ->make(true);
     }
 
     public function index(Request $request)
@@ -46,19 +60,19 @@ class EmagazineController extends Controller
             'file' => 'required',
             'image' => 'required',
         ]);
-        $store['ref'] =  (Ebook::where('type', '=', 'e-magazine')->max('ref') || 0) + 1;
+        $store['ref'] =  (Emagazine::max('ref') || 0) + 1;
         foreach (config('app.locales') as $lang) {
-            $reorder = Ebook::where('type', '=', 'e-magazine')->where('lang', '=', $lang)->max('reorder');
+            $reorder = Emagazine::where('lang', '=', $lang)->max('reorder');
             $store['lang'] =  $lang;
             $store['reorder'] =  ($reorder || 0) + 1;
-            Ebook::create($store);
+            Emagazine::create($store);
         }
 
         return redirect()->route('e-magazine.index')
                         ->with('success','E-Magazine created successfully.');
     }
 
-    public function edit(Ebook $ebook)
+    public function edit(Emagazine $ebook)
     {
         $page['page'] = 'e-magazine';
         $page['title'] = 'E-Magazine Management';
@@ -66,7 +80,7 @@ class EmagazineController extends Controller
         $page['action'] = route('e-magazine.update',$ebook->id);
         return view('webmin.e-magazine.form',compact('page','ebook'));
     }
-    public function update(Request $request, Ebook $ebook)
+    public function update(Request $request, Emagazine $ebook)
     {
         request()->validate([
             'title' => 'required',
@@ -79,7 +93,7 @@ class EmagazineController extends Controller
         return redirect()->route('e-magazine.index')
                         ->with('success','E-Magazine updated successfully');
     }
-    public function destroy(Ebook $ebook)
+    public function destroy(Emagazine $ebook)
     {
         $ebook->delete();
 

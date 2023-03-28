@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Ebook;
+use App\AnnualReport;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -17,8 +17,22 @@ class AnnualController extends Controller
     }
 
 
-    public function json(){
-        return DataTables::of(Ebook::where('type', '=', 'annual')->orderBy('id','DESC'))->addIndexColumn()->make(true);
+    public function json(Request $request){
+        if ($request->reorder){
+            AnnualReport::reorderData($request);
+        }
+        $getData = AnnualReport::getData($request);
+        $query = $getData['query'];
+
+        return DataTables::of($query)
+        ->addIndexColumn()
+        ->filter(function ($query) use ($request, $getData) {
+            $this->filterGlobal($getData, $request, $query);
+        })
+        ->skipTotalRecords()
+        ->setTotalRecords(false)
+        ->setFilteredRecords(false)
+        ->make(true);
     }
 
     public function index(Request $request)
@@ -46,19 +60,19 @@ class AnnualController extends Controller
             'file' => 'required',
             'image' => 'required',
         ]);
-        $store['ref'] =  (Ebook::where('type', '=', 'annual')->max('ref') || 0) + 1;
+        $store['ref'] =  (AnnualReport::max('ref') || 0) + 1;
         foreach (config('app.locales') as $lang) {
-            $reorder = Ebook::where('type', '=', 'annual')->where('lang', '=', $lang)->max('reorder');
+            $reorder = AnnualReport::where('lang', '=', $lang)->max('reorder');
             $store['lang'] =  $lang;
             $store['reorder'] =  ($reorder || 0) + 1;
-            Ebook::create($store);
+            AnnualReport::create($store);
         }
 
         return redirect()->route('annual-report.index')
                         ->with('success','Annual report created successfully.');
     }
 
-    public function edit(Ebook $ebook)
+    public function edit(AnnualReport $ebook)
     {
         $page['page'] = 'annual-report';
         $page['title'] = 'Annual Report Management';
@@ -66,7 +80,7 @@ class AnnualController extends Controller
         $page['action'] = route('annual-report.update',$ebook->id);
         return view('webmin.annual-report.form',compact('page','ebook'));
     }
-    public function update(Request $request, Ebook $ebook)
+    public function update(Request $request, AnnualReport $ebook)
     {
         request()->validate([
             'title' => 'required',
@@ -79,7 +93,7 @@ class AnnualController extends Controller
         return redirect()->route('annual-report.index')
                         ->with('success','Annual report updated successfully');
     }
-    public function destroy(Ebook $ebook)
+    public function destroy(AnnualReport $ebook)
     {
         $ebook->delete();
 

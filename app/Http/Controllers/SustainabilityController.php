@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Ebook;
+use App\SustainabilityReport;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -10,15 +10,29 @@ class SustainabilityController extends Controller
 {
     function __construct()
     {
-        //  $this->middleware('permission:news-list', ['only' => ['index','store']]);
-        //  $this->middleware('permission:news-create', ['only' => ['create','store']]);
-        //  $this->middleware('permission:news-edit', ['only' => ['edit','update']]);
-        //  $this->middleware('permission:news-delete', ['only' => ['destroy']]);
+        //  $this->middleware('permission:sustainability-list', ['only' => ['index','store']]);
+        //  $this->middleware('permission:sustainability-create', ['only' => ['create','store']]);
+        //  $this->middleware('permission:sustainability-edit', ['only' => ['edit','update']]);
+        //  $this->middleware('permission:sustainability-delete', ['only' => ['destroy']]);
     }
 
 
-    public function json(){
-        return DataTables::of(Ebook::where('type', '=', 'sustainability')->orderBy('id','DESC'))->addIndexColumn()->make(true);
+    public function json(Request $request){
+        if ($request->reorder){
+            SustainabilityReport::reorderData($request);
+        }
+        $getData = SustainabilityReport::getData($request);
+        $query = $getData['query'];
+
+        return DataTables::of($query)
+        ->addIndexColumn()
+        ->filter(function ($query) use ($request, $getData) {
+            $this->filterGlobal($getData, $request, $query);
+        })
+        ->skipTotalRecords()
+        ->setTotalRecords(false)
+        ->setFilteredRecords(false)
+        ->make(true);
     }
 
     public function index(Request $request)
@@ -46,19 +60,19 @@ class SustainabilityController extends Controller
             'file' => 'required',
             'image' => 'required',
         ]);
-        $store['ref'] =  (Ebook::where('type', '=', 'sustainability')->max('ref') || 0) + 1;
+        $store['ref'] =  (SustainabilityReport::max('ref') || 0) + 1;
         foreach (config('app.locales') as $lang) {
-            $reorder = Ebook::where('type', '=', 'sustainability')->where('lang', '=', $lang)->max('reorder');
+            $reorder = SustainabilityReport::where('lang', '=', $lang)->max('reorder');
             $store['lang'] =  $lang;
             $store['reorder'] =  ($reorder || 0) + 1;
-            Ebook::create($store);
+            SustainabilityReport::create($store);
         }
 
         return redirect()->route('sustainability-report.index')
                         ->with('success','Sustainability report created successfully.');
     }
 
-    public function edit(Ebook $ebook)
+    public function edit(SustainabilityReport $ebook)
     {
         $page['page'] = 'sustainability-report';
         $page['title'] = 'Sustainability Report Management';
@@ -66,7 +80,7 @@ class SustainabilityController extends Controller
         $page['action'] = route('sustainability-report.update',$ebook->id);
         return view('webmin.sustainability-report.form',compact('page','ebook'));
     }
-    public function update(Request $request, Ebook $ebook)
+    public function update(Request $request, SustainabilityReport $ebook)
     {
         request()->validate([
             'title' => 'required',
@@ -79,7 +93,7 @@ class SustainabilityController extends Controller
         return redirect()->route('sustainability-report.index')
                         ->with('success','Sustainability report updated successfully');
     }
-    public function destroy(Ebook $ebook)
+    public function destroy(SustainabilityReport $ebook)
     {
         $ebook->delete();
 
