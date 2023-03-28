@@ -18,8 +18,22 @@ class NewsController extends Controller
     }
 
 
-    public function json(){
-        return DataTables::of(News::orderBy('id','DESC'))->addIndexColumn()->make(true);
+    public function json(Request $request){
+        if ($request->reorder){
+            News::reorderData($request);
+        }
+        $getData = News::getData($request);
+        $query = $getData['query'];
+
+        return DataTables::of($query)
+        ->addIndexColumn()
+        ->filter(function ($query) use ($request, $getData) {
+            $this->filterGlobal($getData, $request, $query);
+        })
+        ->skipTotalRecords()
+        ->setTotalRecords(false)
+        ->setFilteredRecords(false)
+        ->make(true);
     }
 
     public function index(Request $request)

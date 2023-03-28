@@ -64,7 +64,7 @@ class SustainabilityReport extends Model
         }elseif (isset($request->order[0]['column']) && $request->order[0]['column']=='5'){
             $query->orderBy('updated_at', $request->order[0]['dir']);
         }else{
-            $query->orderBy('lang', 'ASC')->orderBy('reorder', 'ASC');
+            $query->orderBy('lang', 'ASC')->orderBy('title', 'DESC');
         }
         $out = getQueryDatatables($columns, $query);
         return $out;

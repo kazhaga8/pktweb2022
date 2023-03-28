@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\AnnualReport;
 use App\Category;
 use App\Certificate;
 use App\Config;
 use App\Contact;
-use App\Ebook;
+use App\Emagazine;
+use App\FinancialReport;
 use App\Gallery;
 use App\Management;
 use App\Menu;
@@ -19,6 +21,7 @@ use App\ProgramEmpowerment;
 use App\ProgramTjsl;
 use App\Slider;
 use App\SliderBottom;
+use App\SustainabilityReport;
 use App\Timeline;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -117,7 +120,7 @@ class WebController extends Controller
 
   static function rederHomeInvestors($locale)
   {
-    $ebook = Ebook::where('type', '=', 'annual')->where('lang', $locale)->orderBy('reorder')->take(6)->get();
+    $ebook = AnnualReport::where('lang', $locale)->orderBy('title', 'DESC')->take(6)->get();
     return view('web.render-modules.home-investors', compact('locale', 'ebook'));
   }
 
@@ -168,13 +171,13 @@ class WebController extends Controller
 
   static function rederKeberlanjutan($locale)
   {
-    $ebook = Ebook::where('type', '=', 'sustainability')->where('lang', $locale)->orderBy('reorder')->get();
+    $ebook = SustainabilityReport::where('lang', $locale)->orderBy('title', 'DESC')->get();
     return view('web.render-modules.laporan-laporan', compact('ebook'));
   }
 
   static function rederTahunan($locale)
   {
-    $ebook = Ebook::where('type', '=', 'annual')->where('lang', $locale)->orderBy('reorder')->get();
+    $ebook = AnnualReport::where('lang', $locale)->orderBy('title', 'DESC')->get();
     return view('web.render-modules.laporan-laporan', compact('ebook'));
   }
 
@@ -185,7 +188,7 @@ class WebController extends Controller
 
   static function rederKeuangan($locale)
   {
-    $ebook = Ebook::where('type', '=', 'financial')->where('lang', $locale)->orderBy('reorder')->get();
+    $ebook = FinancialReport::where('lang', $locale)->orderBy('title', 'DESC')->get();
     return view('web.render-modules.laporan-laporan', compact('ebook'));
   }
 
@@ -228,14 +231,14 @@ class WebController extends Controller
           ->orWhere('exp_date', '>=', date('Y-m-d'));
     })
     ->whereRaw($category)
-    ->orderBy('created_at', 'DESC')
+    ->orderBy('active_date', 'DESC')
     ->paginate($request->limit);
     $news = [];
     if ($data->count() > 0) {
       foreach ($data->items() as $key => $value) {
         $value->url = route('web.page-det', [$request->locale, 'news-detail', $value->url]);
         $value->image = url('public' . $value->image);
-        $value->active_date = date('m M Y', strtotime($value->active_date));
+        $value->active_date = date('d M Y', strtotime($value->active_date));
         $value->category = Category::where('id', $value->id_category)->first()->title;
         $news[] = $value;
       }
@@ -336,7 +339,7 @@ class WebController extends Controller
   {
     $_response = array("status" => "200", "messages" => [], "data" => []);
     $_response['messages'] = "Data Found";
-    $data = Ebook::where('type', '=', 'e-magazine')->where('lang', $request->locale)->orderBy('reorder')->paginate($request->limit);
+    $data = Emagazine::where('lang', $request->locale)->orderBy('reorder')->paginate($request->limit);
     $cert = [];
     if ($data->count() > 0) {
       foreach ($data->items() as $key => $value) {

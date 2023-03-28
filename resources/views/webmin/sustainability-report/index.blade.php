@@ -40,7 +40,6 @@
                 return image;
             }
         }],
-        reorder: true
     });
 </script>
 @endpush

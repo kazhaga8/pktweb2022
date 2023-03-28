@@ -4,14 +4,29 @@
 <script>
     const dataTbInit = new dataTbConfig({
         column: [{
-                data: 'title',
-                name: 'title',
-                title: 'Title'
-            },
-            {
                 data: 'lang',
                 name: 'lang',
                 title: 'Lang'
+            },
+            {
+                data: 'title',
+                name: 'title',
+                title: 'Year'
+            },
+            {
+                data: 'image',
+                name: 'image',
+                title: 'Image'
+            },
+            {
+                data: 'active_date',
+                name: 'active_date',
+                title: 'Active Date'
+            },
+            {
+                data: 'exp_date',
+                name: 'exp_date',
+                title: 'Exp Date'
             },
             {
                 data: 'created_at',
@@ -24,7 +39,17 @@
                 title: 'Updated At'
             }
         ],
-        reorder: true
+        columnDefs: [{
+            orderable: false,
+            targets: 3,
+            render: function(cellvalue, data, rowdata) {
+                const public = "{{ url('public') }}";
+                const image = '<div class="form-group">' +
+                    '<img class="img-thumbnail" src="' + public + '/' + cellvalue.replace('../../', '') + '" />' +
+                    '</div>';
+                return image;
+            }
+        }],
     });
 </script>
 @endpush
