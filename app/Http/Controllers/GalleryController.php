@@ -10,7 +10,7 @@ use Yajra\DataTables\Facades\DataTables;
 
 
 class GalleryController extends Controller
-{ 
+{
     function __construct()
     {
         //  $this->middleware('permission:gallery-list', ['only' => ['index','show']]);
@@ -18,7 +18,7 @@ class GalleryController extends Controller
         //  $this->middleware('permission:gallery-edit', ['only' => ['edit','update']]);
         //  $this->middleware('permission:gallery-delete', ['only' => ['destroy']]);
     }
-    
+
 
     /**
      * Display a listing of the resource.
@@ -48,7 +48,7 @@ class GalleryController extends Controller
         ->setFilteredRecords(false)
         ->make(true);
     }
-    
+
 
     /**
      * Show the form for creating a new resource.
@@ -61,9 +61,7 @@ class GalleryController extends Controller
         $page['title'] = 'Gallery Management';
         $page['method'] = 'POST';
         $page['action'] = route('galleries.store');
-        $parent = Category::where('lang', '=', config('app.fallback_locale'))->where('type', 'gallery')->get(['id', 'title as name']);
-        $parent = json_decode(json_encode($parent));
-        return view('webmin.galleries.form',compact('page', 'parent'));
+        return view('webmin.galleries.form',compact('page'));
     }
 
 
@@ -88,12 +86,7 @@ class GalleryController extends Controller
             $media = $store['image'];
         }
         $store['media'] = $media;
-        $ref = Category::where('id', '=', $store['id_category'])->select('ref')->pluck('ref')->first();
         foreach (config('app.locales') as $lang) {
-            if ($store['id_category']) {
-                $id_category = Category::where('lang', '=', $lang)->where('ref', '=', $ref)->select('id')->pluck('id')->first();
-                $store['id_category'] =  $id_category;
-            }
             $reorder = Gallery::where('lang', '=', $lang)->max('reorder');
             $store['lang'] =  $lang;
             $store['reorder'] =  ($reorder ? $reorder : 0) + 1;
@@ -117,9 +110,7 @@ class GalleryController extends Controller
         $page['title'] = 'Gallery Management';
         $page['method'] = 'PUT';
         $page['action'] = route('galleries.update',$gallery->id);
-        $parent = Category::where('lang', '=', $gallery->lang)->where('type', 'gallery')->get(['id', 'title as name']);
-        $parent = json_decode(json_encode($parent));
-        return view('webmin.galleries.form',compact('gallery','page', 'parent'));
+        return view('webmin.galleries.form',compact('gallery','page'));
     }
 
 
