@@ -11,7 +11,7 @@
             {
                 data: 'title',
                 name: 'title',
-                title: 'Year'
+                title: 'Edition'
             },
             {
                 data: 'image',

@@ -13,7 +13,7 @@
                 name: 'title',
                 title: 'Title'
             },
-            
+
             {
                 data: 'created_at',
                 name: 'created_at',
@@ -24,7 +24,8 @@
                 name: 'updated_at',
                 title: 'Updated At'
             }
-        ]
+        ],
+        reorder: true,
     });
 </script>
 @endpush

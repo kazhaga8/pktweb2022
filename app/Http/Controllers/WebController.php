@@ -277,7 +277,7 @@ class WebController extends Controller
   {
     $_response = array("status" => "200", "messages" => [], "data" => []);
     $_response['messages'] = "Data Found";
-    $data = ProgramTjsl::where('lang', $request->locale)->orderBy('created_at', 'DESC')->paginate($request->limit);
+    $data = ProgramTjsl::where('lang', $request->locale)->orderBy('reorder')->paginate($request->limit);
     $cert = [];
     if ($data->count() > 0) {
       foreach ($data->items() as $key => $value) {
@@ -295,7 +295,7 @@ class WebController extends Controller
   {
     $_response = array("status" => "200", "messages" => [], "data" => []);
     $_response['messages'] = "Data Found";
-    $data = ProgramEmpowerment::where('lang', $request->locale)->orderBy('created_at', 'DESC')->paginate($request->limit);
+    $data = ProgramEmpowerment::where('lang', $request->locale)->orderBy('reorder')->paginate($request->limit);
     $cert = [];
     if ($data->count() > 0) {
       foreach ($data->items() as $key => $value) {
