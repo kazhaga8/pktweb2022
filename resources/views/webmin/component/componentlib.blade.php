@@ -107,6 +107,12 @@
                     title: "Profil - Pengembangan Bisnis",
                     url: "{{ url('public') }}/assets/templates/profile-business-development.html",
                 }, {
+                    title: "Profil - Identitas Perusahaan",
+                    url: "{{ url('public') }}/assets/templates/profile-identitas-perusahaan.html",
+                }, {
+                    title: "Profil - Greenport",
+                    url: "{{ url('public') }}/assets/templates/profile-greenport.html",
+                }, {
                     title: "Struktur - Struktur Organisasi Perusahaan",
                     url: "{{ url('public') }}/assets/templates/struktur-organisasi.html",
                 }, {
@@ -124,6 +130,9 @@
                 }, {
                     title: "Laporan - Keuangan",
                     url: "{{ url('public') }}/assets/templates/laporan-keuangan.html",
+                }, {
+                    title: "FAQ",
+                    url: "{{ url('public') }}/assets/templates/faq.html",
                 }, {
                     title: "Component - Preview & Download",
                     url: "{{ url('public') }}/assets/templates/preview-download.html",
