@@ -9,7 +9,7 @@ use Yajra\DataTables\Facades\DataTables;
 
 
 class TimelineController extends Controller
-{ 
+{
     function __construct()
     {
         //  $this->middleware('permission:timeline-list', ['only' => ['index','show']]);
@@ -17,7 +17,7 @@ class TimelineController extends Controller
         //  $this->middleware('permission:timeline-edit', ['only' => ['edit','update']]);
         //  $this->middleware('permission:timeline-delete', ['only' => ['destroy']]);
     }
-    
+
 
     /**
      * Display a listing of the resource.
@@ -47,7 +47,7 @@ class TimelineController extends Controller
         ->setFilteredRecords(false)
         ->make(true);
     }
-    
+
 
     /**
      * Show the form for creating a new resource.
@@ -78,11 +78,12 @@ class TimelineController extends Controller
             'image' => 'required',
         ]);
         $store  = $request->all();
-        $store['ref'] =  (Timeline::max('ref') || 0) + 1;
+        $max_ref = Timeline::max('ref');
+        $store['ref'] =  ($max_ref ? $max_ref : 0) + 1;
         foreach (config('app.locales') as $lang) {
             $reorder = Timeline::where('lang', '=', $lang)->max('reorder');
             $store['lang'] =  $lang;
-            $store['reorder'] =  ($reorder || 0) + 1;
+            $store['reorder'] =  ($reorder ? $reorder : 0) + 1;
             Timeline::create($store);
         }
 

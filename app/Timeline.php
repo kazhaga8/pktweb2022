@@ -10,6 +10,7 @@ class Timeline extends Model
         'ref',
         'year',
         'title',
+        'content',
         'image',
         'lang',
         'status',
