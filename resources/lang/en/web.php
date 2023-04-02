@@ -14,6 +14,7 @@ return [
     */
 
     'award' => 'Award',
+    'certification' => 'Certification',
     'all' => 'All',
     'load-more' => 'Load More',
     'more' => 'More',

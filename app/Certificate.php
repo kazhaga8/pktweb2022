@@ -17,6 +17,7 @@ class Certificate extends Model
         'image',
         'content',
         'type',
+        'category',
         'lang',
         'status',
         'reorder'
@@ -36,6 +37,7 @@ class Certificate extends Model
         $columns = [
             'id',
             'year',
+            'category',
             'title',
             'lang',
             'created_at',
@@ -48,10 +50,12 @@ class Certificate extends Model
         } elseif (isset($request->order[0]['column']) && $request->order[0]['column'] == '2') {
             $query->orderBy('year', $request->order[0]['dir']);
         } elseif (isset($request->order[0]['column']) && $request->order[0]['column'] == '3') {
-            $query->orderBy('title', $request->order[0]['dir']);
+            $query->orderBy('category', $request->order[0]['dir']);
         } elseif (isset($request->order[0]['column']) && $request->order[0]['column'] == '4') {
-            $query->orderBy('created_at', $request->order[0]['dir']);
+            $query->orderBy('title', $request->order[0]['dir']);
         } elseif (isset($request->order[0]['column']) && $request->order[0]['column'] == '5') {
+            $query->orderBy('created_at', $request->order[0]['dir']);
+        } elseif (isset($request->order[0]['column']) && $request->order[0]['column'] == '6') {
             $query->orderBy('updated_at', $request->order[0]['dir']);
         } else {
             $query->orderBy('lang', 'ASC')->orderBy('year', 'ASC')->orderBy('reorder', 'ASC');

@@ -14,11 +14,16 @@
                 title: 'Year'
             },
             {
+                data: 'category',
+                name: 'category',
+                title: 'Category'
+            },
+            {
                 data: 'title',
                 name: 'title',
                 title: 'Title'
             },
-            
+
             {
                 data: 'created_at',
                 name: 'created_at',
@@ -29,7 +34,13 @@
                 name: 'updated_at',
                 title: 'Updated At'
             }
-        ]
+        ],
+        columnDefs: [{
+            targets: 3,
+            render: function(cellvalue, data, rowdata) {
+                return cellvalue ? cellvalue.replace(/\b[a-z]/g, (x) => x.toUpperCase()) : "";
+            }
+        }],
     });
 </script>
 @endpush

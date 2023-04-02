@@ -14,6 +14,7 @@ return [
     */
 
     'award' => 'Penghargaan',
+    'certification' => 'Sertifikat',
     'all' => 'Semua',
     'load-more' => 'Muat Lebih',
     'more' => 'Selengkapnya',

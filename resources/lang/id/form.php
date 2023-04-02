@@ -12,7 +12,7 @@ return [
     | these language lines according to your application's requirements.
     |
     */
-    
+
     'checked' => 'Checked',
     'check' => 'Check',
     'messages' => 'Messages',
@@ -125,5 +125,6 @@ return [
     'embed_yt' => 'Embed Youtube',
     'active_date' => 'Active Date',
     'exp_date' => 'Expired Date',
-
+    'award' => 'Award',
+    'certification' => 'Certification',
 ];
