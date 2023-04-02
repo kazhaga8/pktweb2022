@@ -5,7 +5,7 @@
         <span class="me-3">{{ __('web.title-tjsl') }}</span>
       </p>
     </div>
-    <div class="row content" id="tjsl-card">
+    <div class="row content justify-content-center" id="tjsl-card">
     </div>
     <div class="text-center">
       <button type="button" id="load-more-tjsl" data-page="2" class="btn btn-primary btn-animate mt-4">{{ __('web.load-more') }}</button>

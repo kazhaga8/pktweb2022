@@ -105,6 +105,10 @@ function renderPage($page, $locale)
             $replace_content = WebController::rederNews($locale);
             $content    = str_replace($module[0][0], $replace_content, $content);
         }
+        if ($module[1][0] == "NEWS-COVID-19") {
+            $replace_content = WebController::rederNewsCovid($locale);
+            $content    = str_replace($module[0][0], $replace_content, $content);
+        }
         if ($module[1][0] == "GALLERY") {
             $replace_content = WebController::rederGallery($locale);
             $content    = str_replace($module[0][0], $replace_content, $content);

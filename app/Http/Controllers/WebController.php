@@ -203,6 +203,12 @@ class WebController extends Controller
     return view('web.render-modules.news', compact('locale', 'category'));
   }
 
+  static function rederNewsCovid($locale)
+  {
+    $category = Category::where('lang', $locale)->where('type', 'news')->get();
+    return view('web.render-modules.news-covid', compact('locale', 'category'));
+  }
+
   static function rederGallery($locale)
   {
     $category = Gallery::select('type', 'type as title')->groupBy('type')->get();
