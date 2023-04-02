@@ -4,19 +4,25 @@
       <p class="section-title d-flex align-items-center">
         <span class="me-3">{{ __('web.award') }}</span>
       </p>
+      <div class="p-2 mb-4">
+      <select class="form-select w-25" id="select-year">
+          <option value="">{{ __('web.all') }}</option>
+          @foreach($year as $item)
+          <option value="{{ $item->year }}">{{ $item->year }}</option>
+          @endforeach
+      </select>
+      </div>
       <div class="box-categories-news">
         <ul class="categories-news d-flex p-0 m-0">
-          <li data-year="" class="toggle-year active">{{ __('web.all') }}</li>
-          @if(isset($year))
-          @foreach($year as $item)
-          <li data-year="{{ $item->year }}" class="toggle-year">{{ $item->year }}</li>
-          @endforeach
-          @endif
+          <li data-year="" class="toggle-category active">{{ __('web.all') }}</li>
+          <li data-category="award" class="toggle-category">{{ __('web.award') }}</li>
+          <li data-category="certification" class="toggle-category">{{ __('web.certification') }}</li>
+
         </ul>
       </div>
     </div>
     <br />
-    <div class="row content" id="certificate-card">
+    <div class="row content justify-content-center" id="certificate-card">
     </div>
     <div class="text-center">
       <button type="button" id="load-more-certificate" data-page="2" class="btn btn-primary btn-animate mt-4">{{ __('web.load-more') }}</button>
@@ -37,7 +43,7 @@
     return params;
   }
 
-  function getAward($page = '', $year = '') {
+  function getAward($page = '', $year = '', $category = '') {
     $.ajax({
       headers: {
         'Accept': 'application/json',
@@ -49,6 +55,7 @@
       data: JSON.stringify({
         "locale": "{{ $locale }}",
         "year": $year,
+        "category": $category,
         "limit": 9,
         "page": $page,
       })
@@ -82,18 +89,25 @@
     });
   }
   $(document).ready(function() {
-    getAward("1", "");
+    getAward("1", "", "");
 
-    $('.toggle-year').on('click', function() {
-      $('.toggle-year').removeClass('active');
+    $('#select-year').on('change', function() {
+      var year = $(this).val();
+      var category = $('.toggle-category.active').attr('data-category');
+      getAward(1, year, category);
+    });
+    $('.toggle-category').on('click', function() {
+      $('.toggle-category').removeClass('active');
       $(this).addClass('active');
-      var year = $(this).attr('data-year');
-      getAward(1, year);
+      var category = $(this).attr('data-category');
+      var year = $('#select-year').val();
+      getAward(1, year, category);
     });
     $('#load-more-certificate').on('click', function() {
       var page = $(this).attr('data-page');
-      var year = $('.toggle-year.active').attr('data-year');
-      getAward(page, year);
+      var year = $('#select-year').val();
+      var category = $('.toggle-category.active').attr('data-category');
+      getAward(page, year, category);
     });
   });
 </script>

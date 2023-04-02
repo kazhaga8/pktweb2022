@@ -262,7 +262,8 @@ class WebController extends Controller
     $_response = array("status" => "200", "messages" => [], "data" => []);
     $_response['messages'] = "Data Found";
     $year = $request->year ? "year='" . $request->year . "'" : "year!=''";
-    $data = Certificate::where('lang', $request->locale)->whereRaw($year)->orderBy('created_at', 'DESC')->paginate($request->limit);
+    $category = $request->category ? "category='" . $request->category . "'" : "category!=''";
+    $data = Certificate::where('lang', $request->locale)->whereRaw($year)->whereRaw($category)->orderBy('created_at', 'DESC')->paginate($request->limit);
     $cert = [];
     if ($data->count() > 0) {
       foreach ($data->items() as $key => $value) {
