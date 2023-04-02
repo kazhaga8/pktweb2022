@@ -47,7 +47,6 @@ class WebController extends Controller
 
   public function index(Request $request, $locale, $pages)
   {
-    $config = Config::first()->toArray();
     $nav = generateMenu($locale, 'main');
     $nav_right = generateMenu($locale, 'right');
     $nav_shortcut = MenuShortcut::where('lang', '=', $locale)->get();
@@ -84,14 +83,13 @@ class WebController extends Controller
 
     $pages = Page::whereIn('id_menu', $menu_ids)->orderBy('reorder')->get();
     if (!count($pages)) {
-      return view('web.coming-soon', compact('pages', 'locale', 'config', 'nav', 'nav_right', 'nav_shortcut', 'nav_lang', 'active_menu', 'next_menu'));
+      return view('web.coming-soon', compact('pages', 'locale', 'nav', 'nav_right', 'nav_shortcut', 'nav_lang', 'active_menu', 'next_menu'));
     }
-    return view('web.pages', compact('pages', 'locale', 'config', 'nav', 'nav_right', 'nav_shortcut', 'nav_lang', 'active_menu', 'slider', 'slider_bottom', 'next_menu'));
+    return view('web.pages', compact('pages', 'locale', 'nav', 'nav_right', 'nav_shortcut', 'nav_lang', 'active_menu', 'slider', 'slider_bottom', 'next_menu'));
   }
 
   public function pageDetail($locale, $pages, $url)
   {
-    $config = Config::first()->toArray();
     $nav = generateMenu($locale, 'main');
     $nav_right = generateMenu($locale, 'right');
     $nav_shortcut = MenuShortcut::where('lang', '=', $locale)->get();
@@ -114,7 +112,7 @@ class WebController extends Controller
         }
       };
     }
-    return view($views, compact('detail', 'locale', 'config', 'nav', 'nav_right', 'nav_shortcut', 'nav_lang', 'active_menu', 'slider', 'slider_bottom'));
+    return view($views, compact('detail', 'locale', 'nav', 'nav_right', 'nav_shortcut', 'nav_lang', 'active_menu', 'slider', 'slider_bottom'));
   }
 
 

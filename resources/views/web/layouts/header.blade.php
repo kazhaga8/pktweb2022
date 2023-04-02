@@ -4,12 +4,12 @@
 
     <h1 class="logo large-logo px-4">
       <a href="{{ route('web.index', [$locale, '']) }}">
-        <img src="{{ url('public').$config['main_logo'] }}" width="219" alt="...">
+        <img src="{{ url('public').config('app.main_logo') }}" width="219" alt="...">
       </a>
     </h1>
     <h1 class="logo small-logo t20">
       <a href="{{ route('web.index', [$locale, '']) }}">
-        <img src="{{ url('public').$config['secondary_logo'] }}" class="img-fluid" width="60" height="74" alt="...">
+        <img src="{{ url('public').config('app.secondary_logo') }}" class="img-fluid" width="60" height="74" alt="...">
       </a>
     </h1>
     <nav id="navbar" class="navbar">
@@ -43,9 +43,16 @@
           <span class="mx-4">
             <i class="ri-search-line fs-4"></i>
           </span>
-          <a href="{{ route('web.index', [$nav_lang[0]['lang'], $nav_lang[0]['alias']]) }}"><span>{{ $nav_lang[0]['lang'] }}</span></a>
+          @php $count = 0; $countlang = count(config('app.lang')); @endphp
+          @if ($countlang > 1)
+          @foreach(config('app.lang') as $key => $lang)
+          @php $index = array_search($lang, array_column($nav_lang, 'lang')); @endphp
+          <a href="{{ route('web.index', [$nav_lang[$index]['lang'], $nav_lang[$index]['alias']]) }}"><span>{{ $lang }}</span></a>
+          @if(++$count%2 && $count < $countlang)
           <span class="mx-2">|</span>
-          <a href="{{ route('web.index', [$nav_lang[1]['lang'], $nav_lang[1]['alias']]) }}"><span>{{ $nav_lang[1]['lang'] }}</span></a>
+          @endif
+          @endforeach
+          @endif
         </li>
       </ul>
       <i class="bi bi-list mobile-nav-toggle"></i>

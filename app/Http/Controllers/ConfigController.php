@@ -32,9 +32,13 @@ class ConfigController extends Controller
             'content_footer_id' => 'required',
             'content_shortcut_en' => 'required',
             'content_shortcut_id' => 'required',
+            'lang' => 'required',
+            'fallback_locale' => 'required',
         ]);
         $store  = $request->all();
-        // $config->update($store);
+        if (!in_array($store['fallback_locale'],  $store['lang'])) {
+            return redirect()->back()->withErrors(['fallback_locale' => ['The default language is not in the active language.']]);
+        }
         Config::where('id', 1)
             ->update([
                 'main_logo' => $store['main_logo'],
@@ -43,6 +47,8 @@ class ConfigController extends Controller
                 'content_footer_id' => $store['content_footer_id'],
                 'content_shortcut_en' => $store['content_shortcut_en'],
                 'content_shortcut_id' => $store['content_shortcut_id'],
+                'lang' => $store['lang'],
+                'fallback_locale' => $store['fallback_locale'],
                 'meta_title' => $store['meta_title'],
                 'meta_desc' => $store['meta_desc'],
                 'meta_keyword' => $store['meta_keyword'],

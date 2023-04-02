@@ -1,6 +1,6 @@
 
   <!-- ======= Footer ======= -->
-  {!! html_entity_decode(str_replace('../../public', url('public'), $config['content_footer_'.request()->route()->parameters['locale']])) !!}
+  {!! html_entity_decode(str_replace('../../public', url('public'), config('app.content_footer_'.request()->route()->parameters['locale']))) !!}
   <!-- End Footer -->
 
   <div class="overlay"></div>

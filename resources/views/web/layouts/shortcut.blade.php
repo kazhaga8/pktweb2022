@@ -16,7 +16,7 @@
         </ul>
         <hr class="text-white" />
         <ul class="info">
-          {!! html_entity_decode($config['content_shortcut_'.request()->route()->parameters['locale']]) !!}
+          {!! html_entity_decode(config('app.content_shortcut_'.request()->route()->parameters['locale'])) !!}
         </ul>
       </div>
     </div><!-- End Shorcut Menu -->

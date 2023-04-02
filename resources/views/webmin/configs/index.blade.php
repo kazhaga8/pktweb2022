@@ -25,9 +25,12 @@
 				<x-webmin.texteditor name="content_footer_id" label="{{ __('form.content_footer') }} ID" value="{!! isset($config->content_footer_id)? $config->content_footer_id : '' !!}" equired="required" />
 				<x-webmin.texteditor name="content_shortcut_en" label="{{ __('form.content_shortcut') }} EN" value="{!! isset($config->content_shortcut_en)? $config->content_shortcut_en : '' !!}" equired="required" />
 				<x-webmin.texteditor name="content_shortcut_id" label="{{ __('form.content_shortcut') }} ID" value="{!! isset($config->content_shortcut_id)? $config->content_shortcut_id : '' !!}" equired="required" />
+                <x-webmin.checkbox name="lang" value="{!! isset($config->lang)? $config->lang : '' !!}" required="required" :items="['id','en']" />
+                <x-webmin.radio name="fallback_locale" value="{!! isset($config->fallback_locale)? $config->fallback_locale : '' !!}" required="required" :items="['id','en']" />
 				<x-webmin.input type="text" name="meta_title" value="{!! isset($config->meta_title)? $config->meta_title : '' !!}" />
 				<x-webmin.input type="text" name="meta_desc" value="{!! isset($config->meta_desc)? $config->meta_desc : '' !!}" />
 				<x-webmin.input type="text" name="meta_keyword" value="{!! isset($config->meta_keyword)? $config->meta_keyword : '' !!}" />
+
 				@if(!strpos($__env->yieldContent('formelement'),'type="submit"'))
 				<div class="form-group mt-4">
 					<button type="submit" class="btn btn-primary waves-effect waves-light"><i class="fa fa-check"></i> Save</button>

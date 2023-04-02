@@ -127,4 +127,8 @@ return [
     'exp_date' => 'Expired Date',
     'award' => 'Award',
     'certification' => 'Certification',
+    'locales' => 'Language',
+    'fallback_locale' => 'Default Language',
+    'id' => 'ID',
+    'en' => 'EN',
 ];

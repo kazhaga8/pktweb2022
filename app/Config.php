@@ -16,6 +16,8 @@ class Config extends Model
         'content_footer_id',
         'content_shortcut_en',
         'content_shortcut_id',
+        'lang',
+        'fallback_locale',
         'meta_title',
         'meta_desc',
         'meta_keyword',
@@ -24,5 +26,7 @@ class Config extends Model
     protected $casts = [
         'created_at' => 'datetime:Y-m-d H:i:s',
         'updated_at' => 'datetime:Y-m-d H:i:s',
+        'lang' => 'array',
     ];
+    protected $hidden = ['created_at', 'updated_at', 'created_by', 'updated_by', 'id', 'ref', 'copyright'];
 }

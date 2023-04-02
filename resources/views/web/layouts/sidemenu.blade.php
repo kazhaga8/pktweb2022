@@ -7,7 +7,7 @@
     <nav class="animated bounceInDown">
       <div class="header-menu-mobile is_mobile">
         <a href="{{ route('web.index', [$locale, '']) }}">
-          <img src="{{ url('public').$config['main_logo'] }}" class="mb-4" width="135" alt="...">
+          <img src="{{ url('public').config('app.main_logo') }}" class="mb-4" width="135" alt="...">
         </a>
         <div class="form-search-mobile d-flex">
           <i class="ri-search-line fs-5 text-white"></i>

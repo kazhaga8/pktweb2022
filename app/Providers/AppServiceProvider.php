@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Config;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Carbon;
@@ -25,10 +26,15 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        config(['app.locale' => 'id']);
+        $app = [];
+        $config = Config::get()->toArray()[0];
+        foreach ($config as $key => $value) {
+            $app['app.'.$key] = $value;
+        }
+        config(array_merge(['app.locale' => 'id'], $app));
         Carbon::setLocale('id');
         date_default_timezone_set('Asia/Jakarta');
-        
+
         Blade::include('webmin.component.componentlib', 'componentlib');
         Blade::include('webmin.component.input', 'input');
         Blade::include('webmin.component.select', 'select');
@@ -41,7 +47,7 @@ class AppServiceProvider extends ServiceProvider
         Blade::include('webmin.component.datepicker', 'datepicker');
         Blade::include('webmin.component.datepickerrange', 'datepickerrange');
         Blade::include('webmin.component.datetimepickerrange', 'datetimepickerrange');
-        
+
         //
     }
 }
