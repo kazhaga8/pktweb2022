@@ -128,6 +128,7 @@ return [
     'award' => 'Award',
     'certification' => 'Certification',
     'locales' => 'Language',
+    'lang' => 'Language',
     'fallback_locale' => 'Default Language',
     'id' => 'ID',
     'en' => 'EN',
