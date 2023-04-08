@@ -10,10 +10,10 @@ class AnnualController extends Controller
 {
     function __construct()
     {
-        //  $this->middleware('permission:annual-list', ['only' => ['index','store']]);
-        //  $this->middleware('permission:annual-create', ['only' => ['create','store']]);
-        //  $this->middleware('permission:annual-edit', ['only' => ['edit','update']]);
-        //  $this->middleware('permission:annual-delete', ['only' => ['destroy']]);
+         $this->middleware('permission:annual-report-list', ['only' => ['index','store']]);
+         $this->middleware('permission:annual-report-create', ['only' => ['create','store']]);
+         $this->middleware('permission:annual-report-edit', ['only' => ['edit','update']]);
+         $this->middleware('permission:annual-report-delete', ['only' => ['destroy']]);
     }
 
 
@@ -38,7 +38,7 @@ class AnnualController extends Controller
     public function index(Request $request)
     {
         $page['page'] = 'annual-report';
-        $page['can'] = 'page';
+        $page['can'] = 'annual-report';
         $page['title'] = 'Annual Report Management';
         return view('webmin.annual-report.index',compact('page'));
     }

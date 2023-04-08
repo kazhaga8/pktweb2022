@@ -9,15 +9,15 @@ use Yajra\DataTables\Facades\DataTables;
 
 
 class ShortcutController extends Controller
-{ 
+{
     function __construct()
     {
-        //  $this->middleware('permission:shortcut-list', ['only' => ['index','show']]);
-        //  $this->middleware('permission:shortcut-create', ['only' => ['create','store']]);
-        //  $this->middleware('permission:shortcut-edit', ['only' => ['edit','update']]);
-        //  $this->middleware('permission:shortcut-delete', ['only' => ['destroy']]);
+         $this->middleware('permission:shortcut-list', ['only' => ['index','show']]);
+         $this->middleware('permission:shortcut-create', ['only' => ['create','store']]);
+         $this->middleware('permission:shortcut-edit', ['only' => ['edit','update']]);
+         $this->middleware('permission:shortcut-delete', ['only' => ['destroy']]);
     }
-    
+
 
     /**
      * Display a listing of the resource.
@@ -26,7 +26,7 @@ class ShortcutController extends Controller
      */
     public function index(){
         $page['page'] = 'shortcuts';
-        $page['can'] = 'page';
+        $page['can'] = 'shortcut';
         $page['title'] = 'Shortcut Menu Management';
         return view('webmin.shortcuts.index',compact('page'));
     }
@@ -47,7 +47,7 @@ class ShortcutController extends Controller
         ->setFilteredRecords(false)
         ->make(true);
     }
-    
+
 
     /**
      * Show the form for creating a new resource.

@@ -13,10 +13,10 @@ class GalleryController extends Controller
 {
     function __construct()
     {
-        //  $this->middleware('permission:gallery-list', ['only' => ['index','show']]);
-        //  $this->middleware('permission:gallery-create', ['only' => ['create','store']]);
-        //  $this->middleware('permission:gallery-edit', ['only' => ['edit','update']]);
-        //  $this->middleware('permission:gallery-delete', ['only' => ['destroy']]);
+         $this->middleware('permission:gallery-list', ['only' => ['index','show']]);
+         $this->middleware('permission:gallery-create', ['only' => ['create','store']]);
+         $this->middleware('permission:gallery-edit', ['only' => ['edit','update']]);
+         $this->middleware('permission:gallery-delete', ['only' => ['destroy']]);
     }
 
 
@@ -27,7 +27,7 @@ class GalleryController extends Controller
      */
     public function index(){
         $page['page'] = 'galleries';
-        $page['can'] = 'page';
+        $page['can'] = 'gallery';
         $page['title'] = 'Gallery Management';
         return view('webmin.galleries.index',compact('page'));
     }

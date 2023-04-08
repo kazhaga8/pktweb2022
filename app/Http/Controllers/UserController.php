@@ -7,13 +7,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
-use DataTables;
 use Spatie\Permission\Models\Role;
-use DB;
-use Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
-
+use Yajra\DataTables\Facades\DataTables;
 
 class UserController extends Controller
 {
@@ -25,7 +24,7 @@ class UserController extends Controller
          $this->middleware('permission:user-delete', ['only' => ['destroy']]);
     }
     public function json(){
-        return Datatables::of(User::orderBy('created_at', 'DESC'))->addIndexColumn()->make(true);
+        return DataTables::of(User::orderBy('created_at', 'DESC'))->addIndexColumn()->make(true);
     }
     /**
      * Display a listing of the resource.
@@ -159,7 +158,7 @@ class UserController extends Controller
 
         $user = User::find($id);
         $input = $request->all();
-        if(!empty($input['password'])){ 
+        if(!empty($input['password'])){
             $input['password'] = Hash::make($input['password']);
         }else{
             $input['password'] = $user['password'];

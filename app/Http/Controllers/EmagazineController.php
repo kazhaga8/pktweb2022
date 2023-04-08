@@ -10,10 +10,10 @@ class EmagazineController extends Controller
 {
     function __construct()
     {
-        //  $this->middleware('permission:e-magazine-list', ['only' => ['index','store']]);
-        //  $this->middleware('permission:e-magazine-create', ['only' => ['create','store']]);
-        //  $this->middleware('permission:e-magazine-edit', ['only' => ['edit','update']]);
-        //  $this->middleware('permission:e-magazine-delete', ['only' => ['destroy']]);
+         $this->middleware('permission:e-magazine-list', ['only' => ['index','store']]);
+         $this->middleware('permission:e-magazine-create', ['only' => ['create','store']]);
+         $this->middleware('permission:e-magazine-edit', ['only' => ['edit','update']]);
+         $this->middleware('permission:e-magazine-delete', ['only' => ['destroy']]);
     }
 
 
@@ -38,7 +38,7 @@ class EmagazineController extends Controller
     public function index(Request $request)
     {
         $page['page'] = 'e-magazine';
-        $page['can'] = 'page';
+        $page['can'] = 'e-magazine';
         $page['title'] = 'E-Magazine Management';
         return view('webmin.e-magazine.index',compact('page'));
     }

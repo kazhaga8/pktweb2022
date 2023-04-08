@@ -10,10 +10,10 @@ class SustainabilityController extends Controller
 {
     function __construct()
     {
-        //  $this->middleware('permission:sustainability-list', ['only' => ['index','store']]);
-        //  $this->middleware('permission:sustainability-create', ['only' => ['create','store']]);
-        //  $this->middleware('permission:sustainability-edit', ['only' => ['edit','update']]);
-        //  $this->middleware('permission:sustainability-delete', ['only' => ['destroy']]);
+         $this->middleware('permission:sustainability-report-list', ['only' => ['index','store']]);
+         $this->middleware('permission:sustainability-report-create', ['only' => ['create','store']]);
+         $this->middleware('permission:sustainability-report-edit', ['only' => ['edit','update']]);
+         $this->middleware('permission:sustainability-report-delete', ['only' => ['destroy']]);
     }
 
 
@@ -38,7 +38,7 @@ class SustainabilityController extends Controller
     public function index(Request $request)
     {
         $page['page'] = 'sustainability-report';
-        $page['can'] = 'page';
+        $page['can'] = 'sustainability-report';
         $page['title'] = 'Sustainability Report Management';
         return view('webmin.sustainability-report.index',compact('page'));
     }

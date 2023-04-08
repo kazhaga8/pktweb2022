@@ -12,10 +12,10 @@ class ProgramEmpowermentController extends Controller
 {
     function __construct()
     {
-        //  $this->middleware('permission:program-empowerment-list', ['only' => ['index','show']]);
-        //  $this->middleware('permission:program-empowerment-create', ['only' => ['create','store']]);
-        //  $this->middleware('permission:program-empowerment-edit', ['only' => ['edit','update']]);
-        //  $this->middleware('permission:program-empowerment-delete', ['only' => ['destroy']]);
+         $this->middleware('permission:program-empowerment-list', ['only' => ['index','show']]);
+         $this->middleware('permission:program-empowerment-create', ['only' => ['create','store']]);
+         $this->middleware('permission:program-empowerment-edit', ['only' => ['edit','update']]);
+         $this->middleware('permission:program-empowerment-delete', ['only' => ['destroy']]);
     }
 
 
@@ -26,7 +26,7 @@ class ProgramEmpowermentController extends Controller
      */
     public function index(){
         $page['page'] = 'program-empowerment';
-        $page['can'] = 'page';
+        $page['can'] = 'program-empowerment';
         $page['title'] = 'Program Pemberdayaan Masyarakat Management';
         return view('webmin.program-empowerment.index',compact('page'));
     }

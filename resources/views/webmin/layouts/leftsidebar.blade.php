@@ -34,23 +34,49 @@
                         @can('news-list')
                         <li><a href="{{ route('news.index') }}" class="waves-effect"><i class=" mdi mdi-newspaper"></i><span> News </span></a></li>
                         @endcan
+                        @can('certificate-list')
                         <li><a href="{{ route('certificates.index') }}" class="waves-effect"><i class=" mdi mdi-certificate"></i><span> Certificate </span></a></li>
+                        @endcan
+                        @can('timeline-list')
                         <li><a href="{{ route('timelines.index') }}" class="waves-effect"><i class=" mdi mdi-altimeter"></i><span> Timeline </span></a></li>
+                        @endcan
+                        @can('management-list')
                         <li><a href="{{ route('managements.index') }}" class="waves-effect"><i class=" mdi mdi-account-network"></i><span> Management </span></a></li>
+                        @endcan
+                        @can('gallery-list')
                         <li><a href="{{ route('galleries.index') }}" class="waves-effect"><i class=" mdi mdi-folder-multiple-image"></i><span> Gallery </span></a></li>
+                        @endcan
+                        @can('product-list')
                         <li><a href="{{ route('products.index') }}" class="waves-effect"><i class=" mdi mdi-shopping"></i><span> Product </span></a></li>
+                        @endcan
+                        @can('contacts-list')
                         <li><a href="{{ route('contacts.index') }}" class="waves-effect"><i class=" mdi mdi-contact-mail"></i><span> Contact </span></a></li>
+                        @endcan
+                        @can('shortcut-list')
                         <li><a href="{{ route('shortcuts.index') }}" class="waves-effect"><i class="mdi mdi-link-variant"></i><span> Shortcuts </span></a></li>
+                        @endcan
+                        @can('config-list')
                         <li><a href="{{ route('configs.index') }}" class="waves-effect"><i class=" mdi mdi-settings"></i><span> Config </span></a></li>
+                        @endcan
 
                         <li class="menu-title  m-t-20">Program</li>
+                        @can('program-tjsl-list')
                         <li><a href="{{ route('program-tjsl.index') }}" class="waves-effect"><i class=" mdi mdi-plus-network"></i><span> Program TJSL </span></a></li>
+                        @endcan
+                        @can('program-empowerment-list')
                         <li><a href="{{ route('program-empowerment.index') }}" class="waves-effect"><i class=" mdi mdi-plus-network"></i><span> Pemberdayaan </span></a></li>
+                        @endcan
 
                         <li class="menu-title  m-t-20">E Book</li>
+                        @can('sustainability-report-list')
                         <li><a href="{{ route('sustainability-report.index') }}" class="waves-effect"><i class=" mdi mdi-book-plus"></i><span> Sustainability Report </span></a></li>
+                        @endcan
+                        @can('annual-report-list')
                         <li><a href="{{ route('annual-report.index') }}" class="waves-effect"><i class=" mdi mdi-book-multiple-variant"></i><span> Annual Report </span></a></li>
+                        @endcan
+                        @can('financial-statements-list')
                         <li><a href="{{ route('financial-statements.index') }}" class="waves-effect"><i class=" mdi mdi-file-document"></i><span> Financial Statements </span></a></li>
+                        @endcan
                         <li><a href="{{ route('e-magazine.index') }}" class="waves-effect"><i class=" mdi mdi-book-open"></i><span> E-Magazine </span></a></li>
 
                         <li class="menu-title m-t-20"></li>

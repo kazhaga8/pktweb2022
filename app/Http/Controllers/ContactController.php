@@ -9,15 +9,15 @@ use Yajra\DataTables\Facades\DataTables;
 
 
 class ContactController extends Controller
-{ 
+{
     function __construct()
     {
-        //  $this->middleware('permission:contact-list', ['only' => ['index','show']]);
-        //  $this->middleware('permission:contact-create', ['only' => ['create','store']]);
-        //  $this->middleware('permission:contact-edit', ['only' => ['edit','update']]);
-        //  $this->middleware('permission:contact-delete', ['only' => ['destroy']]);
+         $this->middleware('permission:contact-list', ['only' => ['index','show']]);
+         $this->middleware('permission:contact-create', ['only' => ['create','store']]);
+         $this->middleware('permission:contact-edit', ['only' => ['edit','update']]);
+         $this->middleware('permission:contact-delete', ['only' => ['destroy']]);
     }
-    
+
 
     /**
      * Display a listing of the resource.
@@ -26,7 +26,7 @@ class ContactController extends Controller
      */
     public function index(){
         $page['page'] = 'contacts';
-        $page['can'] = 'page';
+        $page['can'] = 'contact';
         $page['title'] = 'Contact Management';
         return view('webmin.contacts.index',compact('page'));
     }
@@ -47,7 +47,7 @@ class ContactController extends Controller
         ->setFilteredRecords(false)
         ->make(true);
     }
-    
+
 
     /**
      * Show the form for creating a new resource.

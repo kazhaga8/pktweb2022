@@ -9,14 +9,14 @@ use Yajra\DataTables\Facades\DataTables;
 
 
 class ManagementController extends Controller
-{ 
+{
     public $boards;
     function __construct()
     {
-        //  $this->middleware('permission:management-list', ['only' => ['index','show']]);
-        //  $this->middleware('permission:management-create', ['only' => ['create','store']]);
-        //  $this->middleware('permission:management-edit', ['only' => ['edit','update']]);
-        //  $this->middleware('permission:management-delete', ['only' => ['destroy']]);
+         $this->middleware('permission:management-list', ['only' => ['index','show']]);
+         $this->middleware('permission:management-create', ['only' => ['create','store']]);
+         $this->middleware('permission:management-edit', ['only' => ['edit','update']]);
+         $this->middleware('permission:management-delete', ['only' => ['destroy']]);
 
         $boards = [
             ["id" => "commissioner", "name" => "DEWAN KOMISARIS"],
@@ -25,7 +25,7 @@ class ManagementController extends Controller
         ];
         $this->boards = json_decode(json_encode($boards));
     }
-    
+
 
     /**
      * Display a listing of the resource.
@@ -34,7 +34,7 @@ class ManagementController extends Controller
      */
     public function index(){
         $page['page'] = 'managements';
-        $page['can'] = 'page';
+        $page['can'] = 'management';
         $page['title'] = 'Directors Management';
         return view('webmin.managements.index',compact('page'));
     }
@@ -55,7 +55,7 @@ class ManagementController extends Controller
         ->setFilteredRecords(false)
         ->make(true);
     }
-    
+
 
     /**
      * Show the form for creating a new resource.

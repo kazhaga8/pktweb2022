@@ -10,13 +10,13 @@ class ConfigController extends Controller
 {
     function __construct()
     {
-        //  $this->middleware('permission:config-list', ['only' => ['index','show']]);
-        //  $this->middleware('permission:config-edit', ['only' => ['edit','update']]);
+         $this->middleware('permission:config-list', ['only' => ['index','show']]);
+         $this->middleware('permission:config-edit', ['only' => ['edit','update']]);
     }
 
     public function edit(Config $config){
         $page['page'] = 'configs';
-        $page['can'] = 'page';
+        $page['can'] = 'config';
         $page['title'] = 'Web Config Management';
         $page['method'] = 'PUT';
         $page['action'] = route('configs.update',$config->id);

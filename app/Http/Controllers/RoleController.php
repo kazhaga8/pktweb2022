@@ -7,8 +7,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\MyRole as Role;
+use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Permission;
-use DB;
 use Yajra\DataTables\DataTables;
 
 class RoleController extends Controller
@@ -20,10 +20,10 @@ class RoleController extends Controller
      */
     function __construct()
     {
-        //  $this->middleware('permission:role-list', ['only' => ['index','store']]);
-        //  $this->middleware('permission:role-create', ['only' => ['create','store']]);
-        //  $this->middleware('permission:role-edit', ['only' => ['edit','update']]);
-        //  $this->middleware('permission:role-delete', ['only' => ['destroy']]);
+         $this->middleware('permission:role-list', ['only' => ['index','store']]);
+         $this->middleware('permission:role-create', ['only' => ['create','store']]);
+         $this->middleware('permission:role-edit', ['only' => ['edit','update']]);
+         $this->middleware('permission:role-delete', ['only' => ['destroy']]);
     }
 
 

@@ -9,15 +9,15 @@ use Yajra\DataTables\Facades\DataTables;
 
 
 class CertificateController extends Controller
-{ 
+{
     function __construct()
     {
-        //  $this->middleware('permission:certificate-list', ['only' => ['index','show']]);
-        //  $this->middleware('permission:certificate-create', ['only' => ['create','store']]);
-        //  $this->middleware('permission:certificate-edit', ['only' => ['edit','update']]);
-        //  $this->middleware('permission:certificate-delete', ['only' => ['destroy']]);
+         $this->middleware('permission:certificate-list', ['only' => ['index','show']]);
+         $this->middleware('permission:certificate-create', ['only' => ['create','store']]);
+         $this->middleware('permission:certificate-edit', ['only' => ['edit','update']]);
+         $this->middleware('permission:certificate-delete', ['only' => ['destroy']]);
     }
-    
+
 
     /**
      * Display a listing of the resource.
@@ -26,7 +26,7 @@ class CertificateController extends Controller
      */
     public function index(){
         $page['page'] = 'certificates';
-        $page['can'] = 'page';
+        $page['can'] = 'certificate';
         $page['title'] = 'Certificate Management';
         return view('webmin.certificates.index',compact('page'));
     }
@@ -47,7 +47,7 @@ class CertificateController extends Controller
         ->setFilteredRecords(false)
         ->make(true);
     }
-    
+
 
     /**
      * Show the form for creating a new resource.

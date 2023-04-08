@@ -9,15 +9,15 @@ use Yajra\DataTables\Facades\DataTables;
 
 
 class ProductController extends Controller
-{ 
+{
     public $product_options;
     function __construct()
     {
-        //  $this->middleware('permission:product-list', ['only' => ['index','show']]);
-        //  $this->middleware('permission:product-create', ['only' => ['create','store']]);
-        //  $this->middleware('permission:product-edit', ['only' => ['edit','update']]);
-        //  $this->middleware('permission:product-delete', ['only' => ['destroy']]);
-        
+         $this->middleware('permission:product-list', ['only' => ['index','show']]);
+         $this->middleware('permission:product-create', ['only' => ['create','store']]);
+         $this->middleware('permission:product-edit', ['only' => ['edit','update']]);
+         $this->middleware('permission:product-delete', ['only' => ['destroy']]);
+
         $product_options = [
             ["id" => "urea", "name" => "Urea"],
             ["id" => "amoniak", "name" => "Amoniak"],
@@ -26,7 +26,7 @@ class ProductController extends Controller
         ];
         $this->product_options = json_decode(json_encode($product_options));
     }
-    
+
 
     /**
      * Display a listing of the resource.
@@ -35,7 +35,7 @@ class ProductController extends Controller
      */
     public function index(){
         $page['page'] = 'products';
-        $page['can'] = 'page';
+        $page['can'] = 'product';
         $page['title'] = 'Product Management';
         return view('webmin.products.index',compact('page'));
     }
@@ -56,7 +56,7 @@ class ProductController extends Controller
         ->setFilteredRecords(false)
         ->make(true);
     }
-    
+
 
     /**
      * Show the form for creating a new resource.

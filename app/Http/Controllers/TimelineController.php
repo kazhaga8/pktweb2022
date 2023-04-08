@@ -12,10 +12,10 @@ class TimelineController extends Controller
 {
     function __construct()
     {
-        //  $this->middleware('permission:timeline-list', ['only' => ['index','show']]);
-        //  $this->middleware('permission:timeline-create', ['only' => ['create','store']]);
-        //  $this->middleware('permission:timeline-edit', ['only' => ['edit','update']]);
-        //  $this->middleware('permission:timeline-delete', ['only' => ['destroy']]);
+         $this->middleware('permission:timeline-list', ['only' => ['index','show']]);
+         $this->middleware('permission:timeline-create', ['only' => ['create','store']]);
+         $this->middleware('permission:timeline-edit', ['only' => ['edit','update']]);
+         $this->middleware('permission:timeline-delete', ['only' => ['destroy']]);
     }
 
 
@@ -26,7 +26,7 @@ class TimelineController extends Controller
      */
     public function index(){
         $page['page'] = 'timelines';
-        $page['can'] = 'page';
+        $page['can'] = 'timeline';
         $page['title'] = 'Timeline Management';
         return view('webmin.timelines.index',compact('page'));
     }

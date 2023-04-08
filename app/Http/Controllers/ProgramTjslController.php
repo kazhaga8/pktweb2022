@@ -12,10 +12,10 @@ class ProgramTjslController extends Controller
 {
     function __construct()
     {
-        //  $this->middleware('permission:program-tjsl-list', ['only' => ['index','show']]);
-        //  $this->middleware('permission:program-tjsl-create', ['only' => ['create','store']]);
-        //  $this->middleware('permission:program-tjsl-edit', ['only' => ['edit','update']]);
-        //  $this->middleware('permission:program-tjsl-delete', ['only' => ['destroy']]);
+         $this->middleware('permission:program-tjsl-list', ['only' => ['index','show']]);
+         $this->middleware('permission:program-tjsl-create', ['only' => ['create','store']]);
+         $this->middleware('permission:program-tjsl-edit', ['only' => ['edit','update']]);
+         $this->middleware('permission:program-tjsl-delete', ['only' => ['destroy']]);
     }
 
 
@@ -26,7 +26,7 @@ class ProgramTjslController extends Controller
      */
     public function index(){
         $page['page'] = 'program-tjsl';
-        $page['can'] = 'page';
+        $page['can'] = 'program-tjsl';
         $page['title'] = 'Program TJSL Management';
         return view('webmin.program-tjsl.index',compact('page'));
     }

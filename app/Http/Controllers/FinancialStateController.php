@@ -10,10 +10,10 @@ class FinancialStateController extends Controller
 {
     function __construct()
     {
-        //  $this->middleware('permission:financial-list', ['only' => ['index','store']]);
-        //  $this->middleware('permission:financial-create', ['only' => ['create','store']]);
-        //  $this->middleware('permission:financial-edit', ['only' => ['edit','update']]);
-        //  $this->middleware('permission:financial-delete', ['only' => ['destroy']]);
+         $this->middleware('permission:financial-statements-list', ['only' => ['index','store']]);
+         $this->middleware('permission:financial-statements-create', ['only' => ['create','store']]);
+         $this->middleware('permission:financial-statements-edit', ['only' => ['edit','update']]);
+         $this->middleware('permission:financial-statements-delete', ['only' => ['destroy']]);
     }
 
     public function json(Request $request){
@@ -37,7 +37,7 @@ class FinancialStateController extends Controller
     public function index(Request $request)
     {
         $page['page'] = 'financial-statements';
-        $page['can'] = 'page';
+        $page['can'] = 'financial-statements';
         $page['title'] = 'Financial Statements Management';
         return view('webmin.financial-statements.index',compact('page'));
     }

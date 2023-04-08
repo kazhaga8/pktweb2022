@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
 class SliderBottomController extends Controller
-{ 
+{
     function __construct()
     {
          $this->middleware('permission:sliders-bottom-list', ['only' => ['index','show']]);
@@ -17,7 +17,7 @@ class SliderBottomController extends Controller
          $this->middleware('permission:sliders-bottom-edit', ['only' => ['edit','update']]);
          $this->middleware('permission:sliders-bottom-delete', ['only' => ['destroy']]);
     }
-    
+
 
     public function json(Request $request){
         if ($request->reorder){
@@ -43,11 +43,11 @@ class SliderBottomController extends Controller
      */
     public function index(){
         $page['page'] = 'sliders-bottom';
-        $page['can'] = 'slider';
+        $page['can'] = 'sliders-bottom';
         $page['title'] = 'Sliders Bottom Management';
         return view('webmin.sliders-bottom.index',compact('page'));
     }
-    
+
 
     /**
      * Show the form for creating a new resource.

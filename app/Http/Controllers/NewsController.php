@@ -39,7 +39,7 @@ class NewsController extends Controller
     public function index(Request $request)
     {
         $page['page'] = 'news';
-        $page['can'] = 'page';
+        $page['can'] = 'news';
         $page['title'] = 'News Management';
         return view('webmin.news.index',compact('page'));
     }
