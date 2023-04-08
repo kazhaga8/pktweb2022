@@ -21,6 +21,7 @@ class Emagazine extends Model
         'ref',
         'lang',
         'title',
+        'year',
         'file',
         'type',
         'image',
@@ -44,6 +45,7 @@ class Emagazine extends Model
             'id',
             'lang',
             'title',
+            'year',
             'file',
             'type',
             'image',
@@ -56,12 +58,14 @@ class Emagazine extends Model
         if (isset($request->order[0]['column']) && $request->order[0]['column']=='1'){
             $query->orderBy('lang', $request->order[0]['dir']);
         }elseif (isset($request->order[0]['column']) && $request->order[0]['column']=='2'){
-            $query->orderBy('title', $request->order[0]['dir']);
+            $query->orderBy('year', $request->order[0]['dir']);
         }elseif (isset($request->order[0]['column']) && $request->order[0]['column']=='3'){
-            $query->orderBy('image', $request->order[0]['dir']);
+            $query->orderBy('title', $request->order[0]['dir']);
         }elseif (isset($request->order[0]['column']) && $request->order[0]['column']=='4'){
-            $query->orderBy('created_at', $request->order[0]['dir']);
+            $query->orderBy('image', $request->order[0]['dir']);
         }elseif (isset($request->order[0]['column']) && $request->order[0]['column']=='5'){
+            $query->orderBy('created_at', $request->order[0]['dir']);
+        }elseif (isset($request->order[0]['column']) && $request->order[0]['column']=='6'){
             $query->orderBy('updated_at', $request->order[0]['dir']);
         }else{
             $query->orderBy('lang', 'ASC')->orderBy('reorder', 'ASC');

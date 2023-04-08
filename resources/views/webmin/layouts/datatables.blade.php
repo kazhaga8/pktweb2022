@@ -68,7 +68,7 @@
   const columnDefsId = [{
     orderable: false,
     searchable: false,
-    className: 'select-checkbox',
+    className: 'select-checkbox' + (dataTbInit.reorder && ' select-reorder'),
     targets: 0,
     render: function(cellvalue, data, rowdata) {
       return '<span data-rowid="'+rowdata.id+'">' + rowdata.DT_RowIndex + '</span>';
@@ -133,6 +133,7 @@
       initComplete: function(settings, json) {
       },
       drawCallback: function(setting) {
+        $('.select-reorder').css({'cursor': 'move'});
         $('.action-delete').click(function(e) {
           swal({
               title: "Are you sure?",

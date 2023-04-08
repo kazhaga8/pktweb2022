@@ -9,6 +9,11 @@
                 title: 'Lang'
             },
             {
+                data: 'year',
+                name: 'year',
+                title: 'Year'
+            },
+            {
                 data: 'title',
                 name: 'title',
                 title: 'Edition'
@@ -31,7 +36,7 @@
         ],
         columnDefs: [{
             orderable: false,
-            targets: 3,
+            targets: 4,
             render: function(cellvalue, data, rowdata) {
                 const public = "{{ url('public') }}";
                 const image = '<div class="form-group">' +

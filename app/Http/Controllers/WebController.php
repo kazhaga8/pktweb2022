@@ -181,7 +181,8 @@ class WebController extends Controller
 
   static function rederEMagazine($locale)
   {
-    return view('web.render-modules.e-magazine', compact('locale'));
+    $year = Emagazine::select('year')->where('lang', $locale)->orderBy('year', 'DESC')->groupBy('year')->get();
+    return view('web.render-modules.e-magazine', compact('locale', 'year'));
   }
 
   static function rederKeuangan($locale)
@@ -261,8 +262,8 @@ class WebController extends Controller
   {
     $_response = array("status" => "200", "messages" => [], "data" => []);
     $_response['messages'] = "Data Found";
-    $year = $request->year ? "year='" . $request->year . "'" : "year!=''";
-    $category = $request->category ? "category='" . $request->category . "'" : "category!=''";
+    $year = $request->year ? "year='" . $request->year . "'" : "year IS NOT NULL";
+    $category = $request->category ? "category='" . $request->category . "'" : "category IS NOT NULL";
     $data = Certificate::where('lang', $request->locale)->whereRaw($year)->whereRaw($category)->orderBy('created_at', 'DESC')->paginate($request->limit);
     $cert = [];
     if ($data->count() > 0) {
@@ -344,7 +345,8 @@ class WebController extends Controller
   {
     $_response = array("status" => "200", "messages" => [], "data" => []);
     $_response['messages'] = "Data Found";
-    $data = Emagazine::where('lang', $request->locale)->orderBy('reorder')->paginate($request->limit);
+    $year = $request->year ? "year='" . $request->year . "'" : "year!=''";
+    $data = Emagazine::where('lang', $request->locale)->whereRaw($year)->orderBy('reorder')->paginate($request->limit);
     $cert = [];
     if ($data->count() > 0) {
       foreach ($data->items() as $key => $value) {

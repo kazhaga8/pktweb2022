@@ -4,6 +4,14 @@
       <p class="section-title d-flex align-items-center">
         <span class="me-3">E-MAGAZINE</span>
       </p>
+      <div class="p-2 mb-4">
+      <select class="form-select w-25" id="select-year">
+          <option value="">{{ __('web.all') }}</option>
+          @foreach($year as $item)
+          <option value="{{ $item->year }}">{{ $item->year }}</option>
+          @endforeach
+      </select>
+      </div>
     </div>
     <div class="row content justify-content-center" id="emags-card"></div>
     <div class="text-center">
@@ -23,7 +31,7 @@
     return params;
   }
 
-  function getEMagazine($page = '') {
+  function getEMagazine($page = '', $year = '') {
     $.ajax({
       headers: {
         'Accept': 'application/json',
@@ -34,6 +42,7 @@
       url: "{{ url('get-e-magazine') }}",
       data: JSON.stringify({
         "locale": "{{ $locale }}",
+        "year": $year,
         "limit": 9,
         "page": $page,
       })
@@ -58,10 +67,16 @@
     });
   }
   $(document).ready(function() {
-    getEMagazine("1");
+    getEMagazine("1", "");
+
+    $('#select-year').on('change', function() {
+      var year = $(this).val();
+      getEMagazine(1, year);
+    });
     $('#load-more-emags').on('click', function() {
       var page = $(this).attr('data-page');
-      getEMagazine(page);
+      var year = $('#select-year').val();
+      getEMagazine(page, year);
     });
   });
 </script>
