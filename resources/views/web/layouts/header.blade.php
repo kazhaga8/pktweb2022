@@ -47,7 +47,11 @@
           @if ($countlang > 1)
           @foreach(config('app.lang') as $key => $lang)
           @php $index = array_search($lang, array_column($nav_lang, 'lang')); @endphp
+          @if (request()->get('keyword') || request()->get('keyword') == '')
+          <a href="{{ route('web.search') }}"><span>{{ $lang }}</span></a>
+          @else
           <a href="{{ route('web.index', [$nav_lang[$index]['lang'], $nav_lang[$index]['alias']]) }}"><span>{{ $lang }}</span></a>
+          @endif
           @if(++$count%2 && $count < $countlang)
           <span class="mx-2">|</span>
           @endif

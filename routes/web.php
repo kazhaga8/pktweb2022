@@ -31,6 +31,7 @@ Route::prefix('{locale?}')->middleware('locale')->group(function($locale) {
     Route::get('/', function ($locale) {
         return redirect()->route('web.index', [$locale, 'home']);
     });
+    Route::get('/search','WebController@search')->name('web.search');
     Route::get('/{pages}/{url}','WebController@pageDetail')->name('web.page-det');
     Route::get('/{pages}','WebController@index')->name('web.index');
 });

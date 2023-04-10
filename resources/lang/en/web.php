@@ -20,4 +20,5 @@ return [
     'more' => 'More',
     'title-tjsl' => 'TANGGUNG JAWAB SOSIAL DAN LINGKUNGAN',
     'title-empowerment' => 'PROGRAM PEMBERDAYAAN MASYARAKAT',
+    'searching' => 'Searching',
 ];

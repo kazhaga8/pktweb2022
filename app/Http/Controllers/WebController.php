@@ -114,6 +114,50 @@ class WebController extends Controller
     }
     return view($views, compact('detail', 'locale', 'nav', 'nav_right', 'nav_shortcut', 'nav_lang', 'active_menu', 'slider', 'slider_bottom'));
   }
+  public function findHref($menus, $id) {
+    foreach ($menus as $value) {
+        if (isset($value->child) && count($value->child) > 0) {
+            $this->findHref($value->child, $id);
+        }
+        if ($value->id == $id) {
+            return $value;
+        }
+    }
+    return null;
+  }
+  public function search(Request $request, $locale)
+  {
+    if(count($request->query()) === 0) {
+        return redirect()->route('web.index', [$locale, 'home']);
+    }
+    $nav = generateMenu($locale, 'main');
+    $nav_right = generateMenu($locale, 'right');
+    $nav_shortcut = MenuShortcut::where('lang', '=', $locale)->get();
+    $active_menu = new stdClass();
+    $active_menu->banner_img = '';
+    $active_menu->title = trans('web.searching');
+    $active_menu->ref = null;
+    $views = 'web.search';
+    $slider = [];
+    $slider_bottom = [];
+    $nav_lang = [];
+    // dd($nav);
+    $keyword = $request->query('keyword');
+    $page = Page::where('lang', '=', $locale)->where('content', 'like', '%'.$keyword.'%')
+            ->select('id_menu as id', 'content')
+            ->get();
+    $result = [];
+    foreach ($page as $key => $value) {
+        $menu = $this->findHref($nav, $value->id);
+        $value['menu'] = $menu;
+        $value['href'] = isset($menu->href) ? $menu->href : '';
+        $value['title'] = isset($menu->title) ? $menu->title : '';
+        $value['content'] = trim(str_replace(array("\r\n", "\r", "\n"), " ", strip_tags(html_entity_decode($value->content))));
+        $result['pages'][] = json_decode($value->toJson());
+    }
+    dd($result);
+    return view($views, compact('locale', 'nav', 'nav_right', 'nav_shortcut', 'nav_lang', 'active_menu', 'slider', 'slider_bottom'));
+  }
 
 
   static function rederHomeInvestors($locale)
