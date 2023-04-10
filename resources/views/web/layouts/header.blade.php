@@ -17,7 +17,7 @@
         @foreach ($nav as $lvl1)
         @if ($lvl1->ref > 1)
         <li>
-          <a class="nav-link scrollto" href="{{ $lvl1->href }}">{{ $lvl1->title }}</a>
+          <a class="nav-link scrollto {{ in_array($active_menu->id, $lvl1->child_ids) ? 'active' : '' }}" href="{{ $lvl1->href }}">{{ $lvl1->title }}</a>
           @if (isset($lvl1->child) && count($lvl1->child) > 0)
           <div class="mega-menu">
             @foreach ($lvl1->child as $lvl2)

@@ -109,18 +109,22 @@ function generateMenu($locale, $position)
   $nav = [];
   $nav1 = getMenu($locale, $position)->whereNull('id_menu')->get()->toArray();
   foreach ($nav1 as $lvl1) {
+    $lvl1['child_ids'] = [];
     $nav2 = getMenu($locale, $position)->where('id_menu', '=', $lvl1['id'])->get()->toArray();
     foreach ($nav2 as $lvl2) {
       $nav3 = getMenu($locale, $position)->where('id_menu', '=', $lvl2['id'])->get()->toArray();
       foreach ($nav3 as $lvl3) {
         $nav4 = getMenu($locale, $position)->where('id_menu', '=', $lvl3['id'])->get()->toArray();
         foreach ($nav4 as $lvl4) {
+          $lvl1['child_ids'][] = $lvl4['id'];
           $lvl4['href'] = getHref($lvl4, $lvl3['alias']);
           $lvl3['child'][] = $lvl4;
         }
+        $lvl1['child_ids'][] = $lvl3['id'];
         $lvl3['href'] = getHref($lvl3, $lvl2['alias']);
         $lvl2['child'][] = $lvl3;
       }
+      $lvl1['child_ids'][] = $lvl2['id'];
       $lvl2['href'] = getHref($lvl2, $lvl1['alias']);
       $lvl1['child'][] = $lvl2;
     }
