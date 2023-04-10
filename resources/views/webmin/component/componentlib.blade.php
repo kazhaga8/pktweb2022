@@ -95,17 +95,26 @@
                     title: "Home - Info Terbaru",
                     url: "{{ url('public') }}/assets/templates/home-news.html",
                 }, {
-                    title: "Profil - Riwayat Singkat",
+                    title: "Profil - Tentang Perusahaan - Riwayat Singkat",
                     url: "{{ url('public') }}/assets/templates/profile-a-brief-history.html",
                 }, {
-                    title: "Profil - Budaya Perusahaan",
+                    title: "Profil - Tentang Perusahaan - Budaya Perusahaan",
                     url: "{{ url('public') }}/assets/templates/profile-corporate-custure.html",
                 }, {
-                    title: "Profil - Profil Bisnis",
+                    title: "Profil - Tentang Perusahaan - Profil Bisnis",
                     url: "{{ url('public') }}/assets/templates/profile-business-profile.html",
                 }, {
-                    title: "Profil - Pengembangan Bisnis",
+                    title: "Profil - Tentang Perusahaan - Pengembangan Bisnis",
                     url: "{{ url('public') }}/assets/templates/profile-business-development.html",
+                }, {
+                    title: "Profil - Struktur - Struktur Organisasi Perusahaan",
+                    url: "{{ url('public') }}/assets/templates/struktur-organisasi.html",
+                }, {
+                    title: "Profil - Struktur - Struktur Kepemilikan Saham",
+                    url: "{{ url('public') }}/assets/templates/struktur-kepemilikan.html",
+                }, {
+                    title: "Profil - Struktur - Anak Usaha PKT",
+                    url: "{{ url('public') }}/assets/templates/struktur-anper.html",
                 }, {
                     title: "Profil - Identitas Perusahaan",
                     url: "{{ url('public') }}/assets/templates/profile-identitas-perusahaan.html",
@@ -113,14 +122,23 @@
                     title: "Profil - Greenport",
                     url: "{{ url('public') }}/assets/templates/profile-greenport.html",
                 }, {
-                    title: "Struktur - Struktur Organisasi Perusahaan",
-                    url: "{{ url('public') }}/assets/templates/struktur-organisasi.html",
+                    title: "GCG - Sekilas GCG",
+                    url: "{{ url('public') }}/assets/templates/sekilas-gcg.html",
                 }, {
-                    title: "Struktur - Struktur Kepemilikan Saham",
-                    url: "{{ url('public') }}/assets/templates/struktur-kepemilikan.html",
+                    title: "GCG - Penerapan GCG - Penerapan",
+                    url: "{{ url('public') }}/assets/templates/penerapangcg-penerapan.html",
                 }, {
-                    title: "Struktur - Anak Usaha PKT",
-                    url: "{{ url('public') }}/assets/templates/struktur-anper.html",
+                    title: "GCG - Penerapan GCG - Komitmen",
+                    url: "{{ url('public') }}/assets/templates/penerapangcg-komitmen.html",
+                }, {
+                    title: "GCG - Penerapan GCG - Pedoman",
+                    url: "{{ url('public') }}/assets/templates/penerapangcg-pedoman.html",
+                }, {
+                    title: "GCG - Pengendalian Gratifikasi - Pengendalian",
+                    url: "{{ url('public') }}/assets/templates/pengendalian-gratifikasi-pengendalian.html",
+                }, {
+                    title: "GCG - Pengendalian Gratifikasi - Pedoman",
+                    url: "{{ url('public') }}/assets/templates/pengendalian-gratifikasi-pedoman.html",
                 }, {
                     title: "Laporan - Keberlanjutan",
                     url: "{{ url('public') }}/assets/templates/laporan-keberlanjutan.html",
