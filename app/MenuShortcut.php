@@ -14,7 +14,7 @@ class MenuShortcut extends Model
     ];
     /**
      * The attributes that are mass assignable.
-     *	
+     *
      * @var array
      */
     protected $fillable = [
@@ -25,6 +25,7 @@ class MenuShortcut extends Model
         'menu_type',
         'menu_position',
         'banner_img',
+        'icon',
         'href',
         'lang',
         'status',
@@ -44,6 +45,7 @@ class MenuShortcut extends Model
     {
         $columns = [
             'id',
+            'icon',
             'title',
             'href',
             'lang',

@@ -132,4 +132,5 @@ return [
     'fallback_locale' => 'Default Language',
     'id' => 'ID',
     'en' => 'EN',
+    'icon' => 'Icon',
 ];

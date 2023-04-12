@@ -20,7 +20,10 @@ Auth::routes(['verify' => true]);
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/files', function () {
         return view('webmin.files.index');
-    })->name('files.index');;
+    })->name('files.index');
+    Route::get('/icons', function () {
+        return view('webmin.icons.index');
+    })->name('icons.index');
 
     Route::resource('pages', 'PageController')->except(['edit', 'show']);
     Route::get('/pages/json', 'PageController@json')->name('pages.json');
