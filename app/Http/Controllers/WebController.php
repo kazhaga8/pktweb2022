@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\AnnualReport;
 use App\Category;
 use App\Certificate;
-use App\Config;
 use App\Contact;
 use App\Emagazine;
 use App\FinancialReport;
@@ -115,15 +114,54 @@ class WebController extends Controller
     return view($views, compact('detail', 'locale', 'nav', 'nav_right', 'nav_shortcut', 'nav_lang', 'active_menu', 'slider', 'slider_bottom'));
   }
   public function findHref($menus, $id) {
-    foreach ($menus as $value) {
-        if (isset($value->child) && count($value->child) > 0) {
-            $this->findHref($value->child, $id);
+    foreach ($menus as $lvl1) {
+        if (isset($lvl1->child) && count($lvl1->child) > 0) {
+            foreach ($lvl1->child as $lvl2) {
+                if (isset($lvl2->child) && count($lvl2->child) > 0) {
+                    foreach ($lvl2->child as $lvl3) {
+                        if (isset($lvl3->child) && count($lvl3->child) > 0) {
+                            foreach ($lvl3->child as $lvl4) {
+                                if ($lvl4->id == $id) {
+                                    return $lvl4;
+                                }
+                            }
+                        }
+                        if ($lvl3->id == $id) {
+                            return $lvl3;
+                        }
+                    }
+                }
+                if ($lvl2->id == $id) {
+                    return $lvl2;
+                }
+            }
         }
-        if ($value->id == $id) {
-            return $value;
+        if ($lvl1->id == $id) {
+            return $lvl1;
         }
     }
     return null;
+  }
+
+  public function highlightWords($text, $word){
+    $text = preg_replace('#'. preg_quote($word) .'#i', '<span style="background-color: #F9F902;">\\0</span>', $text);
+    return $text;
+  }
+  public function limit_text($text, $limit, $keyword) {
+    if (str_word_count($text, 0) > $limit) {
+      $words = str_word_count($text, 2);
+      $pos   = array_keys($words);
+      $resttext  = substr($text, $pos[$limit]);
+      $text  = substr($text, 0, $pos[$limit]) . '...';
+    }
+    if (!preg_match('/'.$keyword.'/i', $text) && isset($resttext)){
+        if (str_word_count($resttext, 0) > $limit) {
+            $text = $this->limit_text($resttext, $limit, $keyword);
+        }else{
+            $text = $resttext;
+        }
+    }
+    return $this->highlightWords($text, $keyword);
   }
   public function search(Request $request, $locale)
   {
@@ -134,6 +172,7 @@ class WebController extends Controller
     $nav_right = generateMenu($locale, 'right');
     $nav_shortcut = MenuShortcut::where('lang', '=', $locale)->get();
     $active_menu = new stdClass();
+    $active_menu->id = '';
     $active_menu->banner_img = '';
     $active_menu->title = trans('web.searching');
     $active_menu->ref = null;
@@ -148,15 +187,14 @@ class WebController extends Controller
             ->get();
     $result = [];
     foreach ($page as $key => $value) {
-        $menu = $this->findHref($nav, $value->id);
-        $value['menu'] = $menu;
+        $menu = $this->findHref(array_merge($nav, $nav_right), $value->id);
         $value['href'] = isset($menu->href) ? $menu->href : '';
-        $value['title'] = isset($menu->title) ? $menu->title : '';
-        $value['content'] = trim(str_replace(array("\r\n", "\r", "\n"), " ", strip_tags(html_entity_decode($value->content))));
-        $result['pages'][] = json_decode($value->toJson());
+        $value['title'] = isset($menu->title) ? $this->highlightWords($menu->title, $keyword) : '';
+        $content = trim(str_replace(array("\r\n", "\r", "\n"), " ", strip_tags(html_entity_decode($value->content))));
+        $value['content'] = $this->limit_text($content, 50, $keyword);
+        $result['Pages'][] = json_decode($value->toJson());
     }
-    dd($result);
-    return view($views, compact('locale', 'nav', 'nav_right', 'nav_shortcut', 'nav_lang', 'active_menu', 'slider', 'slider_bottom'));
+    return view($views, compact('locale', 'result', 'nav', 'nav_right', 'nav_shortcut', 'nav_lang', 'active_menu', 'slider', 'slider_bottom'));
   }
 
 

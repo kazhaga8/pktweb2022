@@ -2201,3 +2201,21 @@ section {
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 768px) {
 }
+
+.search-field-desktop {
+    right: 0;
+    top:130%;
+    color: white;
+    background: transparent;
+    outline: none;
+    width: 300px;
+    position: absolute;
+    font-size: 13px;
+  }
+  #search-desktop {
+    display: none;
+  }
+  .search-field-desktop::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+  }
+  

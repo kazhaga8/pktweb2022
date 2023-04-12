@@ -40,8 +40,12 @@
       </ul>
       <ul>
         <li class="nav-lang d-flex align-items-center text-white mx-5">
-          <span class="mx-4">
-            <i class="ri-search-line fs-4"></i>
+          <span class="mx-4 position-relative">
+            <i id="open-search-desktop" class="ri-search-line fs-4" style="cursor: pointer;"></i>
+            <div id="search-desktop" class="position-relative" style="top:10px">
+              <i id="close-search-desktop" class="ri-close-line fs-5 text-white position-absolute" style="top: 3px; z-index: 1; cursor: pointer;"></i>
+              <input id="input-search" class="search-field-desktop rounded border border-light fs-10 px-3 py-2" type="text" placeholder="Pencarian"/>
+            </div>
           </span>
           @php $count = 0; $countlang = count(config('app.lang')); @endphp
           @if ($countlang > 1)

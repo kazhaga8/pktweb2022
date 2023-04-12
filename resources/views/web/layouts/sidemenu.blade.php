@@ -11,7 +11,7 @@
         </a>
         <div class="form-search-mobile d-flex">
           <i class="ri-search-line fs-5 text-white"></i>
-          <input type="text" placeholder="Pencarian" class="w-100" />
+          <input id="input-search-mobile" type="text" placeholder="Pencarian" class="w-100" />
         </div>
       </div>
       <ul class="main-menu-mobile">
