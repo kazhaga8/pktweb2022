@@ -84,7 +84,12 @@ class WebController extends Controller
     if (!count($pages)) {
       return view('web.coming-soon', compact('pages', 'locale', 'nav', 'nav_right', 'nav_shortcut', 'nav_lang', 'active_menu', 'next_menu'));
     }
-    return view('web.pages', compact('pages', 'locale', 'nav', 'nav_right', 'nav_shortcut', 'nav_lang', 'active_menu', 'slider', 'slider_bottom', 'next_menu'));
+    $meta = new stdClass();
+    $meta->title = $active_menu->title;
+    $meta->meta_title = isset($pages[0]) ? $pages[0]->meta_title : '';
+    $meta->meta_desc = isset($pages[0]) ? $pages[0]->meta_desc : '';
+    $meta->meta_keyword = isset($pages[0]) ? $pages[0]->meta_keyword : '';
+    return view('web.pages', compact('pages', 'meta', 'locale', 'nav', 'nav_right', 'nav_shortcut', 'nav_lang', 'active_menu', 'slider', 'slider_bottom', 'next_menu'));
   }
 
   public function pageDetail($locale, $pages, $url)
@@ -111,7 +116,13 @@ class WebController extends Controller
         }
       };
     }
-    return view($views, compact('detail', 'locale', 'nav', 'nav_right', 'nav_shortcut', 'nav_lang', 'active_menu', 'slider', 'slider_bottom'));
+
+    $meta = new stdClass();
+    $meta->title = $detail->title;
+    $meta->meta_title = $detail->meta_title;
+    $meta->meta_desc = $detail->meta_desc;
+    $meta->meta_keyword = $detail->meta_keyword;
+    return view($views, compact('detail', 'meta', 'locale', 'nav', 'nav_right', 'nav_shortcut', 'nav_lang', 'active_menu', 'slider', 'slider_bottom'));
   }
   public function findHref($menus, $id) {
     foreach ($menus as $lvl1) {
@@ -202,9 +213,9 @@ class WebController extends Controller
       if ($news->count() > 0) {
         $result['News'] = $news->count();
       }
-    $page = new stdClass();
-    $page->title = trans('web.searching');
-    return view($views, compact('locale', 'page', 'result', 'nav', 'nav_right', 'nav_shortcut', 'nav_lang', 'active_menu', 'slider', 'slider_bottom'));
+    $meta = new stdClass();
+    $meta->title = trans('web.searching');
+    return view($views, compact('locale', 'meta', 'result', 'nav', 'nav_right', 'nav_shortcut', 'nav_lang', 'active_menu', 'slider', 'slider_bottom'));
   }
 
   public function getSearch(Request $request)

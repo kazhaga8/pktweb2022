@@ -1,6 +1,7 @@
 <div class="as-is-it col-lg-6 pt-4 pt-lg-0">
     <div class="d-flex justify-content-between">
         @if(isset($ebook))
+        <?php $index = 1 ?>
         @foreach($ebook as $key => $item)
         <div class="box-book-investor">
             <div class="report-investor text-center">
@@ -20,11 +21,12 @@
                 </div>
             </div>
         </div>
-    @if($key % 3 == 0)
+        @if($index % 3 == 0)
     </div>
     <div class="d-flex justify-content-between">
-    @endif
-    @endforeach
-    @endif
+        @endif
+        <?php $index++; ?>
+        @endforeach
+        @endif
     </div>
 </div>

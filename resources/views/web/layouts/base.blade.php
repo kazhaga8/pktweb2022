@@ -6,9 +6,9 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>{{ isset($page) ? $page->title : 'COMING SOON' }} {{ isset($page->meta_title) ? $page->meta_title : '' }} | {{ config('app.meta_title') ? config('app.meta_title') : 'PT Pupuk Kaltim' }}</title>
-  <meta content="{{ isset($page->meta_desc) && $page->meta_desc != '' ? $page->meta_desc : config('app.meta_desc') }}" name="description">
-  <meta content="{{ isset($page->meta_keyword) && $page->meta_keyword != '' ? $page->meta_keyword : config('app.meta_keyword') }}" name="keywords">
+  <title>{{ isset($meta) ? $meta->title : 'COMING SOON' }} {{ isset($meta->meta_title) ? $meta->meta_title : '' }} | {{ config('app.meta_title') ? config('app.meta_title') : 'PT Pupuk Kaltim' }}</title>
+  <meta content="{{ isset($meta->meta_desc) && $meta->meta_desc != '' ? $meta->meta_desc : config('app.meta_desc') }}" name="description">
+  <meta content="{{ isset($meta->meta_keyword) && $meta->meta_keyword != '' ? $meta->meta_keyword : config('app.meta_keyword') }}" name="keywords">
 
   <!-- Favicons -->
   <link href="{{ url('public') }}/assets/web/img/favicon.png" rel="icon">
