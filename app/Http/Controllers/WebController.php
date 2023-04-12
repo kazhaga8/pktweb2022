@@ -180,23 +180,85 @@ class WebController extends Controller
     $slider = [];
     $slider_bottom = [];
     $nav_lang = [];
-    // dd($nav);
+
     $keyword = $request->query('keyword');
-    $page = Page::where('lang', '=', $locale)->where('content', 'like', '%'.$keyword.'%')
-            ->select('id_menu as id', 'content')
-            ->get();
     $result = [];
-    foreach ($page as $key => $value) {
-        $menu = $this->findHref(array_merge($nav, $nav_right), $value->id);
-        $value['href'] = isset($menu->href) ? $menu->href : '';
-        $value['title'] = isset($menu->title) ? $this->highlightWords($menu->title, $keyword) : '';
-        $content = trim(str_replace(array("\r\n", "\r", "\n"), " ", strip_tags(html_entity_decode($value->content))));
-        $value['content'] = $this->limit_text($content, 50, $keyword);
-        $result['Pages'][] = json_decode($value->toJson());
-    }
-    return view($views, compact('locale', 'result', 'nav', 'nav_right', 'nav_shortcut', 'nav_lang', 'active_menu', 'slider', 'slider_bottom'));
+    $pages = Page::where('lang', '=', $locale)->where('content', 'like', '%'.$keyword.'%')
+      ->select('id_menu as id', 'content')
+      ->get();
+      if ($pages->count() > 0) {
+          $result['Pages'] = $pages->count();
+      }
+
+    $news = News::where('lang', $locale)
+      ->select('title', 'content', 'url')
+      ->where('active_date', '<=', date('Y-m-d'))
+      ->where(function($q) {
+          $q->whereNull('exp_date')
+            ->orWhere('exp_date', '>=', date('Y-m-d'));
+      })
+      ->where('content', 'like', '%'.$keyword.'%')
+      ->get();
+      if ($news->count() > 0) {
+        $result['News'] = $news->count();
+      }
+    $page = new stdClass();
+    $page->title = trans('web.searching');
+    return view($views, compact('locale', 'page', 'result', 'nav', 'nav_right', 'nav_shortcut', 'nav_lang', 'active_menu', 'slider', 'slider_bottom'));
   }
 
+  public function getSearch(Request $request)
+  {
+    $_response = array("status" => "200", "messages" => [], "data" => []);
+    $_response['messages'] = "Data Found";
+    $category = $request->category;
+    $keyword = $request->keyword;
+    $data = [];
+    if ($category == "Pages") {
+        $nav = generateMenu( $request->locale, 'main');
+        $nav_right = generateMenu( $request->locale, 'right');
+        $data = Page::where('lang', '=',  $request->locale)
+            ->select('id_menu as id', 'content')
+            ->where('content', 'like', '%'.$keyword.'%')
+            ->paginate($request->limit);
+        $result = [];
+        if ($data->count() > 0) {
+            foreach ($data->items() as $key => $value) {
+                $menu = $this->findHref(array_merge($nav, $nav_right), $value->id);
+                $value->href = isset($menu->href) ? $menu->href : '';
+                $value->title = isset($menu->title) ? $this->highlightWords($menu->title, $keyword) : '';
+                $content = trim(str_replace(array("\r\n", "\r", "\n"), " ", strip_tags(html_entity_decode($value->content))));
+                $value->content = $this->limit_text($content, 50, $keyword);
+                $result[] = $value;
+            }
+        }
+    }
+    if ($category == "News") {
+        $data = News::where('lang', $request->locale)
+            ->select('title', 'content', 'url as href')
+            ->where('active_date', '<=', date('Y-m-d'))
+            ->where(function($q) {
+                $q->whereNull('exp_date')
+                ->orWhere('exp_date', '>=', date('Y-m-d'));
+            })
+            ->where('content', 'like', '%'.$keyword.'%')
+            ->orderBy('active_date', 'DESC')
+            ->paginate($request->limit);
+        $result = [];
+        if ($data->count() > 0) {
+          foreach ($data->items() as $key => $value) {
+            $value->href = route('web.page-det', [$request->locale, 'news-detail', $value->href]);
+            $content = trim(str_replace(array("\r\n", "\r", "\n"), " ", strip_tags(html_entity_decode($value->content))));
+            $value->content = $this->limit_text($content, 50, $keyword);
+            $result[] = $value;
+          }
+        }
+        $data->items($result);
+    }
+    $_response['data'] = $data;
+    $_response['blade'] = view('web.search-result', compact('data'))->render();
+    return response()->json($_response);
+  }
 
   static function rederHomeInvestors($locale)
   {

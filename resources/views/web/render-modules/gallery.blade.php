@@ -76,6 +76,7 @@
       if (next_page_url) {
         const searchParams = getQueryParams(next_page_url);
         $('#load-more-gallery').show();
+        $('#load-more-gallery').attr('data-page', searchParams.page)
       } else {
         $('#load-more-gallery').hide();
       }
