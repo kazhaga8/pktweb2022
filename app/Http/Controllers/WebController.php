@@ -336,7 +336,7 @@ class WebController extends Controller
 
   static function rederEMagazine($locale)
   {
-    $year = Emagazine::select('year')->where('lang', $locale)->orderBy('year', 'DESC')->groupBy('year')->get();
+    $year = Emagazine::select('year')->where('lang', $locale)->where('year', '!=', 'NULL')->orderBy('year', 'DESC')->groupBy('year')->get();
     return view('web.render-modules.e-magazine', compact('locale', 'year'));
   }
 
@@ -500,7 +500,7 @@ class WebController extends Controller
   {
     $_response = array("status" => "200", "messages" => [], "data" => []);
     $_response['messages'] = "Data Found";
-    $year = $request->year ? "year='" . $request->year . "'" : "year!=''";
+    $year = $request->year ? "year='" . $request->year . "'" : "year IS NOT NULL ";
     $data = Emagazine::where('lang', $request->locale)->whereRaw($year)->orderBy('reorder')->paginate($request->limit);
     $cert = [];
     if ($data->count() > 0) {

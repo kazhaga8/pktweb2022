@@ -2,7 +2,7 @@
 
 @section('content')
 
-<section>
+<section id="result">
     <div class="container" data-aos="fade-up">
         <div class="row content">
             <div class="col-lg-12 pt-4 pt-lg-0">

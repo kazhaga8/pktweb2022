@@ -636,6 +636,6 @@ $("#close-search-desktop").click(function () {
 
 $("#input-search, #input-search-mobile").on("keydown",function search(e) {
     if(e.keyCode == 13) {
-        window.location.href = 'search?keyword='+$(this).val();
+        window.location.href = 'search?keyword='+$(this).val()+'#result';
     }
 });
