@@ -29,6 +29,12 @@
                 title: 'Updated At'
             }
         ],
+        columnDefs: [{
+            targets: 3,
+            render: function(cellvalue, data, rowdata) {
+                return '<div style="max-width: 500px; word-wrap: break-word;" >'+cellvalue+'</div>';
+            }
+        }],
         reorder: true
     });
 </script>
