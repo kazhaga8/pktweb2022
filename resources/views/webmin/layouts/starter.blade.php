@@ -8,7 +8,7 @@
     <meta name="author" content="Coderthemes">
 
     <!-- App favicon -->
-    <link rel="shortcut icon" href="assets/images/favicon.ico">
+    <link href="{{ url('public') }}/assets/web/img/favicon.png" rel="icon">
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- App title -->
@@ -38,7 +38,7 @@
 <body class="bg-transparent">
 
 @yield('content')
-    
+
 
     <script>
         var resizefunc = [];
@@ -56,7 +56,7 @@
 
     @stack('js')
     @yield('js')
-    
+
     <!-- App js -->
     <script src="{{ url('public') }}/assets/js/jquery.core.js"></script>
     <script src="{{ url('public') }}/assets/js/jquery.app.js"></script>
