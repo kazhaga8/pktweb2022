@@ -31,6 +31,9 @@
                         @can('sliders-bottom-list')
                         <li><a href="{{ route('sliders-bottom.index') }}" class="waves-effect"><i class=" mdi mdi-burst-mode"></i><span> Slider  Bottom </span></a></li>
                         @endcan
+                        @can('news-category-list')
+                        <li><a href="{{ route('news-category.index') }}" class="waves-effect"><i class=" mdi mdi-newspaper"></i><span> News Category </span></a></li>
+                        @endcan
                         @can('news-list')
                         <li><a href="{{ route('news.index') }}" class="waves-effect"><i class=" mdi mdi-newspaper"></i><span> News </span></a></li>
                         @endcan

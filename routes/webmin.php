@@ -45,6 +45,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/news/json', 'NewsController@json')->name('news.json');
     Route::get('/news/{news}', 'NewsController@edit')->name('news.edit');
 
+    Route::resource('news-category', 'NewsCategoryController')->except(['edit', 'show']);
+    Route::get('/news-category/json', 'NewsCategoryController@json')->name('news-category.json');
+    Route::get('/news-category/{news_category}', 'NewsCategoryController@edit')->name('news-category.edit');
+
     Route::get('/sustainability-report', 'SustainabilityController@index')->name('sustainability-report.index');
     Route::get('/sustainability-report/json', 'SustainabilityController@json')->name('sustainability-report.json');
     Route::get('/sustainability-report/create', 'SustainabilityController@create')->name('sustainability-report.create');
