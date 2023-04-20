@@ -133,4 +133,7 @@ return [
     'id' => 'ID',
     'en' => 'EN',
     'icon' => 'Icon',
+    'menu_display' => 'Display Menu',
+    'visible' => 'Visible',
+    'hidden' => 'Hidden',
 ];

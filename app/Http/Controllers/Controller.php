@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Menu;
+use App\Page;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -82,6 +83,7 @@ function getMenu($locale, $position)
     'title',
     'href',
     'menu_type',
+    'menu_display',
   )
     ->where('lang', '=', $locale)
     ->where('menu_position', '=', $position)
@@ -126,6 +128,16 @@ function generateMenu($locale, $position)
       }
       $lvl1['child_ids'][] = $lvl2['id'];
       $lvl2['href'] = getHref($lvl2, $lvl1['alias']);
+      if (isset($lvl2['child'])) {
+        $menu_ids = [];
+        foreach ($lvl2['child'] as $menu_child) {
+          $menu_ids[] = $menu_child['id'];
+        }
+        $check_page = Page::whereIn('id_menu', $menu_ids)->get();
+        if (!count($check_page)) {
+          $lvl2['href'] = $lvl2['child'][0]['href'] ;
+        }
+      }
       $lvl1['child'][] = $lvl2;
     }
     $lvl1['href'] = isset($lvl1['child']) && count($lvl1['child']) ? $lvl1['child'][0]['href'] : route('web.index', [$locale, $lvl1['alias']]);
@@ -185,16 +197,16 @@ function selectMenu($locale)
     $main_menu = generateMenu($locale, 'main');
     $parent = [];
     foreach ($main_menu as $lvl1) {
-        $parent[] = ["id"=>$lvl1->id, "name"=>$lvl1->title];
+        $parent[] = ["id" => $lvl1->id, "name" => $lvl1->title];
         if (isset($lvl1->child) && count($lvl1->child) > 0) {
             foreach ($lvl1->child as $lvl2) {
-                $parent[] = ["id"=>$lvl2->id, "name"=>$lvl1->title.$arrow.$lvl2->title];
+                $parent[] = ["id" => $lvl2->id, "name" => $lvl1->title . $arrow . $lvl2->title];
                 if (isset($lvl2->child) && count($lvl2->child) > 0) {
                     foreach ($lvl2->child as $lvl3) {
-                        $parent[] = ["id"=>$lvl3->id, "name"=>$lvl1->title.$arrow.$lvl2->title.$arrow.$lvl3->title];
+                        $parent[] = ["id" => $lvl3->id, "name" => $lvl1->title . $arrow . $lvl2->title . $arrow . $lvl3->title];
                         if (isset($lvl3->child) && count($lvl3->child) > 0) {
                             foreach ($lvl3->child as $lvl4) {
-                                $parent[] = ["id"=>$lvl4->id, "name"=>$lvl1->title.$arrow.$lvl2->title.$arrow.$lvl3->title.$arrow.$lvl4->title];
+                                $parent[] = ["id" => $lvl4->id, "name" => $lvl1->title . $arrow . $lvl2->title . $arrow . $lvl3->title . $arrow . $lvl4->title];
                             }
                         }
                     }
@@ -204,16 +216,16 @@ function selectMenu($locale)
     }
     $main_menu = generateMenu($locale, 'right');
     foreach ($main_menu as $lvl1) {
-        $parent[] = ["id"=>$lvl1->id, "name"=>$lvl1->title];
+        $parent[] = ["id" => $lvl1->id, "name" => $lvl1->title];
         if (isset($lvl1->child) && count($lvl1->child) > 0) {
             foreach ($lvl1->child as $lvl2) {
-                $parent[] = ["id"=>$lvl2->id, "name"=>$lvl1->title.$arrow.$lvl2->title];
+                $parent[] = ["id" => $lvl2->id, "name" => $lvl1->title . $arrow . $lvl2->title];
                 if (isset($lvl2->child) && count($lvl2->child) > 0) {
                     foreach ($lvl2->child as $lvl3) {
-                        $parent[] = ["id"=>$lvl3->id, "name"=>$lvl1->title.$arrow.$lvl2->title.$arrow.$lvl3->title];
+                        $parent[] = ["id" => $lvl3->id, "name" => $lvl1->title . $arrow . $lvl2->title . $arrow . $lvl3->title];
                         if (isset($lvl3->child) && count($lvl3->child) > 0) {
                             foreach ($lvl3->child as $lvl4) {
-                                $parent[] = ["id"=>$lvl4->id, "name"=>$lvl1->title.$arrow.$lvl2->title.$arrow.$lvl3->title.$arrow.$lvl4->title];
+                                $parent[] = ["id" => $lvl4->id, "name" => $lvl1->title . $arrow . $lvl2->title . $arrow . $lvl3->title . $arrow . $lvl4->title];
                             }
                         }
                     }

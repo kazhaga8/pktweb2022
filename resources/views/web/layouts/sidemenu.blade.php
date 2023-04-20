@@ -16,7 +16,7 @@
       </div>
       <ul class="main-menu-mobile">
         @foreach ($nav as $lvl1)
-        @if ($lvl1->ref > 1)
+        @if ($lvl1->ref > 1 && $lvl1->menu_display == "visible")
         <li class="sub-menu">
           <a href="{{ isset($lvl1->child) ? '#' : $lvl1->href }}">{{ $lvl1->title }}
             @if (isset($lvl1->child) && count($lvl1->child) > 0)<i class="ri-add-line right"></i>@endif
@@ -24,17 +24,21 @@
           @if (isset($lvl1->child) && count($lvl1->child) > 0)
           <ul>
             @foreach ($lvl1->child as $lvl2)
+            @if ($lvl2->menu_display == "visible")
             <li class="sub-menu"><a href="{{ isset($lvl2->child) ? '#' : $lvl2->href }}">{{ $lvl2->title }}
                 @if (isset($lvl2->child) && count($lvl2->child) > 0)<i class="ri-add-line right"></i>@endif
               </a>
               @if (isset($lvl2->child) && count($lvl2->child) > 0)
               <ul>
                 @foreach ($lvl2->child as $lvl3)
+                @if ($lvl3->menu_display == "visible")
                 <li><a href="{{ $lvl3->href }}">{{ $lvl3->title }}</a></li>
+                @endif
                 @endforeach
               </ul>
               @endif
             </li>
+            @endif
             @endforeach
           </ul>
           @endif

@@ -10,7 +10,7 @@ class Menu extends Model
 {
     /**
      * The attributes that are mass assignable.
-     *	
+     *
      * @var array
      */
     protected $fillable = [
@@ -20,6 +20,7 @@ class Menu extends Model
         'title',
         'menu_type',
         'menu_position',
+        'menu_display',
         'banner_img',
         'href',
         'lang',
@@ -44,6 +45,7 @@ class Menu extends Model
             'menus.title',
             'menus.menu_type',
             'menus.menu_position',
+            'menus.menu_display',
             'menus.lang',
             'menus.created_at',
             'menus.updated_at',
@@ -59,8 +61,14 @@ class Menu extends Model
         }elseif (isset($request->order[0]['column']) && $request->order[0]['column']=='3'){
             $query->orderBy('menus.title', $request->order[0]['dir']);
         }elseif (isset($request->order[0]['column']) && $request->order[0]['column']=='4'){
-            $query->orderBy('menus.created_at', $request->order[0]['dir']);
+            $query->orderBy('menus.menu_type', $request->order[0]['dir']);
         }elseif (isset($request->order[0]['column']) && $request->order[0]['column']=='5'){
+            $query->orderBy('menus.menu_position', $request->order[0]['dir']);
+        }elseif (isset($request->order[0]['column']) && $request->order[0]['column']=='6'){
+            $query->orderBy('menus.menu_display', $request->order[0]['dir']);
+        }elseif (isset($request->order[0]['column']) && $request->order[0]['column']=='7'){
+            $query->orderBy('menus.created_at', $request->order[0]['dir']);
+        }elseif (isset($request->order[0]['column']) && $request->order[0]['column']=='8'){
             $query->orderBy('menus.updated_at', $request->order[0]['dir']);
         }else{
             $query->orderBy('menus.lang', 'ASC')->orderBy('menus.reorder', 'ASC');

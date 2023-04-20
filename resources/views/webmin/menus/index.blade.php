@@ -29,6 +29,11 @@
                 title: 'Menu Position'
             },
             {
+                data: 'menu_display',
+                name: 'menu_display',
+                title: 'Display Menu'
+            },
+            {
                 data: 'created_at',
                 name: 'created_at',
                 title: 'Created At'

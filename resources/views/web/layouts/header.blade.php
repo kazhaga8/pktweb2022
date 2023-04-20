@@ -15,22 +15,26 @@
     <nav id="navbar" class="navbar">
       <ul>
         @foreach ($nav as $lvl1)
-        @if ($lvl1->ref > 1)
+        @if ($lvl1->ref > 1 && $lvl1->menu_display == "visible")
         <li>
           <a class="nav-link scrollto {{ in_array($active_menu->id, $lvl1->child_ids) ? 'active' : '' }}" href="{{ $lvl1->href }}">{{ $lvl1->title }}</a>
           @if (isset($lvl1->child) && count($lvl1->child) > 0)
           <div class="mega-menu">
             @foreach ($lvl1->child as $lvl2)
+            @if ($lvl2->menu_display == "visible")
             <div class="column-mega-menu">
               <a href="{{ $lvl2->href }}">
                 <h3 class="fs-5">{{ $lvl2->title }}</h3>
               </a>
               @if (isset($lvl2->child) && count($lvl2->child) > 0)
               @foreach ($lvl2->child as $lvl3)
+              @if ($lvl3->menu_display == "visible")
               <a href="{{ $lvl3->href }}">{{ $lvl3->title }}</a>
+              @endif
               @endforeach
               @endif
             </div>
+            @endif
             @endforeach
           </div>
           @endif
