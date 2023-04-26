@@ -6,6 +6,8 @@ use App\AnnualReport;
 use App\Category;
 use App\Certificate;
 use App\Contact;
+use App\ContactUs;
+use App\ContactUsTo;
 use App\Emagazine;
 use App\FinancialReport;
 use App\Gallery;
@@ -348,9 +350,10 @@ class WebController extends Controller
 
   static function rederContact($locale)
   {
+    $mailto = ContactUsTo::where('lang', $locale)->get();
     $contact = Contact::where('lang', $locale)->get();
     $captcha = count($contact) ? reCaptcha() : '';
-    return view('web.render-modules.contact', compact('contact', 'captcha'));
+    return view('web.render-modules.contact', compact('contact', 'mailto', 'captcha'));
   }
 
   static function rederNews($locale)
@@ -546,21 +549,24 @@ class WebController extends Controller
     }
 
     $ktp_name = date('YmdHis') . $request->ktp_file->getClientOriginalName();
-    $request->ktp_file->storeAs('public', $ktp_name);
+    $ktp_file = $request->file('ktp_file') ;
+    $destinationPath = public_path().'/assets/files/img/KTP' ;
+    $ktp_file->move($destinationPath,$ktp_name);
     $body = $store;
     $body['msg'] = $store['message'];
     $body['logo'] = public_path('assets/files/img/logodasar.png');
-    $body['ktp_image'] = storage_path('app/public/') . $ktp_name;
+    $body['ktp_image'] =  $destinationPath . "/" . $ktp_name;
+    $store['ktp_file'] = 'assets/files/img/KTP/'.$ktp_name;
     unset($body['message']);
     $dataEmail = [];
     $dataEmail['body'] = $body;
     $dataEmail['view'] = "mail.contact";
     $dataEmail['subject'] = $store['subject'];
     $dataEmail = json_decode(json_encode($dataEmail));
-
-    $mailto = "sangrezha@gmail.com";
+    $data_to = ContactUsTo::findOrFail($store['to']);
+    $mailto = $data_to->email;
     Mail::to($mailto)->send(new SendEmailController($dataEmail));
-    Storage::disk('public')->delete($ktp_name);
+    ContactUs::create($store);
     return redirect(url()->previous() . "#form")->with('success_submit_contact', 'Terima kasih, inkuiri anda akan segera kami balas melalui email.');
   }
 }

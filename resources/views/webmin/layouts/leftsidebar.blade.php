@@ -52,8 +52,14 @@
                         @can('product-list')
                         <li><a href="{{ route('products.index') }}" class="waves-effect"><i class=" mdi mdi-shopping"></i><span> Product </span></a></li>
                         @endcan
-                        @can('contacts-list')
+                        @can('contact-list')
                         <li><a href="{{ route('contacts.index') }}" class="waves-effect"><i class=" mdi mdi-contact-mail"></i><span> Contact </span></a></li>
+                        @endcan
+                        @can('contact-us-list')
+                        <li><a href="{{ route('contact-us.index') }}" class="waves-effect"><i class=" mdi mdi-contact-mail"></i><span> Contact Us </span></a></li>
+                        @endcan
+                        @can('contact-us-to-list')
+                        <li><a href="{{ route('contact-us-to.index') }}" class="waves-effect"><i class=" mdi mdi-contact-mail"></i><span> Contact Us Email </span></a></li>
                         @endcan
                         @can('shortcut-list')
                         <li><a href="{{ route('shortcuts.index') }}" class="waves-effect"><i class="mdi mdi-link-variant"></i><span> Shortcuts </span></a></li>

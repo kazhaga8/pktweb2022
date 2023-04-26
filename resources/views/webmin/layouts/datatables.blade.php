@@ -155,7 +155,7 @@
         });
 
         const useLangFilter = columnAll.findIndex(x => x.data === 'lang');
-        if (useLangFilter) {
+        if (useLangFilter > 0) {
             $('.filter').html(
                 '<label>Lang: ' +
                 '<select id="filter_lang" class="form-control input-sm">' +

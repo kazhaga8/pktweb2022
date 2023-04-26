@@ -113,6 +113,14 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/contacts/json', 'ContactController@json')->name('contacts.json');
     Route::get('/contacts/{contact}', 'ContactController@edit')->name('contacts.edit');
 
+    Route::resource('contact-us', 'ContactUsController')->except(['edit', 'show']);
+    Route::get('/contact-us/json', 'ContactUsController@json')->name('contact-us.json');
+    Route::get('/contact-us/{contact_us}', 'ContactUsController@edit')->name('contact-us.edit');
+
+    Route::resource('contact-us-to', 'ContactUsToController')->except(['edit', 'show']);
+    Route::get('/contact-us-to/json', 'ContactUsToController@json')->name('contact-us-to.json');
+    Route::get('/contact-us-to/{contact_us_to}', 'ContactUsToController@edit')->name('contact-us-to.edit');
+
     Route::resource('products', 'ProductController')->except(['edit', 'show']);
     Route::get('/products/json', 'ProductController@json')->name('products.json');
     Route::get('/products/{product}', 'ProductController@edit')->name('products.edit');

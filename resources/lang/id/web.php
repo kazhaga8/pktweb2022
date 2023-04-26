@@ -22,4 +22,15 @@ return [
     'title-empowerment' => 'PROGRAM PEMBERDAYAAN MASYARAKAT',
     'searching' => 'Pencarian',
     'search-result' => 'Hasil Pencarian',
+    'contact-us' => 'HUBUNGI KAMI',
+    'subject' => 'Subjek',
+    'necessity' => 'Tujuan',
+    'select-necessity' => 'Pilih Tujuan',
+    'name' => 'Nama',
+    'email' => 'Email',
+    'id-card' => 'No KTP',
+    'upload-id-card' => 'Upload KTP',
+    'phone' => 'No HP',
+    'message' => 'Pesan',
+    'write-placeholder' => 'Tulis :field Anda'
 ];

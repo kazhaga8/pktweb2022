@@ -136,4 +136,6 @@ return [
     'menu_display' => 'Display Menu',
     'visible' => 'Visible',
     'hidden' => 'Hidden',
+    'subject' => 'Subject',
+    'phone' => 'Phone',
 ];

@@ -22,4 +22,15 @@ return [
     'title-empowerment' => 'PROGRAM PEMBERDAYAAN MASYARAKAT',
     'searching' => 'Searching',
     'search-result' => 'Search Result',
+    'contact-us' => 'Contact Us',
+    'subject' => 'Subject',
+    'necessity' => 'Necessity',
+    'select-necessity' => 'Select Necessity',
+    'name' => 'Name',
+    'email' => 'Email',
+    'id-card' => 'KTP No',
+    'upload-id-card' => 'Upload KTP',
+    'phone' => 'Phone No',
+    'message' => 'Message',
+    'write-placeholder' => 'Input Your :field'
 ];

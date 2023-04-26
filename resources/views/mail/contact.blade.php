@@ -110,7 +110,7 @@
             <tbody>
               <tr>
                 <td valign="middle" align="center">
-                  Copyright &copy; PT Pupuk Kaltim - All Right Reserved
+                  Copyright &copy;2022 PT Pupuk Kalimantan Timur (PKT)
                 </td>
               </tr>
             </tbody>
