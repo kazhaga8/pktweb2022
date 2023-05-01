@@ -3,16 +3,23 @@
 @push('datatbInit')
 <script>
     const dataTbInit = new dataTbConfig({
-        column: [{
-                data: 'title',
-                name: 'title',
-                title: 'Page'
-            },
+        column: [
             {
                 data: 'lang',
                 name: 'lang',
                 title: 'Lang',
                 search: { value: 'en', regex: true },
+            },
+            {
+                data: 'menu',
+                name: 'menu',
+                title: 'Menu',
+                orderable: false
+            },
+            {
+                data: 'title',
+                name: 'title',
+                title: 'Page'
             },
             {
                 data: 'created_at',

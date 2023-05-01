@@ -18,8 +18,24 @@ class PageController extends Controller
     }
 
 
-    public function json(){
-        return DataTables::of(Page::orderBy('id','DESC'))->addIndexColumn()->make(true);
+    public function json(Request $request){
+        $getData = Page::getData($request);
+        $query = $getData['query'];
+
+        return DataTables::of($query)
+        ->addIndexColumn()
+        ->filter(function ($query) use ($request, $getData) {
+            $this->filterGlobal($getData, $request, $query);
+        })
+        ->addColumn('menu', function(Page $page) {
+            $menus = selectMenu($page->lang);
+            $key = array_search($page->id_menu, array_column($menus, 'id'));
+            return $menus[$key]->name;
+        })
+        ->skipTotalRecords()
+        ->setTotalRecords(false)
+        ->setFilteredRecords(false)
+        ->make(true);
     }
 
     public function index(Request $request)
