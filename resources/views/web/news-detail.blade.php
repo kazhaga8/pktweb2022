@@ -23,7 +23,7 @@
     </div>
 
     <div class="text-center">
-    <a href="{{ url()->previous() }}"><button type="button" class="btn btn-primary btn-animate mt-4">Kembali</button></a>
+    <a href="{{ url()->previous() }}"><button type="button" class="btn btn-primary btn-animate mt-4">{{ __('web.back') }}</button></a>
     </div>
   </div>
 </section>

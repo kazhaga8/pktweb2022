@@ -32,5 +32,6 @@ return [
     'upload-id-card' => 'Upload KTP',
     'phone' => 'Phone No',
     'message' => 'Message',
-    'write-placeholder' => 'Input Your :field'
+    'write-placeholder' => 'Input Your :field',
+    'back' => 'Back',
 ];

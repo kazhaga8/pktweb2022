@@ -50,12 +50,6 @@
 
 li.nav-lang a {
     text-transform: uppercase;
-    display: unset !important
-}
-
-li.nav-lang:hover > a {
-    color: inherit;
-    border-bottom: inherit;
 }
 
 footer .footer-middle {

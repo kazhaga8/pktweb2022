@@ -32,5 +32,6 @@ return [
     'upload-id-card' => 'Upload KTP',
     'phone' => 'No HP',
     'message' => 'Pesan',
-    'write-placeholder' => 'Tulis :field Anda'
+    'write-placeholder' => 'Tulis :field Anda',
+    'back' => 'Kembali',
 ];
